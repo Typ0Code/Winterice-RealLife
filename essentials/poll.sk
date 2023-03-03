@@ -1,0 +1,84 @@
+Options:
+	servernameset: Winterice # replace the '<server name>' as whatever you want!
+command poll [<text>]:
+	permission: poll.admin
+	trigger:
+		if arg-1 is set:
+			if {asked.question} is not set:
+				set {asked.question} to 0
+			if {asked.question} is 1:
+				message "&8&l<&4&l!&8&l> &fYou have already set a poll!"
+			if {asked.question} is 0:
+				broadcast ""
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &f%arg-1%?            &7For yes, /yes        For no, /no."
+				broadcast ""
+				set {asked.question} to 1
+				wait 30 seconds
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 30 seconds!"
+				wait 15 seconds
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 15 seconds!"
+				wait 5 seconds
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 10 seconds!"
+				wait 5 seconds
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 5 seconds!"
+				wait 2 seconds
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 3 seconds!"
+				wait 1 second
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 2 seconds!"
+				wait 1 second
+				broadcast "&f&l{@servernameset} &lPoll &8&l| &fEnding in 1 seconds!"
+				wait 1 second
+				set {answer::*} to 0
+				if {answers.no} is greater than {answers.yes}:
+					broadcast ""
+					broadcast "&f&l{@servernameset} &8&l| &f'No' wins with %{answers.no}% votes!"
+					broadcast ""
+				else:
+					broadcast ""
+					broadcast "&f&l{@servernameset} &8&l| &f'Yes' wins with %{answers.yes}% votes!"
+					broadcast ""
+				set {answers.no} to 0
+				set {answers.yes} to 0
+				set {asked.question} to 0
+		else:
+			message "&8&l<&4&l!&8&l> &fYou must type a question! ./poll <Your question>"
+command yes:
+	trigger:
+		if {asked.question} is not set:
+			set {asked.question} to 0
+		if {answer::%player%} is not set:
+			set {answer::%player%} to 0
+		if {answers.no} is not set:
+			set {answers.no} to 0
+		if {answers.yes} is not set:
+			set {answers.yes} to 0
+		if {asked.question} is 1:
+			if {answer::%player%} is 0:
+				set {answers.yes} to {answers.yes} + 1
+				broadcast "&f&l{@servernameset} &8&l| &f%player% votes &aYes! &7%{answers.yes}%/10"
+				set {answer::%player%} to 1
+				stop
+			if {answer::%player%} is 1:
+				message "&8&l<&4&l!&8&l> &fYou have already answered!"
+		if {asked.question} is 0:
+			message "&8&l<&4&l!&8&l> &fA question hasn't been set!"
+command no:
+	trigger:
+		if {asked.question} is not set:
+			set {asked.question} to 0
+		if {answer::%player%} is not set:
+			set {answer::%player%} to 0
+		if {answers.no} is not set:
+			set {answers.no} to 0
+		if {answers.yes} is not set:
+			set {answers.yes} to 0
+		if {asked.question} is 1:
+			if {answer::%player%} is 0:
+				set {answers.no} to {answers.no} + 1
+				broadcast "&f&l{@servernameset} &8&l| &f%player% votes &4No! &7%{answers.no}%/10"
+				set {answer::%player%} to 1
+				stop
+			if {answer::%player%} is 1:
+				message "&8&l<&4&l!&8&l> &fYou have already answered!"
+		if {asked.question} is 0:
+			message "&8&l<&4&l!&8&l> &fA question hasn't been set!"

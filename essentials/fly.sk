@@ -1,0 +1,12 @@
+command /fly [<text>]:
+	permission: *
+	trigger:
+		if arg 1 is not set:
+			if {fly.%player%} is not true:
+				message "&6&lFly Mode &f> You have toggled fly &eon&f."
+				set player's flight mode to true
+				set {fly.%player%} to true
+			else:
+				message "&e&lFly Mode &f> You have toggled fly &eoff&f."
+				set player's flight mode to false
+				delete {fly.%player%}

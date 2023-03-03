@@ -1,0 +1,273 @@
+options:
+	Version: e2975d4 #DO NOT TOUCH THIS
+	server-type: RealLife-Server
+	networkName: Winterice
+	primaryColor: &7 #MUST INCLUDE & 
+	secondaryColor: &c #MUST INCLUDE & 
+	errorColor: &c #THE COLOR OF ERRORS SUCH AS NO PLAYER ONLINE WITH A SPECIFIED USERNAME
+	msgColor: &6 #COLOR OF PARANTHESIS AND TEXT IN /MSG 
+	vanishPrefix: &7[V] #PREFIX OF VANISHED USERS IN TAB (ONLY SEEN BY STAFF): Default - &7[V]
+	incorrectSyntax: There was an error while processing your command. Is the syntax correct?
+	noPerm: &cNo permission.
+	discordInvite: https://discord.gg/dDEwjDyXYS
+	storeLink: Your_Store_Link_Here
+	staffJoin: false
+	staffLeave: false
+	chatFormat: false #THIS CURRENTLY DOES NOT WORK, YOU WILL NEED LUCKPERMSCHAT OR ESSENTIALSCHAT
+	chatFormat: %player's prefix% &7%player's name%: %message%
+	alertPrefix: &7[&6&lALERT&7] &4
+	banCommand: /ban %player% #USED WHEN SOMEBODY LOGS OUT WHILE FROZEN (/SS) - Default: "/ban %player% 30d Left while frozen -s"
+command /alert [<string>]:
+	permission: core.alert
+	permission message: "{@noPerm}"
+	aliases: /bc, /broadcast, /core:alert, /core:bc, /core:broadcast
+	trigger:
+		if arg-1 is not set:
+			send "{@primaryColor}Usage: {@secondaryColor}/alert &f<message>"
+		else:
+			broadcast "{@alertPrefix} %arg-1%"
+command /discord [<string>]:
+	aliases: /dc, /disc, /core:discord, /core:dc, /core:disc
+	trigger:
+		send "{@primaryColor}You may join our Discord at {@secondaryColor}{@discordInvite}&e!"
+command /store [<string>]:
+	aliases: /buy, /purchase, /core:store, /core:buy, /core:purchase
+	trigger:
+		send "{@primaryColor}You may visit our Store at {@secondaryColor}{@storeLink}&e!"
+command /ping [<offlineplayer>] [<string>]:
+	aliases: core:ping
+	trigger:
+		if arg-1 is not set:
+			send "%player%{@primaryColor}'s ping: {@secondaryColor}%player's ping%ms{@primaryColor}."
+		else:
+			if arg-1 is not online:
+				send "{@errorColor}Error: ""&e%arg-1%&c"" is not online."
+			else:
+				send "%arg-1%{@primaryColor}'s ping: {@secondaryColor}%arg-1's ping%ms{@primaryColor}."
+command /freeze [<player>]:
+	aliases: /ss
+	permission: core.ss
+	permission message: {@noPerm}
+	trigger:
+		if argument has permission "core.ssexempt":
+			if arg-1 is set:
+				send "{@errorColor}You cannot freeze this player." to the player
+		else:
+			if arg-1 is set:
+				if {core.%argument%.frozen} isn't set:
+					set {core.%argument%.frozen} to true
+					set {core.%argument%.invincibility.frozen} to true
+					send "&f█████████" to arg 1
+					send "&f████&c█&f████" to arg 1
+					send "&f███&c█&0█&c█&f███" to arg 1
+					send "&f██&c█&6█&0█&6█&c█&f██" to arg 1
+					send "&f██&c█&6█&0█&6█&c█&f██ {@primaryColor}You've been frozen by a staff member." to arg 1
+					send "&f██&c█&6█&0█&6█&c█&f██ {@primaryColor}If you disconnect you will be &4&lBANNED&e." to arg 1
+					send "&f█&c█&6█████&c█&f█ {@primaryColor}Please connect to our discord." to arg 1
+					send "&c█&6███&0█&6███&c█ &7{@discordInvite}" to arg 1
+					send "&c█████████" to arg 1
+					send "&f█████████" to arg 1
+					send "&c%argument% &ehas been frozen." to the player
+				else:
+					if {core.%argument%.frozen} is set:
+						delete {core.%argument%.frozen}
+						send "{@primaryColor}You've been unfrozen. We are sorry for this inconvience." to the argument
+						send "{@primaryColor}You've unfroze {@secondaryColor}%argument%" to the player
+						reset arg-1's walk speed
+						wait 5 seconds
+						delete {core.%argument%.invincibility.frozen}
+		if arg-1 isn't set:
+			message "{@primaryColor}Usage: {@secondaryColor}&c/freeze &f<target>"
+on player move:
+	if {core.%player%.frozen} is true:
+		cancel event
+on damage:
+	if {core.%victim%.invincibility.frozen} is true:
+		cancel event
+	if {core.%attacker%.invincibility.frozen} is true:
+		cancel event
+command /tp [<offline player>] [<string>]:
+	aliases: /core:tp, /core:teleport, /teleport
+	trigger:
+		if executor does not have permission "core.teleport":
+			send "{@noPerm}"
+		else:
+			if arg-1 is not set:
+				send "{@primaryColor}Usage: {@secondaryColor}&6/teleport &f<target1>"
+			else:
+				if arg-2 is set:
+					send "{@errorColor}{@incorrectSyntax}"
+				else:
+					if arg-1 is not online:
+						send "{@errorColor}}No player matching &e%arg-1% &cis connected to this server."
+					else:
+						teleport player to arg-1
+						send "{@primaryColor}You've teleported to {@secondaryColor}%arg-1%{@primaryColor}."
+						send "&7&o[%player%: &eteleported to %arg-1%&7&o]" to all players where [input has permission "core.staff"]
+command /tphere [<offline player>] [<string>]:       
+	aliases: /core:tphere, /teleporthere, /core:teleporthere
+	trigger:
+		if executor does not have permission "core.teleporthere":
+			send "{@noPerm}"
+		else:
+			if arg-1 is not set:
+				send "{@primaryColor}Usage: {@secondaryColor}&6/teleporthere &f<target1>"
+			else:
+				if arg-2 is set:
+					send "{@errorColor}{@incorrectSyntax}"
+				else:
+					if arg-1 is not online:
+						send "{@errorColor}No player matching &e%arg-1% &cis connected to this server."
+					else:
+						teleport arg-1 to player
+						send "{@primaryColor}You've teleported {@secondaryColor}%arg-1% {@primaryColor}to {@secondaryColor}you{@primaryColor}."
+						send "&7&o[%player%: &eteleported %arg-1% to %player%&7&o]" to all players where [input has permission "core.staff"]
+command /tpall [<string>]:       
+	aliases: /core:tpall
+	trigger:
+		if executor does not have permission "core.teleportall":
+			send "{@noPerm}"
+		else:
+			if arg-1 is set:
+				send "{@errorColor}{@incorrectSyntax}"
+			else:
+				teleport all players to player
+				send "{@primaryColor}You've teleported {@secondaryColor}all players {@primaryColor}to {@secondaryColor}you{@primaryColor}."
+				send "&7&o[%player%: &eteleported all players to %player%&7&o]" to all players where [input has permission "core.staff"]
+command /list [<string>]:
+	aliases: /who, /core:list, /core:who
+	trigger:
+		if arg-1 is set:
+			send "{@errorColor}{@incorrectSyntax}"
+		else:
+			set {_a} to capitalized "{@server-type}"
+			send "{@primaryColor}There are {@secondaryColor}%number of all players - size of {vanished::*}% players {@primaryColor}connected to {@secondaryColor}%{_a}%&e."
+command /v [<string>]:
+	aliases: /vanish, /core:vanish, /core:v
+	trigger:
+		if executor does not have permission "core.vanish":
+			send "{@noPerm}"
+		else:
+			if arg-1 is set:
+				send "{@errorColor}{@incorrectSyntax}"
+			else:
+				if {vanish::%player's uuid%} is not set:
+					if {vanished::*} doesn't contain player:
+						add player to {vanished::*}
+					send "{@primaryColor}}You're now &avanished{@primaryColor}."
+					send "&7&o[%player%: &evanished&7&o]" to all players where [input has permission "core.staff"]
+					set {vanish::%player's uuid%} to true
+				else:
+					if {vanished::*} contains player:
+						remove player from {vanished::*}
+					send "{@primaryColor}You're now &cunvanished{@primaryColor}."
+					send "&7&o[%player%: &eunvanished&7&o]" to all players where [input has permission "core.staff"]
+					delete {vanish::%player's uuid%}
+on damage:
+	if {vanish::%victim's uuid%} is set:
+		cancel event
+	if {vanish::%attacker's uuid%} is set:
+		cancel event
+on server ping:
+	hide {vanished::*} from server list
+every 1 second:
+	loop all players:
+		loop all players:
+			if {vanish::%loop-player-1's uuid%} is true:
+				if loop-player-2 does not have permission "core.vanish":
+					hide loop-player-1 from loop-player-2 
+				else:
+					reveal loop-player-1 to loop-player-2
+			else:
+				reveal loop-player-1 to loop-player-2
+command /onlinestaff [<string>]:
+	aliases: /stafflist, /os, /sl, /core:sl, /core:os, /core:stafflist, /core:onlinestaff
+	trigger:
+		if executor does not have permission "core.staff":
+			send "{@noPerm}"
+		else:
+			if arg-1 is set:
+				send "{@errorColor}}{@incorrectSyntax}"
+			else:
+				loop all players:
+					if loop-player has permission "core.staff":
+						add "%loop-player%&7" to {_onlinestaff::*}
+				if size of {_onlinestaff::*} is 0:
+					send "{@errorColor}No staff are currently online{@errorColor}."
+				else:
+					set {_a} to "%colored {_onlinestaff::*}%"
+					replace all " and" in {_a} with ","
+					send "&7Processing..."
+					wait 0.5 seconds
+					send "{@primaryColor}&lOnline Staff:"
+					send " {@primaryColor}&l{@server-type}: %{_a}%"
+command /gamemode [<string>]:
+	aliases: /gm, /core:gm, /core:gamemode
+	permission: core.gamemode
+	permission message: {@noPerm}
+	trigger:
+		if arg-1 is not set:
+			send "{@primaryColor}Usage: {@secondaryColor}&6/gamemode &f<mode>"
+		else if arg-1 is "creative" or "1":
+			if player has permission "core.gmc":
+				set player's gamemode to creative
+				send "&7&o[%player%: &eswitched to &ccreative &emode&7&o]" to all players where [input has permission "core.gamemode"]
+				send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Creative{@primaryColor}."
+			else:
+				send "{@noPerm}"
+		else if arg-1 is "survival" or "0":
+			if player has permission "core.gms":
+				set player's gamemode to survival
+				send "&7&o[%player%: &eswitched to &csurvival &emode&7&o]" to all players where [input has permission "core.gamemode"]
+				send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Survival{@primaryColor}."
+			else:
+				send "{@noPerm}"
+		else if arg-1 is "spectator" or "3":
+			if player has permission "core.gmsp":
+				set player's gamemode to spectator
+				send "&7&o[%player%: &eswitched to &cspectator &emode&7&o]" to all players where [input has permission "core.gamemode"]
+				send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Spectator{@primaryColor}."
+			else:
+				send "{@noPerm}"
+		else if arg-1 is "c":
+			if player has permission "core.gmc":
+				set player's gamemode to creative
+				send "&7&o[%player%: &eswitched to &ccreative &emode&7&o]" to all players where [input has permission "core.gamemode"]
+				send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Creative{@primaryColor}."
+			else:
+				send "{@noPerm}"
+		else if arg-1 is "s":
+			if player has permission "core.gms":
+				set player's gamemode to survival
+				send "&7&o[%player%: &eswitched to &csurvival &emode&7&o]" to all players where [input has permission "core.gamemode"]
+				send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Survival{@primaryColor}."
+			else:
+				send "{@noPerm}"
+		else if arg-1 is "sp":
+			if player has permission "core.gmsp":
+				set player's gamemode to spectator
+				send "&7&o[%player%: &eswitched to &cspectator &emode&7&o]" to all players where [input has permission "core.gamemode"]
+				send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Spectator{@primaryColor}."
+			else:
+				send "{@noPerm}"
+command /gmc:
+	permission: core.gmc
+	permission message: {@noPerm}
+	trigger:
+		set player's gamemode to creative
+		send "&7&o[%player%: &eswitched to &ccreative &emode&7&o]" to all players where [input has permission "core.gamemode"]
+		send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Creative{@primaryColor}."
+command /gms:
+	permission: core.gms
+	permission message: {@noPerm}
+	trigger:
+		set player's gamemode to survival
+		send "&7&o[%player%: &eswitched to &csurvival &emode&7&o]" to all players where [input has permission "core.gamemode"]
+		send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Survival{@primaryColor}."
+command /gmsp:
+	permission: core.gmsp
+	permission message: {@noPerm}
+	trigger:
+		set player's gamemode to spectator
+		send "&7&o[%player%: &eswitched to &cspectator &emode&7&o]" to all players where [input has permission "core.gamemode"]
+		send "{@primaryColor}Successfully set your gamemode to {@secondaryColor}Spectator{@primaryColor}."

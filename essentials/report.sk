@@ -1,0 +1,8 @@
+command /report <offline player>:
+	trigger:
+		set {%player's UUID%.reportsystem.chat.grund} to true
+		set {%player's UUID%.reportsystem.name} to arg-1
+		send "&7Wie lautet der Grund für die Meldung?"
+		wait 10 minutes
+		delete {%player's UUID%.reportsystem.name}
+		delete {%player's UUID%.reportsystem.chat.grund}

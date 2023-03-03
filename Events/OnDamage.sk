@@ -1,0 +1,2 @@
+On damage of a player:
+	show 25 "redstone" particles at location of victim for victim offset by 0.4, 0.7, 0.4

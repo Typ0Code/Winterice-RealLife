@@ -1,36 +1,3 @@
-on quit:
-	if {%player%.pvp.isin} is true:
-		broadcast "Der Spieler %player% ist während pvp geleavt."
-	delete {%player%.damagelog::*}
-	delete {%player%.add.player}
-	delete {%player%.remove.player}
-	loop {locations.names.list::*}:
-		delete {distance.bus.%player%.%loop-value%}
-	delete {%player%.compass.ziel}
-	delete {%player%.compass.ziel.location}
-	delete {%player%.naechster.punkt.name}
-	delete {%player%.naechster.punkt.bankautomat}
-	delete {%player%.naechster.punkt.bushaltestelle}
-	delete {%player%.naechster.punkt.name.bankautomat}
-	delete {%player%.naechster.punkt.name.bushaltestelle}
-	delete {%player%.naechster.punkt.name.zughaltestelle}
-	delete {%player%.naechster.punkt.zughaltestelle}
-	delete {%{%player%.naechster.punkt.name}%_location}
-	delete {%player%.compass.ziel}
-	delete {%player%.thrust}
-	delete {%player%_gesperrt}
-	delete {%player%.wartezeit}
-	delete {%uuid of player%_delay}
-	delete {distance.compass.%player%}
-	if {%player's uuid%.waffenbesitzkarte} is not "&2Ja":
-		delete {%player's uuid%.waffenbesitzkarte}
-	if {%player's uuid%.Leichtwaffenschein} is not "&2Ja":
-		delete {%player's uuid%.Leichtwaffenschein}
-	if {%player's uuid%.Schwerwaffenschein} is not "&2Ja":
-		delete {%player's uuid%.Schwerwaffenschein}
-	if {%player's uuid%.Kriegswaffenschein} is not "&2Ja":
-		delete {%player's uuid%.Kriegswaffenschein}
-
 on join:
 	if {%player's UUID%.abrechnung.strom} is not set:
 		set {%player's UUID%.abrechnung.strom} to 0

@@ -1,0 +1,37 @@
+command /Resetjoin:
+	trigger:
+		delete {firstjoin::%player's uuid%}
+command /unkick <offline player>:
+	permission: *
+	trigger:
+		delete {%arg-1%_gesperrt}
+command /kick <player> <text>:
+	aliases: /essentials:kick
+	permission: essentials.kick
+	trigger:
+		kick arg 1 because "%colored arg-2%"
+		broadcast "&c[-] &7%arg-1% (gesperrt)"
+		set {%arg-1%_gesperrt} to true
+		wait 1 minute
+		delete {%arg-1%_gesperrt}
+command /warn [<player>] [<text>] [<text>]:
+	trigger:
+		if player does not have permission "staff.mute":
+			send "&cNo permission."
+		else:
+			if arg-1 is not set:
+				send "&8[&c&lExtremeBans&8] &cUsage: /mute <player> <reason> [-s]"
+			else:
+				if arg-2 is set:
+					if arg-3 is "-s":
+						send "&aSuccessfully warned %arg-1%." to player
+						send "&cYou have been warned by %player% for %arg-2%." to arg-1
+					else:
+						execute console command "/minecraft:ban-ip %arg-1%"
+						broadcast ""
+						broadcast "&7&m--------------------&c(&4⚠&c)&7&m--------------------"
+						broadcast "&cServer &8>> &4%arg-1% &7was warned."
+						broadcast "&cReason &8>> &4%arg-2%"
+						broadcast "&cPunisher &8>> &4%player%"
+						broadcast "&7&m--------------------&c(&4⚠&c)&7&m--------------------"
+						broadcast ""

@@ -1,0 +1,27 @@
+on damage:
+	victim is player
+	attacker is player
+	add "%time in world% &c%attacker% &2➡ &3%victim% (damage)" to {%attacker%.damagelog::*}
+	add "%time in world% &3%attacker% &2➡ &c%victim% (damage)" to {%victim%.damagelog::*}
+	set {%attacker%.pvp.isin} to true
+	set {%victim%.pvp.isin} to true
+	wait 5 minutes
+	delete {%attacker%.pvp.isin}
+	delete {%victim%.pvp.isin}
+command /damagelog [<player>]:
+	trigger:
+		if arg-1 is set:
+			send ""
+			send "                            &6➣ Damagelog von %arg 1%"
+			send ""
+			loop {%arg 1%.damagelog::*}:
+				send "%loop-value%" to player
+				send "%loop-value%" to arg 1
+			stop
+		else:
+			send ""
+			send "                            &6➣ Damagelog von %player%"
+			send ""
+			loop {%player%.damagelog::*}:
+				send "%loop-value%" to player
+			stop

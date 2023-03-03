@@ -1,0 +1,33 @@
+options:
+	prefix: &8[&bCmd&3Inspect&8]
+	msg_format: <##54C693>%player% - /%command%
+	permission: cmdinspect.cmdinspect
+	permission_msg: &cYou do not have permission to use this command!
+	blacklisted_commands: "blacklisted1" or "blacklisted2" or "blacklisted3"
+	log_cancelled_commands: false
+	permission_ignore: "cmdinspect.ignore"
+command /cmdinspect:
+	permission: {@permission}
+	permission message: {@permission_msg}
+	trigger:
+		if {cmdinspect::%player%} is not true:
+			send "{@prefix} &fEnabled command inspecting! Use /cmdinspect to disable." to player 
+			set {cmdinspect::%player%} to true
+		else:
+			send "{@prefix} &fDisabled command inspecting." to player 
+			delete {cmdinspect::%player%}
+on command:
+	player is online #So cmd blocks/console don't show up
+	player does not have permission {@permission_ignore}
+	command is not {@blacklisted_commands}
+	if {@log_cancelled_commands} is false:
+		if event is cancelled:
+			stop
+	if arguments is not set:
+		loop all players:
+			if {%loop-player's uuid%_teamdienst} is true:
+				send "{@msg_format}" to loop-player
+	else if arguments is set:
+		loop all players:
+			if {%loop-player's uuid%_teamdienst} is true:
+				send "{@msg_format}" to loop-player
