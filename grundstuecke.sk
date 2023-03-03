@@ -28,11 +28,11 @@ on right click on sign:
 	if line 1 is "&7[&cVerkauft&7]":
 		if {%line 3%.gs.owner} is player's uuid:
 			open chest with 1 row named "GS-VERKAUF" to player
-			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich für &e%{%line 3%.gs.sell.price}% &2verkaufen?" to close then run [add {%line 3%.gs.sell.price} to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}]->[execute console command "rg removeowner -w world -a %line 3%"]->[delete {%line 3%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Kaufen&7]"]
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich für &e%{%line 3%.gs.sell.price}% &2verkaufen?" to close then run [execute player command "sell1321342323n* %line 3%"]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Kaufen&7]"]
 			stop
 		if player has permission "*":
 			open chest with 1 row named "ADMIN" to player
-			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &edem Spieler entziehen?" with lore "&7Zuletzt online : %{friends::%{%line 3%.gs.owner}%::login}%" and "&7Name : %line 2%" to close then run [add {%line 3%.gs.sell.price} to {%{%{%line 3%.gs.owner}%_kontonummer_bank}%_kontostand_bank}]->[delete {%line 3%.mitglieder::*}]->[execute console command "rg removeowner -w world -a %line 3%"]->[delete {%line 3%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Kaufen&7]"]
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &edem Spieler entziehen?" with lore "&7Zuletzt online : %{friends::%{%line 3%.gs.owner}%::login}%" and "&7Name : %line 2%" to close then run [execute player command "sell1321342323y* %line 3%"]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Kaufen&7]"]
 			stop
 	if line 1 is "&7[&2Kaufen&7]":
 		if {%line 2%.gs.price} > {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}:
@@ -40,15 +40,15 @@ on right click on sign:
 			stop
 		else:
 			open chest with 1 row named "&7%{%{%player's uuid%_kontonummer_bank}%_kontostand_bank}% | GS-KAUF" to player
-			format slot 4 of player with green terracotta named "&7» &2Möchtest du &a%{%line 2%.gs.name}% &2wirklich für &e%{%line 2%.gs.price}% &2kaufen?" to close then run [remove {%line 2%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}]->[set {%line 2%.gs.owner} to player's uuid]->[execute console command "rg addowner -w world %{%line 2%.gs.name}% %player%"]->[set line 3 to "%{%line 2%.gs.name}%"]->[set line 1 to "&7[&cVerkauft&7]"]->[set line 2 to "&7%player%"]->[add 150 to {%uuid of player%_exp}]
+			format slot 4 of player with green terracotta named "&7» &2Möchtest du &a%{%line 2%.gs.name}% &2wirklich für &e%{%line 2%.gs.price}% &2kaufen?" to close then run [execute player command "sell1321342323 %line 2%"]->[set line 3 to "%{%line 2%.gs.name}%"]->[set line 1 to "&7[&cVerkauft&7]"]->[set line 2 to "&7%player%"]
 	if line 1 is "&7[&cVermietet&7]":
 		if {%line 3%.gs.owner} is player's uuid:
 			open chest with 1 row named "KÜNDIGEN" to player
-			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &eKündigen?" to close then run [execute console command "rg removeowner -w world -a %line 3%"]->[remove {%line 3%.gs.price} from {%UUID of player%.stuendlicheabrechnung.miete}]->[execute console command "rg select %line 3% -w world"]->[execute console command "/world world"]->[execute console command "/set 0"]->[delete {%line 3%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Mieten&7]"]
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &eKündigen?" to close then run [execute player command "rent1321342323n* %line 3%"]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Mieten&7]"]
 			stop
 		if player has permission "*":
 			open chest with 1 row named "ADMIN" to player
-			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &edem Spieler entziehen?" with lore "&7Zuletzt online : %{friends::%{%line 3%.gs.owner}%::login}%" and "&7Name : %line 2%" to close then run [execute console command "rg removeowner -w world -a %line 3%"]->[delete {%line 3%.mitglieder::*}]->[remove {%line 3%.gs.price} from {%{%line 3%.gs.owner}%.stuendlicheabrechnung.miete}]->[execute console command "rg select %line 3% -w world"]->[execute console command "/world world"]->[execute console command "/set 0"]->[delete {%line 2%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Mieten&7]"]
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &edem Spieler entziehen?" with lore "&7Zuletzt online : %{friends::%{%line 3%.gs.owner}%::login}%" and "&7Name : %line 2%" to close then run [execute player command "rent1321342323y* %line 3%"]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Mieten&7]"]
 			stop
 	if line 1 is "&7[&2Mieten&7]":
 		if {%line 2%.gs.price} * 3 > {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}:
@@ -56,7 +56,74 @@ on right click on sign:
 			stop
 		else:
 			open chest with 1 row named "&7%{%{%player's uuid%_kontonummer_bank}%_kontostand_bank}% | Mieten" to player
-			format slot 4 of player with green terracotta named "&7» &2Möchtest du &a%{%line 2%.gs.name}% &2wirklich für &e%{%line 2%.gs.price}% pro Payday &2mieten?" to close then run [remove {%line 2%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}]->[add {%line 2%.gs.price} to {%UUID of player%.stuendlicheabrechnung.miete}]->[set {%line 2%.gs.owner} to player's uuid]->[execute console command "rg addowner -w world %{%line 2%.gs.name}% %player%"]->[set line 3 to "%{%line 2%.gs.name}%"]->[set line 1 to "&7[&cVermietet&7]"]->[set line 2 to "&7%player%"]
+			format slot 4 of player with green terracotta named "&7» &2Möchtest du &a%{%line 2%.gs.name}% &2wirklich für &e%{%line 2%.gs.price}% pro Payday &2mieten?" to close then run [execute player command "rent1321342323 %line 2%"]->[set line 3 to "%{%line 2%.gs.name}%"]->[set line 1 to "&7[&cVermietet&7]"]->[set line 2 to "&7%player%"]
+	
+command /rent1321342323n* [<text>]:
+	trigger:
+		if arg-1 is not set:
+			cancel event
+		else:
+			execute console command "rg removeowner -w world -a %arg 1%"
+			remove {%arg 1%.gs.price} from {%UUID of player%.stuendlicheabrechnung.miete}
+			execute console command "rg select %arg 1% -w world"
+			execute console command "/world world"
+			execute console command "/set 0"
+			delete {%arg 1%.gs.owner}
+			delete {%arg 1%.mitglieder::*}
+	
+command /rent1321342323y* [<text>]:
+	trigger:
+		if arg-1 is not set:
+			cancel event
+		else:
+			execute console command "rg removeowner -w world -a %arg 1%"
+			delete {%arg 1%.mitglieder::*}
+			remove {%arg 1%.gs.price} from {%{%arg 1%.gs.owner}%.stuendlicheabrechnung.miete}
+			execute console command "rg select %arg 1% -w world"
+			execute console command "/world world"
+			execute console command "/set 0"
+			delete {%arg 1%.gs.owner}
+			
+command /rent1321342323 [<text>]:
+	trigger:
+		if arg-1 is not set:
+			cancel event
+		else:
+			remove {%arg 1%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+			add {%arg 1%.gs.price} to {%UUID of player%.stuendlicheabrechnung.miete}
+			set {%arg 1%.gs.owner} to player's uuid
+			execute console command "rg addowner -w world %{%arg 1%.gs.name}% %player%"
+		
+command /sell1321342323n* [<text>]:
+	trigger:
+		if arg-1 is not set:
+			cancel event
+		else:
+			delete {%arg 1%.gs.owner}
+			execute console command "rg removeowner -w world -a %arg 1%"
+			add {%arg 1%.gs.sell.price} to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+			delete {%arg 1%.mitglieder::*}
+
+command /sell1321342323y* [<text>]:
+	trigger:
+		if arg-1 is not set:
+			cancel event
+		else:
+			delete {%arg 1%.gs.owner}
+			execute console command "rg removeowner -w world -a %arg 1%"
+			delete {%arg 1%.mitglieder::*}
+			add {%arg 1%.gs.sell.price} to {%{%{%arg 1%.gs.owner}%_kontonummer_bank}%_kontostand_bank}
+			
+command /sell1321342323 [<text>]:
+	trigger:
+		if arg-1 is not set:
+			cancel event
+		else:
+			add 150 to {%uuid of player%_exp}
+			execute console command "rg addowner -w world %{%arg 1%.gs.name}% %player%"
+			set {%arg 1%.gs.owner} to player's uuid
+			remove {%arg 1%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+
 command /baurechte:
 	trigger:
 		if %region at player%" does not contain "kau" or "mie":
