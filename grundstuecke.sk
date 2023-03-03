@@ -66,8 +66,8 @@ command /rent1321342323n* [<text>]:
 			execute console command "rg removeowner -w world -a %arg 1%"
 			remove {%arg 1%.gs.price} from {%UUID of player%.stuendlicheabrechnung.miete}
 			execute console command "rg select %arg 1% -w world"
-			execute console command "/world world"
-			execute console command "/set 0"
+			execute console command "fastasyncworldedit:/world world"
+			execute console command "fastasyncworldedit:/set 0"
 			delete {%arg 1%.gs.owner}
 			delete {%arg 1%.mitglieder::*}
 	
@@ -80,8 +80,8 @@ command /rent1321342323y* [<text>]:
 			delete {%arg 1%.mitglieder::*}
 			remove {%arg 1%.gs.price} from {%{%arg 1%.gs.owner}%.stuendlicheabrechnung.miete}
 			execute console command "rg select %arg 1% -w world"
-			execute console command "/world world"
-			execute console command "/set 0"
+			execute console command "fastasyncworldedit:/world world"
+			execute console command "fastasyncworldedit:/set 0"
 			delete {%arg 1%.gs.owner}
 			
 command /rent1321342323 [<text>]:
