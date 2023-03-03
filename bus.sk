@@ -70,4 +70,4 @@ every second:
 				delete {warp.name.bus.%loop-player%}
 				delete {warp.name.bus.%loop-player%.Dauer}
 			remove 1 from {warp.name.bus.%loop-player%.Dauer}
-			set action bar of loop-player to " &0&lNoch %{warp.name.bus.%loop-player%.Dauer}% Sekunden"
+			set action bar of loop-player to " &0&lNoch %{warp.name.bus.%loop-player%.Dauer}% Sekunden.."
