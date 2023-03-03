@@ -1,0 +1,36 @@
+on right click on jukebox:
+	cancel event
+	open chest with 6 rows named "&7Radio" to player
+	format slot 0 of player with gray stained glass pane named " " to be unstealable
+	format slot 1 of player with gray stained glass pane named " " to be unstealable
+	format slot 2 of player with gray stained glass pane named " " to be unstealable
+	format slot 3 of player with gray stained glass pane named " " to be unstealable
+	format slot 4 of player with gray stained glass pane named " " to be unstealable
+	format slot 5 of player with gray stained glass pane named " " to be unstealable
+	format slot 6 of player with gray stained glass pane named " " to be unstealable
+	format slot 7 of player with gray stained glass pane named " " to be unstealable
+	format slot 8 of player with gray stained glass pane named " " to be unstealable
+	format slot 17 of player with gray stained glass pane named " " to be unstealable
+	format slot 26 of player with gray stained glass pane named " " to be unstealable
+	format slot 35 of player with gray stained glass pane named " " to be unstealable
+	format slot 44 of player with gray stained glass pane named " " to be unstealable
+	format slot 10 of player with gray stained glass pane named " " to be unstealable
+	format slot 19 of player with gray stained glass pane named " " to be unstealable
+	format slot 28 of player with gray stained glass pane named " " to be unstealable
+	format slot 37 of player with gray stained glass pane named " " to be unstealable
+	format slot 45 of player with gray stained glass pane named " " to be unstealable
+	format slot 46 of player with gray stained glass pane named " " to be unstealable
+	format slot 47 of player with gray stained glass pane named " " to be unstealable
+	format slot 48 of player with gray stained glass pane named " " to be unstealable
+	format slot 49 of player with gray stained glass pane named " " to be unstealable
+	format slot 50 of player with gray stained glass pane named " " to be unstealable
+	format slot 51 of player with gray stained glass pane named " " to be unstealable
+	format slot 52 of player with gray stained glass pane named " " to be unstealable
+	format slot 53 of player with gray stained glass pane named " " to be unstealable
+	format slot 9 of player with music disc pigstep named "&0| &7Musik" to run [execute player command "audiomusicguichange"]
+	format slot 18 of player with book named "&0| &7News" to be unstealable
+	format slot 27 of player with lever named "&0| &7Podcasts" to be unstealable
+	format slot 36 of player with jukebox named "&0| &cSoon" to be unstealable
+command /audiomusicguichange:
+	trigger:
+		format slot 11 of player with music disc wait named "Cartoon - On & On (feat. Daniel Levi) [NCS Release]" to close then run [execute console command "oam play %player% https://youtu.be/K4DyBUG242c"]->[send "&7Now playing... Cartoon - On & On (feat. Daniel Levi) [NCS Release] "]

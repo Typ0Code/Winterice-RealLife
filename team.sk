@@ -1,0 +1,42 @@
+on right click:
+	"%event-block%" contains "iron door":
+		if {%player's uuid%_teamdienst} is true:
+			toggle event-block
+			wait 2 seconds
+			deactivate event-block
+			stop
+		if player has permission "*":
+			send ""
+			send "&e&l➣  &4&l⚠ &6&lGehe in den /Teamdienst, um alle Türen zu öffnen!" to player
+			send ""
+		play sound "notification_warning" with volume 10 with pitch 1 at player for player
+		send "&e&l➣  &4&l⚠ &6Du kannst dies nicht öffnen!" to player
+		cancel event
+		stop
+options:
+	Team: §8§l【§c§lTC§8§l】&8&l▶§7
+command /tc [<text>]:
+	aliases: /teamchat
+	permission: *
+	trigger:
+		if arg-1 is not set:
+			send "{@Team} §a/tc §f<Text>"
+			stop
+		if arg-1 is set:
+			loop all players:
+				if loop-player has permission "*":
+					send "{@Team} %colored player's prefix% §f%player% §8§l● §7%colored arg%" to loop-player
+command /Fraktiontest <text>:
+	trigger:
+		set {%player's uuid%_Fraktion} to arg-1
+command /teamdienst:
+	trigger:
+		if player has permission "*":
+			if {%player's uuid%_teamdienst} is true:
+				delete {%player's uuid%_teamdienst}
+				send "&c&l[ACHTUNG] &cDein Teamdienst wurde beendet!"
+				set the player's tablist name to "&7%player%"
+			else:
+				set {%player's uuid%_teamdienst} to true
+				send "&c&l[ACHTUNG] &cDu hast den Teamdienst betreten!"
+				set the player's tablist name to "&4[T] &c%player%"

@@ -1,0 +1,150 @@
+command /Bargeldgeben <player>:
+	trigger:
+		wait 5 ticks
+		open chest with 1 row named "%arg 1% | Bargeld geben" to player
+		format slot 0 of player with black glass pane named " " to be unstealable
+		format slot 8 of player with black glass pane named " " to be unstealable
+		format slot 1 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[5]" to close then run [execute player command "givemoney %arg-1% 5"]
+		format slot 2 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[10]" to close then run [execute player command "givemoney %arg-1% 10"]
+		format slot 3 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[20]" to close then run [execute player command "givemoney %arg-1% 20"] 
+		format slot 4 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[50]" to close then run [execute player command "givemoney %arg-1% 50"]
+		format slot 5 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[100]" to close then run [execute player command "givemoney %arg-1% 100"] 
+		format slot 6 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[200]" to close then run [execute player command "givemoney %arg-1% 200"] 
+		format slot 7 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben &l[500]" to close then run [execute player command "givemoney %arg-1% 500"] 
+command /givemoney <player> <number>:
+	trigger:
+		if arg 2 > {%player's uuid%_bargeld}:
+			send "&cZu wenig Geld!"	
+			stop
+		else:
+			remove arg 2 from {%player's uuid%_bargeld}
+			add arg 2 to {%UUID of arg-1%_bargeld}
+			message "§4Du hast %arg 2%$ von %player% bekommen" to arg 1
+			message "§4Du hast %arg 1% %arg 2%$ gegeben" 
+command /variablegeldgeben:
+	permission: *
+	trigger:
+		add 50000 to {%player's uuid%_bargeld}
+		add 50000 to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+command /bankgive <number>:
+	trigger:
+		if arg 1 > {%player's uuid%_bargeld}:
+			message "§4Nicht genug Geld"
+			stop trigger
+		add arg 1 to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+		remove arg 1 from {%player's uuid%_bargeld}
+		send "&2Erfolgreich %arg-1%€ eingezahlt!"
+command /bank:
+	description: Zeigt deinen Kontostand
+	permission: *
+	trigger:
+		message "§2%{%{%player's uuid%_kontonummer_bank}%_kontostand_bank}% ist dein aktueller Kontostand"
+command /bankget <number>:
+	trigger:
+		if arg 1 > {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}:
+			message "§4Nicht genug Geld"
+			stop
+		add arg 1 to {%player's uuid%_bargeld}
+		remove arg 1 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+		send "&2Erfolgreich %arg-1%€ ausgezahlt!"
+every 1 second:
+	loop all players:
+		set tab header to "&7Bargeld:  %{%UUID of loop-player%_bargeld}%€" and footer to "" for loop-player
+on damage:
+	name of victim is "Bankautomat":
+		cancel event
+on rightclick on armor stand:
+	name of clicked entity is "Bankautomat":
+		cancel event
+		open chest with 4 rows named "&0&l %{%{%player's uuid%_kontonummer_bank}%_kontostand_bank}%€         &cDE%{%player's uuid%_kontonummer_bank}%" to player
+		loop numbers from 0 to 9:
+			format slot loop-number of player with white glass pane named "" to be unstealable
+		format slot 11 of player with skull of ("MHF_ArrowUp" parsed as an offline player) named "&7» &8Geld einzahlen" to close then run [set {%player's uuid%.Bank.ueberweisung.einzahlen} to true]->[send "&cBitte Betrag eingeben:" to player]
+		format slot 13 of player with skull of ("MHF_ArrowRight" parsed as an offline player) named "&7» &8Geld überweisen" to close then run [set {%player's uuid%.Bank.ueberweisung.chat.betrag} to true]->[send "&cBitte Betrag eingeben:" to player]
+		format slot 17 of player with white glass pane named "" to be unstealable
+		format slot 18 of player with white glass pane named "" to be unstealable
+		format slot 20 of player with skull of ("MHF_ArrowDown" parsed as an offline player) named "&7» &8Geld auszahlen" to close then run [set {%player's uuid%.Bank.ueberweisung.auszahlen} to true]->[send "&cBitte Betrag eingeben:" to player]
+		loop numbers from 26 to 35:
+			format slot loop-number of player with white glass pane named "" to be unstealable
+every second:
+	loop all players:
+		if {%uuid of loop-player%_exp} is greater than or equal to {%{%uuid of loop-player%_level2}%_levelneed}:
+			send "Du hast ein neues Level erreicht!" to loop-player
+			set {%uuid of loop-player%_level} to {%uuid of loop-player%_level} + 1
+			set {%uuid of loop-player%_level2} to {%uuid of loop-player%_level} + 1
+			set {%{%uuid of loop-player%_level2}%_levelneed} to ( 150 * 2.32 ) * ( {%uuid of loop-player%_level2} * 2 )
+			stop
+command /levelneedset:
+	permission: *
+	trigger:
+		set {%{%uuid of player%_level2}%_levelneed} to ( 150 * 2.32 ) * ( {%uuid of player%_level2} * 2 )
+command /expgeben:
+	permission: *
+	trigger:
+		add 5000 to {%player's uuid%_exp}
+options:
+	command: playtime											# Default command /playtime
+	prefix: &8[&b&lOT&8]									# Prefix on chat messages
+every 30 minutes:
+	execute console command "iareload"
+every minute:
+	loop all players:
+		add 1 to {minute::%loop-player's uuid%}
+		if {minute::%loop-player's uuid%} >= 60:
+			subtract 60 from {minute::%loop-player's uuid%}
+			add 1 to {hour::%loop-player's uuid%}
+			play sound "notification_info" with volume 100 with pitch 1 at loop-player for loop-player
+			send "------------------------------" to loop-player
+			send "" to loop-player
+			send "          &6Stündliche Abrechnung!        " to loop-player
+			send "" to loop-player
+			send "------------------------------" to loop-player
+			set {_tmp.%loop-player's uuid%_abrechnung} to 0
+			if {%loop-player's uuid%_job} is not set:
+				send "     &a&l+   90 Euro (Arbeitslosengeld) " to loop-player
+				add 90 to {_tmp.%loop-player's uuid%_abrechnung}
+			if loop-player has permission "*":
+				send "     &a&l+   1000 Euro (Beta Bonus) " to loop-player
+				add 1000 to {_tmp.%loop-player's uuid%_abrechnung}
+			set {%UUID of loop-player%.final.abrechnung} to {%UUID of loop-player%.abrechnung.strom} * 0.023
+			if {%UUID of loop-player%.final.abrechnung} > 500:
+				set {%UUID of loop-player%.final.abrechnung} to 500
+			set {%UUID of loop-player%.abrechnung.strom} to 0
+			send "     &c&l-   %{%UUID of loop-player%.final.abrechnung}% Euro (Strom) " to loop-player
+			remove {%UUID of loop-player%.final.abrechnung} from {_tmp.%loop-player's uuid%_abrechnung}	
+			if {Marrypartner::%loop-player's uuid%} is not "&cNiemandem":
+				send "     &c&l-   135 Euro (Steuern) " to loop-player
+				remove 135 from {_tmp.%loop-player's uuid%_abrechnung}
+			else:
+				send "     &c&l-   190 Euro (Steuern) " to loop-player
+				remove 190 from {_tmp.%loop-player's uuid%_abrechnung}
+			send "     &c&l-   %{%UUID of loop-player%.stuendlicheabrechnung.miete}% Euro (Miete) " to loop-player
+			remove {%UUID of loop-player%.stuendlicheabrechnung.miete} from {_tmp.%loop-player's uuid%_abrechnung}
+			send "" to loop-player
+			send "     &a&l+   %{_tmp.%loop-player's uuid%_abrechnung}%       &6&nSUMME" to loop-player	
+			if {_tmp.%loop-player's uuid%_abrechnung} >= 0:
+				add {_tmp.%loop-player's uuid%_abrechnung} to {%{%loop-player's uuid%_kontonummer_bank}%_kontostand_bank}
+			else:
+				remove {_tmp.%loop-player's uuid%_abrechnung} from {%{%loop-player's uuid%_kontonummer_bank}%_kontostand_bank}
+			send "------------------------------" to loop-player
+			set {%loop-player%_random} to a random integer between 5 and 25
+			add {%loop-player%_random} to {%uuid of loop-player%_exp}
+			set action bar of loop-player to "&7» Du hast &2%{%loop-player%_random}% Levelpunkte &ferhalten!"
+			delete {%loop-player%_random}
+		if {hour::%loop-player's uuid%} is 24:
+			subtract 24 from {hour::%loop-player's uuid%}
+			add 1 to {days::%loop-player's uuid%}
+command /{@command} [<offline player>]:
+	aliases: /ot
+	trigger:
+		if arg 1 is not set:
+			send "{@prefix} &7Your play time is %{days::%player's uuid%}% Tage, %{hour::%player's uuid%}% Stunden, %{minute::%player's uuid%}% Minuten"
+			stop
+		if arg 1 is set:
+			send "&7--------------------------------------------------"
+			send "&7%arg-1%`s Spielzeit ist %{days::%uuid of arg-1%}% Tage, %{hour::%uuid of arg-1%}% Stunden, %{minute::%uuid of arg-1%}% Minuten"
+			send "&7--------------------------------------------------"
+command /otgive:
+	permission: *
+	trigger:
+		add 5 to {minute::%uuid of player%}

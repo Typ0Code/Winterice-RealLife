@@ -1,0 +1,87 @@
+on break:
+	"%region at player%" contains "staatsfirmastone"
+	if event-block is not stone or coal ore or iron ore:
+		cancel event
+	else:
+		if player's tool is not wooden pickaxe or stone pickaxe or iron pickaxe or diamond pickaxe:
+			cancel event
+on break of stone:
+	"%region at player%" contains "staatsfirmastone"
+	if player's tool is wooden pickaxe:
+		cancel event
+		set block at location of event-block to cobblestone
+		give 1 of cobblestone to player
+		wait 2 minutes
+		set block at location of event-block to stone
+	if player's tool is iron pickaxe:
+		cancel event
+		set block at location of event-block to cobblestone
+		give 2 of cobblestone to player
+		wait 2 minutes
+		set block at location of event-block to stone
+	if player's tool is diamond pickaxe:
+		cancel event
+		set block at location of event-block to cobblestone
+		give 5 of cobblestone to player
+		wait 2 minutes
+		set block at location of event-block to stone
+on break of coal ore:
+	"%region at player%" contains "staatsfirmastone"
+	if player's tool is wooden pickaxe:
+		cancel event
+		set block at location of event-block to stone
+		give 1 of coal ore to player
+		wait 30 minutes
+		set block at location of event-block to coal ore
+	if player's tool is iron pickaxe:
+		cancel event
+		set block at location of event-block to stone
+		give 3 of coal ore to player
+		wait 30 minutes
+		set block at location of event-block to coal ore
+	if player's tool is diamond pickaxe:
+		cancel event
+		set block at location of event-block to stone
+		give 5 of coal ore to player
+		wait 30 minutes
+		set block at location of event-block to coal ore
+on break of iron ore:
+	"%region at player%" contains "staatsfirmastone"
+	if player's tool is wooden pickaxe:
+		cancel event
+		send "&7Dein Tool ist für diesen Block nicht geeignet"
+	if player's tool is iron pickaxe:
+		cancel event
+		set block at location of event-block to stone
+		give 3 of iron ore to player
+		wait 60 minutes
+		set block at location of event-block to iron ore
+	if player's tool is diamond pickaxe:
+		cancel event
+		set block at location of event-block to stone
+		give 5 of iron ore to player
+		wait 60 minutes
+		set block at location of event-block to iron ore
+on right click:
+	"%event-block%" contains "eastward ladder"
+	"%region at player%" contains "stoneabgabe"
+	cancel event
+	set {%player%.stone.summe} to 0
+	set {%player%.coal.summe} to 0
+	set {%player%.iron.summe} to 0
+	while amount of cobblestone in player's inventory is bigger than 0:
+		remove 1 of cobblestone from player's inventory
+		add 0.05 to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+		add 0.05 to {%player%.stone.summe}
+	while amount of coal ore in player's inventory is bigger than 0:
+		remove 1 of coal ore from player's inventory
+		add 0.25 to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+		add 0.25 to {%player%.coal.summe}
+	while amount of iron ore in player's inventory is bigger than 0:
+		remove 1 of iron ore from player's inventory
+		add 0.75 to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+		add 0.75 to {%player%.iron.summe}
+	send "&7Du hast &2%{%player%.stone.summe}%€ &7durch Steine erhalten, &2%{%player%.coal.summe}%€ &7durch Kohle erhalten und &2%{%player%.iron.summe}%€ &7durch Eisen erhalten." to player
+	delete {%player%.stone.summe}
+	delete {%player%.coal.summe}
+	delete {%player%.iron.summe}

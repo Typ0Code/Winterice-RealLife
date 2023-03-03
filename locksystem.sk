@@ -1,0 +1,154 @@
+options:
+	prefix: &d&lLocksystem
+on right click on chest:
+	player is sneaking:
+		set {_baurechteregion} to the first 7 characters of "%region at player%"
+		{%{_baurechteregion}%.gs.owner} is player's UUID
+		if player does not have permission "chestlock.bypass":
+			if {locked.chests::*} contains location of event-block:
+				if player's UUID is not {locked.chest.owner.%location of event-block%}:
+					cancel event 
+					send "{@prefix} &8» &7Diese Truhe ist &cgelockt&7!"
+					stop
+		cancel event
+		set {clicked.chest.location} to location of event-block
+		clear {c.items::*} 
+		loop all items in event-block:
+			add "%loop-value%" to {c.items::*}
+		set {chest_lock_gui} to a new chest inventory with 3 row with name "{@prefix} &8» &bMenu"
+		set slot 0 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 1 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 2 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 3 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 4 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 5 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 6 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 7 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 8 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 9 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 10 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 11 of {chest_lock_gui} to chest named "&aInformation" with lore " ", "&8» &bPosition: &f%location of event-block%", "&8» &bItems: &f%size of {c.items::*}%"
+		set slot 12 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 13 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 14 of {chest_lock_gui} to black stained glass pane named "&7"
+		if {locked.chests::*} contains location of event-block:
+			set slot 15 of {chest_lock_gui} to lime dye named "&c&lUnlock the Chest"
+		else:
+			set slot 15 of {chest_lock_gui} to red dye named "&c&lLock the Chest"
+		set slot 16 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 17 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 18 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 19 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 20 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 21 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 22 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 23 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 24 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 25 of {chest_lock_gui} to black stained glass pane named "&7"
+		set slot 26 of {chest_lock_gui} to black stained glass pane named "&7"
+		open {chest_lock_gui} to player
+		delete {c.items::*}
+		stop
+	if player does not have permission "chestlock.bypass":
+		if {locked.chests::*} contains location of event-block:
+			if player's UUID is not {locked.chest.owner.%location of event-block%}:
+				cancel event 
+				send "{@prefix} &8» &7Diese Truhe ist &cgelockt&7!"
+				stop
+on break of chest:
+	if player does not have permission "chestlock.bypass":
+		if {locked.chests::*} contains location of event-block:
+			if player's UUID is not {locked.chest.owner.%location of event-block%}:
+				cancel event 
+				send "{@prefix} &8» &7Diese Truhe ist &cgelockt&7!"
+				stop
+on inventory click:
+	if name of player's current inventory is "{@prefix} &8» &bMenu":
+		cancel event
+		clicked slot is 15:
+			if {locked.chests::*} contains {clicked.chest.location}:
+				remove {clicked.chest.location} from {locked.chests::*}
+				close player's inventory
+				delete {locked.chest.owner.%{clicked.chest.location}%}
+				delete {clicked.chest.location}
+				send "{@prefix} &8» &7Truhe erfolgreich &aunlockt&7!"
+			else:
+				add {clicked.chest.location} to {locked.chests::*}
+				set {locked.chest.owner.%{clicked.chest.location}%} to player's UUID
+				close player's inventory
+				delete {clicked.chest.location}
+				send "{@prefix} &8» &7Truhe erfolgreich &cgelockt&7!"
+on right click on any door or any gate:
+	player is sneaking:
+		set {_baurechteregion} to the first 7 characters of "%region at player%"
+		{%{_baurechteregion}%.gs.owner} is player's UUID
+		if player does not have permission "chestlock.bypass":
+			if {locked.doors::*} contains location of event-block:
+				if player's UUID is not {locked.door.owner.%location of event-block%}:
+					cancel event 
+					send "{@prefix} &8» &7Diese Tür ist &cgelockt&7!"
+					stop
+		cancel event
+		set {clicked.door.location} to location of event-block
+		set {door_lock_gui} to a new chest inventory with 3 row with name "{@prefix} &8» &bTürenMenu"
+		set slot 0 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 1 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 2 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 3 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 4 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 5 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 6 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 7 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 8 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 9 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 10 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 11 of {door_lock_gui} to oak door named "&aInformation" with lore " ", "&8» &bPosition: &f%location of event-block%"
+		set slot 12 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 13 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 14 of {door_lock_gui} to black stained glass pane named "&7"
+		if {locked.doors::*} contains location of event-block:
+			set slot 15 of {door_lock_gui} to lime dye named "&c&lUnlock the Door"
+		else:
+			set slot 15 of {door_lock_gui} to red dye named "&c&lLock the Door"
+		set slot 16 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 17 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 18 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 19 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 20 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 21 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 22 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 23 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 24 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 25 of {door_lock_gui} to black stained glass pane named "&7"
+		set slot 26 of {door_lock_gui} to black stained glass pane named "&7"
+		open {door_lock_gui} to player
+		stop
+	if player does not have permission "chestlock.bypass":
+		if {locked.doors::*} contains location of event-block:
+			if player's UUID is not {locked.door.owner.%location of event-block%}:
+				cancel event 
+				send "{@prefix} &8» &7Diese Tür ist &cgelockt&7!"
+				stop
+on break of any door or any gate:
+	if player does not have permission "chestlock.bypass":
+		if {locked.doors::*} contains location of event-block:
+			if player's UUID is not {locked.door.owner.%location of event-block%}:
+				cancel event
+				send "{@prefix} &8» &7Diese Truhe ist &cgelockt&7!"
+				stop
+on inventory click:
+	if name of player's current inventory is "{@prefix} &8» &bTürenMenu":
+		cancel event
+		clicked slot is 15:
+			if {locked.doors::*} contains {clicked.door.location}:
+				remove {clicked.door.location} from {locked.doors::*}
+				close player's inventory
+				delete {locked.door.owner.%{clicked.door.location}%}
+				delete {clicked.door.location}
+				send "{@prefix} &8» &7Tür erfolgreich &aunlockt&7!"
+			else:
+				add {clicked.door.location} to {locked.doors::*}
+				set {locked.door.owner.%{clicked.door.location}%} to player's UUID
+				close player's inventory
+				delete {clicked.door.location}
+				send "{@prefix} &8» &7Tür erfolgreich &cgelockt&7!"

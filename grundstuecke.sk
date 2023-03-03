@@ -1,0 +1,110 @@
+on sign change:
+	if line 1 is "[rent]":
+		set line 1 to "&7[&2Mieten&7]"
+	if line 1 is "[buy]":
+		set line 1 to "&7[&2Kaufen&7]"
+	if line 2 contains "mie_":
+		set {%line 2%.gs.name} to line 2
+		set {%line 2%.gs.price} to line 3 parsed as integer
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners block-place allow"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners block-break allow"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners use allow"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners interact allow"
+		set {%line 2%_location} to player's location
+	if line 2 contains "kau_":
+		set {%line 2%.gs.name} to line 2
+		set {%line 2%_location} to player's location
+		set {%line 2%.gs.blockzahl} to 0
+		loop all blocks in the region {%line 2%.gs.name}:
+			add 1 to {%line 2%.gs.blockzahl}
+		set {%line 2%.gs.price} to {%line 2%.gs.blockzahl} * 3
+		set {%line 2%.gs.sell.price} to {%line 2%.gs.blockzahl} * 2
+		set line 3 to "&7%{%line 2%.gs.price}%"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners block-place allow"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners block-break allow"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners use allow"
+		execute console command "/rg flag -w world %{%line 2%.gs.name}% -g owners interact allow"
+on right click on sign:
+	if line 1 is "&7[&cVerkauft&7]":
+		if {%line 3%.gs.owner} is player's uuid:
+			open chest with 1 row named "GS-VERKAUF" to player
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich für &e%{%line 3%.gs.sell.price}% &2verkaufen?" to close then run [add {%line 3%.gs.sell.price} to {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}]->[execute console command "rg removeowner -w world -a %line 3%"]->[delete {%line 3%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Kaufen&7]"]
+			stop
+		if player has permission "*":
+			open chest with 1 row named "ADMIN" to player
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &edem Spieler entziehen?" with lore "&7Zuletzt online : %{friends::%{%line 3%.gs.owner}%::login}%" and "&7Name : %line 2%" to close then run [add {%line 3%.gs.sell.price} to {%{%{%line 3%.gs.owner}%_kontonummer_bank}%_kontostand_bank}]->[delete {%line 3%.mitglieder::*}]->[execute console command "rg removeowner -w world -a %line 3%"]->[delete {%line 3%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Kaufen&7]"]
+			stop
+	if line 1 is "&7[&2Kaufen&7]":
+		if {%line 2%.gs.price} > {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}:
+			send "&e&l➣  &4&l⚠ &c&l Nicht genug Geld!"
+			stop
+		else:
+			open chest with 1 row named "&7%{%{%player's uuid%_kontonummer_bank}%_kontostand_bank}% | GS-KAUF" to player
+			format slot 4 of player with green terracotta named "&7» &2Möchtest du &a%{%line 2%.gs.name}% &2wirklich für &e%{%line 2%.gs.price}% &2kaufen?" to close then run [remove {%line 2%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}]->[set {%line 2%.gs.owner} to player's uuid]->[execute console command "rg addowner -w world %{%line 2%.gs.name}% %player%"]->[set line 3 to "%{%line 2%.gs.name}%"]->[set line 1 to "&7[&cVerkauft&7]"]->[set line 2 to "&7%player%"]->[add 150 to {%uuid of player%_exp}]
+	if line 1 is "&7[&cVermietet&7]":
+		if {%line 3%.gs.owner} is player's uuid:
+			open chest with 1 row named "KÜNDIGEN" to player
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &eKündigen?" to close then run [execute console command "rg removeowner -w world -a %line 3%"]->[remove {%line 3%.gs.price} from {%UUID of player%.stuendlicheabrechnung.miete}]->[execute console command "rg select %line 3% -w world"]->[execute console command "/world world"]->[execute console command "/set 0"]->[delete {%line 3%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Mieten&7]"]
+			stop
+		if player has permission "*":
+			open chest with 1 row named "ADMIN" to player
+			format slot 4 of player with red terracotta named "&7» &2Möchtest du &a%{%line 3%.gs.name}% &2wirklich &edem Spieler entziehen?" with lore "&7Zuletzt online : %{friends::%{%line 3%.gs.owner}%::login}%" and "&7Name : %line 2%" to close then run [execute console command "rg removeowner -w world -a %line 3%"]->[delete {%line 3%.mitglieder::*}]->[remove {%line 3%.gs.price} from {%{%line 3%.gs.owner}%.stuendlicheabrechnung.miete}]->[execute console command "rg select %line 3% -w world"]->[execute console command "/world world"]->[execute console command "/set 0"]->[delete {%line 2%.gs.owner}]->[set line 2 to "%{%line 3%.gs.name}%"]->[set line 3 to "&7%{%line 3%.gs.price}%"]->[set line 1 to "&7[&2Mieten&7]"]
+			stop
+	if line 1 is "&7[&2Mieten&7]":
+		if {%line 2%.gs.price} * 3 > {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}:
+			send "&e&l➣  &4&l⚠ &c&l Nicht genug Geld für die nächsten 3 Mieten!"
+			stop
+		else:
+			open chest with 1 row named "&7%{%{%player's uuid%_kontonummer_bank}%_kontostand_bank}% | Mieten" to player
+			format slot 4 of player with green terracotta named "&7» &2Möchtest du &a%{%line 2%.gs.name}% &2wirklich für &e%{%line 2%.gs.price}% pro Payday &2mieten?" to close then run [remove {%line 2%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}]->[add {%line 2%.gs.price} to {%UUID of player%.stuendlicheabrechnung.miete}]->[set {%line 2%.gs.owner} to player's uuid]->[execute console command "rg addowner -w world %{%line 2%.gs.name}% %player%"]->[set line 3 to "%{%line 2%.gs.name}%"]->[set line 1 to "&7[&cVermietet&7]"]->[set line 2 to "&7%player%"]
+command /baurechte:
+	trigger:
+		if %region at player%" does not contain "kau" or "mie":
+			send "&e&l➣  &4&l⚠ &c&l Du befindest dich auf keinem Grundstück!"
+			stop
+		set {_baurechteregion} to the first 7 characters of "%region at player%"
+		if {%{_baurechteregion}%.gs.owner} is player's UUID:
+			open chest with 3 rows named "%{_baurechteregion}%" to player
+			set {zaehler.gui.alleorte.%player%} to 0
+			loop {%{_baurechteregion}%.mitglieder::*}:
+				format slot {zaehler.gui.alleorte.%player%} of player with player head named "%loop-value%" to be unstealable
+				add 1 to {zaehler.gui.alleorte.%player%}
+			format slot 26 of player with green terracotta named "&7» &2Spieler hinzufügen..." to close then run [set {%player%.add.player} to true]->[send "&cSchreibe nun dem Namen in den Chat. Bleibe aber auf dem Grundstück stehen."]
+			format slot 25 of player with red terracotta named "&7» &2Spieler entfernen..." to close then run [set {%player%.remove.player} to true]->[send "&cSchreibe nun dem Namen in den Chat. Bleibe aber auf dem Grundstück stehen."]
+			delete {zaehler.gui.alleorte.%player%}
+		else:
+			send "&e&l➣  &4&l⚠ &c&l Dies ist nicht dein Grundstück!"
+on sign change:
+	if line 1 is "[Klingel]":
+		set line 1 to "&7[Klingel]"
+		set line 2 to "%player%"
+on right click on sign:
+	if line 1 is "&7[Klingel]":
+		if {%player%.klingel.delay} is true:
+			send "&e&l➣  &6⚠ &e&lBitte warte einen Moment bis du erneut klingelst..."
+			stop
+		if line 2 is "%player%":
+			send "&e&l➣  &6⚠ &e&lDu kannst nicht bei dir klingeln!"
+			stop
+		else:
+			set {_p} to line 2 parsed as player
+			if {_p} is online:
+				set {%player%.klingel.delay} to true
+				send "&e&l➣  &6⚠ &e&l%player% hat bei dir geklingelt!" to {_p}
+				wait 30 seconds
+				delete {%player%.klingel.delay}
+			else:
+				send "&e&l➣  &6⚠ &e&lDieser Spieler ist nicht online!"
+on right click on sign:
+	if line 1 is "&7[Briefkasten]":
+		if line 2 is "%player%":
+			loop {%event-block%.briefkasten::*}:
+				give 1 of loop-value to player
+			delete {%event-block%.briefkasten::*}
+			stop
+		add player's tool to {%event-block%.briefkasten::*}
+		remove 1 of player's tool from player's inventory
+on sign change:
+	if line 1 is "[Briefkasten]":
+		set line 1 to "&7[Briefkasten]"
+		set line 2 to "%player%"

@@ -1,0 +1,101 @@
+options:
+	Prefix: §8§l【§a§lMarry§8§l】&8&l▶§7
+command /marry [<text>] [<offline player>]:
+	aliases: /heiraten, /heirat, /ehepartner, /ehe,
+	trigger:
+		if arg-1 is not set:
+			send "          §8§m--§7§m--§a§m--§2§m--§8( §c§lMARRY §8)§2§m--§a§m--§7§m--§8§m--"
+			send " "
+			send " §8▪ §2/marry §aantrag §f<Spieler> §8§l» §cAntrag §7machen."
+			send " §8▪ §2/marry §aja §f<Spieler> §8§l» §cAntrag §aannehmen."
+			send " §8▪ §2/marry §ascheiden <Spieler>§8§l» §cScheidung §7einreichen."
+			send " §8▪ §2/marry §astatus §f<Spieler> §8§l» §cEhe §7anzeigen."
+			send " "		
+			send "          §8§m--§7§m--§a§m--§2§m--§8( §c§lMARRY §8)§2§m--§a§m--§7§m--§8§m--"
+			stop
+		if arg-1 is set:
+			if arg-1 is "antrag":
+				if arg-2 is set:
+					if arg-2 is player:
+						send "{@Prefix} Du kannst dich §cnicht selber heiraten."
+						stop
+					if {Marrypartner::%player's uuid%} is not "&cNiemandem":
+						send "{@Prefix} Du bist §abereits verheiratet."
+					else:
+						if {Marrypartner::%uuid of arg 2%} is not "&cNiemandem":
+							send "{@Prefix} Dieser §fSpieler §7ist mit §f%{Marrypartner::%uuid of arg 2%}% §cverheiratet."
+						else:
+							if arg-2 is online:
+								if {Marryrequests::%player's uuid%::%uuid of arg 2%} is set:
+									send "{@Prefix} Spieler §a§l%arg-2% §fhat bereits einen Antrag von dir."
+								else:
+									set {Marryrequests::%uuid of arg 2%::%player's uuid%} to true
+									send "{@Prefix} §f%player% §7möchte dich heiraten. Tippe §2/marry ja §f%player% §7um das Ja-Wort zu geben." to arg-2
+									send "{@Prefix} Du hast §f%arg-2% §7einen §aAntrag §7gemacht."
+									wait 60 seconds
+									delete {Marryrequests::%player's uuid%::%uuid of arg 2%}
+									if player is not {Marrypartner::%player's uuid%}:
+										send "{@Prefix} §7Du hast einen §cKorb §7erhalten." to player
+										send "{@Prefix} Antrag von §f%player's name% §cabgelaufen." to arg-2
+							else:
+								send "{@Prefix} Dieser §fSpieler ist §cnicht online."
+			else if arg-1 is "ja":
+				if arg-2 is set:
+					if arg-2 is online:
+						if {Marrypartner::%player's uuid%} is not "&cNiemandem":
+							send "{@Prefix} Du bist §cbereits verheiratet."
+						else:
+							if {Marrypartner::%uuid of arg 2%} is not "&cNiemandem":
+								send "{@Prefix} Dieser §fSpieler ist mit §f%{Marrypartner::%uuid of arg 2%}% §cverheiratet."
+							else:
+								loop {Marryrequests::%player's uuid%::*}:
+									if {Marryrequests::%player's uuid%::%loop-index%} is set:
+										set {Marrypartner::%player's uuid%} to "%arg-2%"
+										set {Marrypartner::%uuid of arg 2%} to "%player%"
+										add 25 to {%uuid of player%_exp}
+										add 25 to {%uuid of arg 2%_exp}
+										delete {Marryrequests::%player's uuid%::*}
+										delete {Marryrequests::%uuid of arg 2%::*}
+										send "{@Prefix} Du bist nun mit %arg-2% verheiratet" to player
+										send "{@Prefix} Du bist nun mit %player% verheiratet" to arg 2
+										stop
+								send "{@Prefix} Du hast §ckeinen Heiratsantrag §7von diesem §fSpieler."
+			else if arg-1 is "scheiden":
+				if arg-2 is "%{Marrypartner::%player's uuid%}%":
+					if {Marrypartner::%player's uuid%} is "&cNiemandem":
+						send "{@Prefix} Du bist §cnicht verheiratet."
+					else:
+						set {Marrypartner::%uuid of arg-2%} to "&cNiemandem"
+						set {Marrypartner::%uuid of player%} to "&cNiemandem"
+						send "{@Prefix} Du bist nun nicht mehr mit %arg-2% verheiratet" to player
+						send "{@Prefix} Du bist nun nicht mehr mit %player% verheiratet" to arg 2
+				else:
+					send "{@Prefix} Du bist bist nicht mit diesem Spieler verheiratet"
+			else if arg-1 is "status":
+				if arg-2 is set:
+					send " "
+					if {Marrypartner::%uuid of arg 2%} is not "&cNiemandem":
+						send "{@Prefix} §f%arg-2% §7ist mit §f%{Marrypartner::%uuid of arg 2%}% §cverheiratet"
+					else:
+						send "{@Prefix} §f%arg-2% §7ist §cnicht verheiratet."
+					send " "
+				else:
+					send " "
+					if {Marrypartner::%player's uuid%} is not "&cNiemandem":
+						send "{@Prefix} §7Du bist mit §f%{Marrypartner::%player's uuid%}% §cverheiratet"
+					else:
+						send "{@Prefix} §7Du bist §cnicht verheiratet."
+					send " "	
+quit:
+	delete {Marryrequests::%player's uuid%::*}
+on damage:
+	if attacker is player:
+		if victim is player:
+			if victim is {Marrypartner::%attacker's uuid%}:
+				cancel event
+				loop all blocks in radius 1 around attacker:
+					play heart at location of loop-value
+					play heart at location of loop-value
+				loop all blocks in radius 1 around victim:
+					play heart at location of loop-value
+					play heart at location of loop-value

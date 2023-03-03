@@ -1,0 +1,580 @@
+command /Waffenscheinmachengui:
+	trigger:
+		if {%player's uuid%.waffenbesitzkarte} is not "&2Ja":
+			set {%player's uuid%.waffenbesitzkarte} to "&cNein"
+		if {%player's uuid%.Leichtwaffenschein} is not "&2Ja":
+			set {%player's uuid%.Leichtwaffenschein} to "&cNein"
+		if {%player's uuid%.Schwerwaffenschein} is not "&2Ja":
+			set {%player's uuid%.Schwerwaffenschein} to "&cNein"
+		if {%player's uuid%.Kriegswaffenschein} is not "&2Ja":
+			set {%player's uuid%.Kriegswaffenschein} to "&cNein"
+		wait 2 ticks
+		open chest with 3 rows named "&8 ➥ &0[RATHAUS] &7Waffenschein" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 19 of player with black glass pane named "" to be unstealable
+		format slot 20 of player with black glass pane named "" to be unstealable
+		format slot 21 of player with black glass pane named "" to be unstealable
+		format slot 22 of player with black glass pane named "" to be unstealable
+		format slot 23 of player with black glass pane named "" to be unstealable
+		format slot 24 of player with black glass pane named "" to be unstealable
+		format slot 25 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with skull of ("%player%" parsed as an offline player) named "&7Waffenscheine im Besitz :" with lore "" and "Waffenbesitzkarte : %{%player's uuid%.waffenbesitzkarte}%" and "Leichtwaffenschein : %{%player's uuid%.Leichtwaffenschein}%" and "Schwerwaffenschein : %{%player's uuid%.Schwerwaffenschein}%" and "Kriegswaffenschein : %{%player's uuid%.Kriegswaffenschein}%" to be unstealable
+		format slot 10 of player with paper named "&7Waffenbesitzkarte" with lore "" and "&4Tragen von Messern und &lhäuslicher Besitz &r&4von Pistolen" and "4.999 € und Level 5" to close then run [execute player command "Waffenscheinmachenlevel 1"]
+		format slot 12 of player with book named "&7Leichtwaffenschein" with lore "" and "&4Tragen von Pistolen" and "9.999 € und Level 10 und alle vorherigen Scheine" to close then run [execute player command "Waffenscheinmachenlevel 2"]
+		format slot 14 of player with book named "&7Schwerwaffenschein" with lore "" and "&4Tragen und Erwerb von Maschinenpistolen" and "17.999 € und Level 15 und alle vorherigen Scheine" to close then run [execute player command "Waffenscheinmachenlevel 3"]
+		format slot 16 of player with map named "&7Kriegswaffenschein" with lore "" and "&4Tragen und Erwerb von Sturmgewehren, Sniper, Schrotflinten" and "49.999 € und Level 25 und alle vorherigen Scheine" to close then run [execute player command "Waffenscheinmachenlevel 4"]
+command /Waffenscheinmachenlevel [<text>]:
+	trigger:
+		if arg 1 is not set:
+			stop
+		if arg 1 is "1":
+			if {%player's uuid%_level} >= 5:
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 4.999:
+					remove 4999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Du hast die Waffenbesitzkarte erfolgreich erworben!"
+					set {%player's uuid%.waffenbesitzkarte} to "&2Ja"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du brauchst ein höheres Level"
+				stop
+		if arg 1 is "2":
+			if {%player's uuid%_level} >= 10:
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 9.999:
+					if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+						remove 9999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+						send "&2✔ Du hast den Leichtwaffenschein erfolgreich erworben!"
+						set {%player's uuid%.Leichtwaffenschein} to "&2Ja"
+					else:
+						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+					stop
+			else:
+				send "&e➣  &4⚠ &6Du brauchst ein höheres Level"
+				stop
+		if arg 1 is "3":
+			if {%player's uuid%_level} >= 15:
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 17.999:
+					if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+						if {%player's uuid%.Leichtwaffenschein} is "&2Ja":
+							remove 17999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+							send "&2✔ Du hast den Schwerwaffenschein erfolgreich erworben!"
+							set {%player's uuid%.Schwerwaffenschein} to "&2Ja"
+						else:	
+							send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+					else:
+						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+						stop
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+					stop	
+			else:
+				send "&e➣  &4⚠ &6Du brauchst ein höheres Level"
+				stop		
+		if arg 1 is "4":
+			if {%player's uuid%_level} >= 25:
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 49.999:
+					if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+						if {%player's uuid%.Leichtwaffenschein} is "&2Ja":
+							if {%player's uuid%.Schwerwaffenschein} is "&2Ja":
+								remove 49999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+								send "&2✔ Du hast den &cKriegswaffenschein &2erfolgreich erworben!"
+								set {%player's uuid%.Kriegswaffenschein} to "&2Ja"
+							else:
+								send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+						else:
+							send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+							stop
+					else:
+						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+						stop
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+					stop
+			else:
+				send "&e➣  &4⚠ &6Du brauchst ein höheres Level"
+				stop
+command /resetwaffenscheine:
+	trigger:
+		delete {%player's uuid%.waffenbesitzkarte}
+		delete {%player's uuid%.Leichtwaffenschein}
+		delete {%player's uuid%.Schwerwaffenschein}
+		delete {%player's uuid%.Kriegswaffenschein}
+command /Waffenladen1:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 10 of player with crossbow with custom model data 13 named "&7Enfield" with lore "" and "&c2.990 €" and "&2&l3.0 Damage / 6 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 1"]
+		format slot 11 of player with crossbow with custom model data 69 named "&7FN-Five-Seven" with lore "" and "&c2.800 €" and "&2&l3.0 Damage / 12 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 2"]
+		format slot 12 of player with crossbow with custom model data 1 named "&7P30" with lore "" and "&c1.249 €" and "&2&l3.0 Damage / 12 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 3"]
+		format slot 13 of player with crossbow with custom model data 23 named "&7P30 Silent" with lore "" and "&c2.920 €" and "&2&l3.0 Damage / 12 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 4"]
+		format slot 14 of player with crossbow with custom model data 53 named "&7Makarov PM" with lore "" and "&c529 €" and "&2&l3.0 Damage / 8 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 5"]
+		format slot 15 of player with crossbow with custom model data 1 named "&7Glock 17" with lore "" and "&c1.749 €" and "&2&l3.0 Damage / 15 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 6"]
+		format slot 16 of player with crossbow with custom model data 11 named "&7SW-1911" with lore "" and "&c2.350 €" and "&2&l3.0 Damage / 12 Bullets / 9mm" to close then run [execute player command "Waffekaufengunstore 7"]
+		format slot 46 of player with polished blackstone button named "Pistolen" to close
+		format slot 47 of player with stone button named "MP" to close then run [execute player command "/waffenladen2"]
+		format slot 48 of player with stone button named "Gewehre" to close then run [execute player command "/waffenladen3"]
+		format slot 49 of player with stone button named "Schrotflinten" to close then run [execute player command "/waffenladen4"]
+		format slot 50 of player with stone button named "Sniper" to close then run [execute player command "/waffenladen5"]
+		format slot 51 of player with stone button named "Messer" to close then run [execute player command "/waffenladen6"]
+		format slot 52 of player with stone button named "Rüstungen" to close then run [execute player command "/waffenladen7"]
+command /Waffekaufengunstore [<text>]:
+	trigger:
+		if arg 1 is not set:
+			stop
+		if arg 1 is "1":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2990:
+					remove 2990 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give enfield %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+		if arg 1 is "2":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2800:
+					remove 2800 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give fnfiveseven %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+		if arg 1 is "3":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 1249:
+					remove 1249 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give p30 %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+		if arg 1 is "4":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2920:
+					remove 2920 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give p30silenced %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+		if arg 1 is "5":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 529:
+					remove 529 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give makarov %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+		if arg 1 is "6":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 1749:
+					remove 1749 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give glock %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+		if arg 1 is "7":
+			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2350:
+					remove 2350 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give sw1911 %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+command /Waffenladen2:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 10 of player with crossbow with custom model data 3 named "&7Mp5K" with lore "" and "&c4.499 €" and "&2&l2.0 Damage / 32 Bullets / 9mm" to close then run [execute player command "/Waffekaufenmpstore 1"]
+		format slot 11 of player with crossbow with custom model data 10 named "&7UMP" with lore "" and "&c3.760 €" and "&2&l4.0 Damage / 30 Bullets / 5.56 NATO" to close then run [execute player command "/Waffekaufenmpstore 2"]
+		format slot 46 of player with stone button named "Pistolen" to close then run [execute player command "/waffenladen1"]
+		format slot 47 of player with polished blackstone button named "MP" to close
+		format slot 48 of player with stone button named "Gewehre" to close then run [execute player command "/waffenladen3"]
+		format slot 49 of player with stone button named "Schrotflinten" to close then run [execute player command "/waffenladen4"]
+		format slot 50 of player with stone button named "Sniper" to close then run [execute player command "/waffenladen5"]
+		format slot 51 of player with stone button named "Messer" to close then run [execute player command "/waffenladen6"]
+		format slot 52 of player with stone button named "Rüstungen" to close then run [execute player command "/waffenladen7"]
+command /Waffekaufenmpstore [<text>]:
+	trigger:
+		if arg 1 is not set:
+			stop
+		if arg 1 is "1":
+			if {%player's uuid%.Schwerwaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 4499:
+					remove 4499 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give mp5k %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+		if arg 1 is "2":
+			if {%player's uuid%.Schwerwaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2800:
+					remove 2800 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give ump %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+command /Waffenladen3:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 10 of player with crossbow with custom model data 6 named "&7M16" with lore "" and "&c8.686 €" and "&2&l3.0 Damage / 30 Bullets / 5.56 NATO" to close then run [execute player command "/Waffekaufengewehrestore 1"]
+		format slot 11 of player with crossbow with custom model data 5 named "&7Ak-U" with lore "" and "&c7.020 €" and "&2&l3.0 Damage / 30 Bullets / 7.62x39mm" to close then run [execute player command "/Waffekaufengewehrestore 2"]
+		format slot 12 of player with crossbow with custom model data 25 named "&7M4A1" with lore "" and "&c10.395 €" and "&2&l4.0 Damage / 30 Bullets / 5.56 NATO" to close then run [execute player command "/Waffekaufengewehrestore 3"]
+		format slot 46 of player with stone button named "Pistolen" to close then run [execute player command "/waffenladen1"]
+		format slot 47 of player with stone button named "MP" to close then run [execute player command "/waffenladen2"]
+		format slot 48 of player with polished blackstone button named "Gewehre" to close
+		format slot 49 of player with stone button named "Schrotflinten" to close then run [execute player command "/waffenladen4"]
+		format slot 50 of player with stone button named "Sniper" to close then run [execute player command "/waffenladen5"]
+		format slot 51 of player with stone button named "Messer" to close then run [execute player command "/waffenladen6"]
+		format slot 52 of player with stone button named "Rüstungen" to close then run [execute player command "/waffenladen7"]
+command /Waffekaufengewehrestore [<text>]:
+	trigger:
+		if arg 1 is not set:
+			stop
+		if arg 1 is "1":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 8686:
+					remove 8686 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give m16 %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+		if arg 1 is "2":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 7020:
+					remove 7020 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give ak47u %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+		if arg 1 is "3":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 10395:
+					remove 10395 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give m4a1s %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+command /Waffenladen4:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 10 of player with crossbow with custom model data 7 named "&7Remmington" with lore "" and "&c7.200 €" and "&2&l3.0 Damage / 8 Bullets / BUCKSHOT" to close then run [execute player command "/Waffekaufenschrotflintenstore 1"]
+		format slot 11 of player with crossbow with custom model data 17 named "&7Spas-12" with lore "" and "&c9.320 €" and "&2&l2.0 Damage / 8 Bullets / 5.56 NATO" to close then run [execute player command "/Waffekaufenschrotflintenstore 2"]
+		format slot 46 of player with stone button named "Pistolen" to close then run [execute player command "/waffenladen1"]
+		format slot 47 of player with stone button named "MP" to close then run [execute player command "/waffenladen2"]
+		format slot 48 of player with stone button named "Gewehre" to close then run [execute player command "/waffenladen3"]
+		format slot 49 of player with polished blackstone button named "Schrotflinten" to close
+		format slot 50 of player with stone button named "Sniper" to close then run [execute player command "/waffenladen5"]
+		format slot 51 of player with stone button named "Messer" to close then run [execute player command "/waffenladen6"]
+		format slot 52 of player with stone button named "Rüstungen" to close then run [execute player command "/waffenladen7"]
+command /Waffekaufenschrotflintenstore [<text>]:
+	trigger:
+		if arg 1 is not set:
+			stop
+		if arg 1 is "1":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 7200:
+					remove 7200 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give remington %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+		if arg 1 is "2":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 9320:
+					remove 9320 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give spas12 %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+command /Waffenladen5:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 10 of player with crossbow with custom model data 20 named "&7AWP" with lore "" and "&c14.120 €" and "&2&l10.0 Damage / 12 Bullets / 7.62x39mm" to close then run [execute player command "/Waffekaufensniperstore 1"]
+		format slot 11 of player with crossbow with custom model data 12 named "&7M40" with lore "" and "&c11.080 €" and "&2&l10.0 Damage / 6 Bullets / 7.62x39mm" to close then run [execute player command "/Waffekaufensniperstore 2"]
+		format slot 12 of player with crossbow with custom model data 16 named "&7Dragunov" with lore "" and "&c9.090 €" and "&2&l7.0 Damage / 12 Bullets / 7.62x39mm" to close then run [execute player command "/Waffekaufensniperstore 3"]
+		format slot 46 of player with stone button named "Pistolen" to close then run [execute player command "/waffenladen1"]
+		format slot 47 of player with stone button named "MP" to close then run [execute player command "/waffenladen2"]
+		format slot 48 of player with stone button named "Gewehre" to close then run [execute player command "/waffenladen3"]
+		format slot 49 of player with stone button named "Schrotflinten" to close then run [execute player command "/waffenladen4"]
+		format slot 50 of player with polished blackstone button named "Sniper" to close
+		format slot 51 of player with stone button named "Messer" to close then run [execute player command "/waffenladen6"]
+		format slot 52 of player with stone button named "Rüstungen" to close then run [execute player command "/waffenladen7"]
+command /Waffekaufensniperstore [<text>]:
+	trigger:
+		if arg 1 is not set:
+			stop
+		if arg 1 is "1":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 14120:
+					remove 7200 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give awp %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
+		if arg 1 is "2":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 11080:
+					remove 11080 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give m40 %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+		if arg 1 is "3":
+			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 9090:
+					remove 9090 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					send "&2✔ Kauf erfolgreich"
+					execute console command "/qa give dragunov %player%"
+				else:
+					send "&e➣  &4⚠ &6Nicht genug Geld"
+			else:
+				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
+command /Waffenladen6:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 46 of player with stone button named "Pistolen" to close then run [execute player command "/waffenladen1"]
+		format slot 47 of player with stone button named "MP" to close then run [execute player command "/waffenladen2"]
+		format slot 48 of player with stone button named "Gewehre" to close then run [execute player command "/waffenladen3"]
+		format slot 49 of player with stone button named "Schrotflinten" to close then run [execute player command "/waffenladen4"]
+		format slot 50 of player with stone button named "Sniper" to close then run [execute player command "/waffenladen5"]
+		format slot 51 of player with polished blackstone button named "Messer" to close
+		format slot 52 of player with stone button named "Rüstungen" to close then run [execute player command "/waffenladen7"]
+command /Waffenladen7:
+	trigger:
+		wait 5 ticks
+		open chest with 6 rows named "&8 ➥ &0[Kaufen] &7Waffenladen" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with black glass pane named "" to be unstealable
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 27 of player with black glass pane named "" to be unstealable
+		format slot 36 of player with black glass pane named "" to be unstealable
+		format slot 37 of player with black glass pane named "" to be unstealable
+		format slot 38 of player with black glass pane named "" to be unstealable
+		format slot 39 of player with black glass pane named "" to be unstealable
+		format slot 40 of player with black glass pane named "" to be unstealable
+		format slot 41 of player with black glass pane named "" to be unstealable
+		format slot 42 of player with black glass pane named "" to be unstealable
+		format slot 43 of player with black glass pane named "" to be unstealable
+		format slot 44 of player with black glass pane named "" to be unstealable
+		format slot 53 of player with black glass pane named "" to be unstealable
+		format slot 45 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+		format slot 35 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with black glass pane named "" to be unstealable
+		format slot 46 of player with stone button named "Pistolen" to close then run [execute player command "/waffenladen1"]
+		format slot 47 of player with stone button named "MP" to close then run [execute player command "/waffenladen2"]
+		format slot 48 of player with stone button named "Gewehre" to close then run [execute player command "/waffenladen3"]
+		format slot 49 of player with stone button named "Schrotflinten" to close then run [execute player command "/waffenladen4"]
+		format slot 50 of player with stone button named "Sniper" to close then run [execute player command "/waffenladen5"]
+		format slot 51 of player with stone button named "Messer" to close then run [execute player command "/waffenladen6"]
+		format slot 52 of player with polished blackstone button named "Rüstungen" to close

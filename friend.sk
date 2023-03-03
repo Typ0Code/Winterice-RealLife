@@ -1,0 +1,76 @@
+command /friend [<text>] [<player>] [<text>]:
+	aliases: /fr
+	trigger:
+		if arg-1 is not set:
+			message "&1"
+			message "&7/friend add <Spieler> &7- &eAdde einen Freund"
+			message "&7/friend remove <Spieler> &7- &eLösche deinen Freund"
+			message "&7/friend accept <Spieler> &7- &eNehme die Freundschaftsanfrage an"
+			message "&7/friend deny <Spieler> &7- &eLehne die Freundschaftsanfrage ab"
+			message "&2"
+		if arg 1 is "add":
+			if {friend.count.%player's uuid%} is greater than 36:
+				send "&5Freunde &8» &7Du hast zu viele Freunde!"
+				stop
+			loop {friend.list.%player's uuid%::*}:
+				if arg 2 is loop-value:
+					send "&5Freunde &8» &7Du bist schon mit &e%arg 2% &7befreundet"
+					stop
+			if arg 2 is player:
+				send "&5Freunde &8» &7Du kannst dir selber keine Anfrage stellen"
+				stop
+			set {friend.request.%player's uuid%.%uuid of arg 2%} to player
+			set {friend.request.%uuid of arg 2%.%player's uuid%} to arg 2
+			send "&5Freunde &8» &7Du hast &e%arg 2% &7eine Anfrage gestellt"
+			send "&5Freunde &8» &7Du hast von &e%player% &7eine Anfrage bekommen" to arg 2
+			send "&5Freunde &8» &7Benutze &e/friend accept name&7 oder &e/friend deny name" to arg 2
+			wait 5 minutes
+			delete {friend.request.%player's uuid%.%uuid of arg 2%}
+			delete {friend.request.%uuid of arg 2%.%player's uuid%}
+		if arg 1 is "accept":
+			if {friend.count.%player's uuid%} is greater than 36:
+				send "&5Freunde &8» &7Du hast zu viele Freunde!"
+				stop
+			if {friend.request.%player's uuid%.%uuid of arg 2%} is player:
+				if {friend.request.%uuid of arg 2%.%player's uuid%} is arg 2:
+					add player to {friend.list.%uuid of arg 2%::*}
+					add arg 2 to {friend.list.%player's uuid%::*}
+					send "&5Freunde &8» &7Du bist nun mit &e%arg 2% &7befreundet"
+					send "&5Freunde &8» &7Du bist nun mit &e%player% &7befreundet" to arg 2
+					add 1 to {friend.count.%player's uuid%}
+					delete {friend.request.%uuid of arg 2%.%player's uuid%}
+					delete {friend.request.%player's uuid%.%uuid of arg 2%}
+		if arg 1 is "deny":	
+			if {friend.request.%player's uuid%.%uuid of arg 2%} is arg 2:
+				if {friend.request.%uuid of arg 2%.%player's uuid%} is player:
+					send "&5Freunde &8» &7Du hast die Anfrage von &e%arg 2% &cabgelehnt"
+					send "&5Freunde &8» &e%player% hat deine Anfrage abgelehnt" to arg 2
+					delete {friend.request.%uuid of arg 2%.%player's uuid%}
+					delete {friend.request.%player's uuid%.%uuid of arg 2%}
+		if arg 1 is "list":
+			wait 2 ticks
+			set {friend.count.%player's uuid%} to 0
+			open chest with 6 rows named "&5Freunde &8» &7Menü" to player
+			wait 1 tick
+			loop {friend.list.%player's uuid%::*}:
+				if loop-value is online:
+					set {%player's uuid%_loop} to loop-value parsed as player
+					format slot {friend.count.%player's uuid%} of player with loop-value's skull named "&6%loop-value%" with lore "&aOnline &7auf &6%loop-value's world%" to close then run [execute player command "/friend list"]
+					add 1 to {friend.count.%player's uuid%}
+				if loop-value is offline:
+					format slot {friend.count.%player's uuid%} of player with wither skeleton head named "&6%loop-value%" with lore "&cOffline (%{friends::%uuid of loop-value%::login}%)" to be unstealable
+					add 1 to {friend.count.%player's uuid%}	
+		if arg 1 is "remove":
+			loop {friend.list.%player's uuid%::*}:
+				if arg 2 is loop-value:
+					remove arg 2 from {friend.list.%player's uuid%::*}
+					send "&5Freunde &8» &7 &7Du bist nun nicht mehr mit &e%arg 2% &7befreundet"
+					remove 1 from {friend.count.%uuid of arg 2%}
+					remove 1 from {friend.count.%player's uuid%}
+					remove player from {friend.list.%uuid of arg 2%::*}
+on quit:
+	loop {friend.list.%player's uuid%::*}:
+		if loop-value is online:
+			send loop-value title "&8» &c%player% hat verlassen!" for 2 seconds
+	wait 1 tick
+	delete {%player's uuid%_loop}

@@ -1,0 +1,125 @@
+on quit:
+	if {%player%.pvp.isin} is true:
+		broadcast "Der Spieler %player% ist während pvp geleavt."
+	delete {%player%.damagelog::*}
+	delete {%player%.add.player}
+	delete {%player%.remove.player}
+	loop {locations.names.list::*}:
+		delete {distance.bus.%player%.%loop-value%}
+	delete {%player%.compass.ziel}
+	delete {%player%.compass.ziel.location}
+	delete {%player%.naechster.punkt.name}
+	delete {%player%.naechster.punkt.bankautomat}
+	delete {%player%.naechster.punkt.bushaltestelle}
+	delete {%player%.naechster.punkt.name.bankautomat}
+	delete {%player%.naechster.punkt.name.bushaltestelle}
+	delete {%player%.naechster.punkt.name.zughaltestelle}
+	delete {%player%.naechster.punkt.zughaltestelle}
+	delete {%{%player%.naechster.punkt.name}%_location}
+	delete {%player%.compass.ziel}
+	delete {%player%.thrust}
+	delete {%player%_gesperrt}
+	delete {%player%.wartezeit}
+	delete {%uuid of player%_delay}
+	delete {distance.compass.%player%}
+	if {%player's uuid%.waffenbesitzkarte} is not "&2Ja":
+		delete {%player's uuid%.waffenbesitzkarte}
+	if {%player's uuid%.Leichtwaffenschein} is not "&2Ja":
+		delete {%player's uuid%.Leichtwaffenschein}
+	if {%player's uuid%.Schwerwaffenschein} is not "&2Ja":
+		delete {%player's uuid%.Schwerwaffenschein}
+	if {%player's uuid%.Kriegswaffenschein} is not "&2Ja":
+		delete {%player's uuid%.Kriegswaffenschein}
+
+on join:
+	if {%player's UUID%.abrechnung.strom} is not set:
+		set {%player's UUID%.abrechnung.strom} to 0
+	if {firstJoin.%uuid of player%} is not set:
+		teleport player to location at 77, 75, -358 in world "world"
+		wait 2 seconds
+		clear player's inventory
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		wait 2 seconds
+		give compass to player
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ &f&lWillkommen auf &0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "            &6          ___ ___   __     __  ___      __   __ "
+		send "            &6|   | | |\ |  |   |__   |__) | /   ` |__       |__) |__)"
+		send "            &6|/\| | | \|  |   |___ |  \  | \__,  |___     |  \  |   "
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ &b✯ &2Das &6&lechte &cLeben&0 ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		send "&0⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"
+		wait 5 seconds
+		send "&e&l➣  &f&l⚠ &6&lFahre mit dem Bus zum Jobcenter, um deine Karriere zu beginnen! Nutze den Kompass, um die nächste Haltestelle zu finden!"
+		play sound "notification_info" with volume 1000 with pitch 1 at player for player
+	if {days::%player's uuid%} is not set:
+		set {days::%player's uuid%} to 0
+	if {hour::%player's uuid%} is not set:
+		set {hour::%player's uuid%} to 0
+	if {minute::%player's uuid%} is not set:
+		set {minute::%player's uuid%} to 0
+	if {%player's uuid%_Tab} is not set:
+		set {%player's uuid%_Fraktion} to "Zivilist"
+		set the player's tablist name to "&7%player%"
+	delete {%player's uuid%_teamdienst}
+	if {%player%_gesperrt} is true:
+		kick player because "&7Bitte warte einen Moment.. Du wurdest eben erst gesperrt!"
+	set {friends::%player's uuid%::login} to now
+	loop {friend.list.%player's uuid%::*}:
+		if loop-value is online:
+			send loop-value title "&8» &a%player% ist beigetreten!" for 2 seconds
+	if {friend.count.%player's uuid%} is not set:
+		set {friend.count.%player's uuid%} to 0
+	if {%uuid of player%_level} is not set:
+		set {%uuid of player%_level} to 1
+		set {%uuid of player%_level2} to {%uuid of player%_level} + 1
+		set {%uuid of player%_exp} to 0
+		set {%{%uuid of player%_level2}%_levelneed} to ( 150 * 1.32 ) * {%uuid of player%_level2}
+	if {firstJoin.%uuid of player%} is not set:
+		set {firstJoin.%uuid of player%} to now
+	if {Marrypartner::%uuid of player%} is not set:
+		set {Marrypartner::%uuid of player%} to "&cNiemandem"
+	set {lastJoin.%uuid of player%} to now
+	if {%uuid of player%_fett} is not set:
+		set {%uuid of player%_fett} to 3
+	if {%uuid of player%_muskeln} is not set:
+		set {%uuid of player%_muskeln} to 3
+	if {%uuid of player%_promille} is not set:
+		set {%uuid of player%_promille} to 0.00
+	if {%player's uuid%_kontonummer_bank} is not set:
+		set {%player's uuid%_kontonummer_bank} to random integer between 1000000000 and 9999999999
+		loop {kontonummer.list::*}:
+			if {%player's uuid%_kontonummer_bank} is loop-value:
+				set {%player's uuid%_kontonummer_bank} to random integer between 1000000000 and 9999999999
+			else:
+				add {%player's uuid%_kontonummer_bank} to {kontonummer.bank.list::*}
+		if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} is not set:
+			wait 2 ticks
+			set {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} to 100
+		if {%player's uuid%_bargeld} is not set:
+			wait 2 ticks
+			set {%player's uuid%_bargeld} to 250
+	if {%UUID of player%.stuendlicheabrechnung.miete} is not set:
+		set {%UUID of player%.stuendlicheabrechnung.miete} to 0
+	if {%player's uuid%.locations} is not set:
+		set {%player's uuid%.locations} to 0
+	if {%player's uuid%.locations} < 0:
+		set {%player's uuid%.locations} to 0
+	if {settings.color.%player's UUID%} is not set:
+		set {settings.color.%player's UUID%} to "blue"

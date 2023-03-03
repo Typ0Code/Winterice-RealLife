@@ -1,0 +1,324 @@
+command /loopalleorte:
+	trigger:
+		wait 2 ticks
+		open chest with 6 rows named "&8 ➥ &0[Alle] &7Navigation" to player
+		set {zaehler.gui.alleorte.%player%} to 0
+		set {locations.names.list.sorted::*} to sorted {locations.names.list::*}
+		loop {locations.names.list.sorted::*}:
+			if "%loop-value%" contains "Bus" or "Zug" or "Bankautomat" or "Tankstelle":
+			else:
+				set {_distance_%loop-value%_%player%} to distance between player and {%{%loop-value%_Name}%_location}
+				set {_distance_%loop-value%_%player%} to round({_distance_%loop-value%_%player%})
+				set slot {zaehler.gui.alleorte.%player%} of player's current inventory to paper named "&7 %loop-value%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{_distance_%loop-value%_%player%}% Meter"
+				set {%{zaehler.gui.alleorte.%player%}%.location} to {%{%loop-value%_Name}%_location}
+				set {%{zaehler.gui.alleorte.%player%}%.name} to loop-value
+				add 1 to {zaehler.gui.alleorte.%player%}
+		delete {zaehler.gui.alleorte.%player%}
+on inventory click:
+	if inventory name of player's current inventory is "&8 ➥ &0[Alle] &7Navigation":
+		cancel event
+		set {locations.names.minimal.temp.list::*} to {locations.names.list::*}
+		loop {locations.names.minimal.temp.list::*}:
+			if "%loop-value%" contains "Bus" or "Zug" or "Bankautomat" or "Tankstelle":
+				remove loop-value from {locations.names.minimal.temp.list::*}
+		loop {locations.names.minimal.temp.list::*}:
+			add loop-value to {locations.names.minimal.list::*}
+		loop {locations.names.minimal.list::*}:
+			set {_index.event.slot.allwarps} to Index of event-slot
+			add 1 to {_index.event.slot.allwarps}
+			if "%{_index.event.slot.allwarps}%" is loop-index:
+				set {_warp.name.%player%} to loop-value
+				set player's compass target to {%{_warp.name.%player%}%_location}
+				play sound "notification_success" with volume 1000 with pitch 1 at player for player
+				set {%player%.compass.ziel} to true
+				set {%player%.compass.ziel.location} to {%{_warp.name.%player%}%_location}
+				delete {locations.names.minimal.list::*}
+				stop loop
+command /settingsnavi:
+	trigger:
+		wait 5 ticks
+		open chest with 3 rows named "&8 ➥ &0[Einstellungen] &7Navigation" to player
+		format slot 0 of player with black glass pane named "" to be unstealable
+		format slot 1 of player with black glass pane named "" to be unstealable
+		format slot 2 of player with black glass pane named "" to be unstealable
+		format slot 3 of player with black glass pane named "" to be unstealable
+		format slot 4 of player with black glass pane named "" to be unstealable
+		format slot 5 of player with black glass pane named "" to be unstealable
+		format slot 6 of player with black glass pane named "" to be unstealable
+		format slot 7 of player with black glass pane named "" to be unstealable
+		format slot 8 of player with black glass pane named "" to be unstealable
+		format slot 9 of player with gray glass pane named "Grauer Hintergrund" to close then run [set {settings.color.%player's UUID%} to "gray"]
+		format slot 10 of player with black glass pane named "" to be unstealable
+		format slot 11 of player with blue glass pane named "Blauer Hintergrund" to close then run [set {settings.color.%player's UUID%} to "blue"]
+		format slot 12 of player with black glass pane named "" to be unstealable
+		format slot 13 of player with red glass pane named "Roter Hintergrund" to close then run [set {settings.color.%player's UUID%} to "red"]
+		format slot 14 of player with black glass pane named "" to be unstealable
+		format slot 15 of player with purple glass pane named "Violetter Hintergrund" to close then run [set {settings.color.%player's UUID%} to "purple"]
+		format slot 16 of player with black glass pane named "" to be unstealable
+		format slot 17 of player with lime glass pane named "Hellgrüner Hintergrund" to close then run [set {settings.color.%player's UUID%} to "lime"]
+		format slot 18 of player with black glass pane named "" to be unstealable
+		format slot 19 of player with black glass pane named "" to be unstealable
+		format slot 20 of player with black glass pane named "" to be unstealable
+		format slot 21 of player with black glass pane named "" to be unstealable
+		format slot 22 of player with black glass pane named "" to be unstealable
+		format slot 23 of player with black glass pane named "" to be unstealable
+		format slot 24 of player with black glass pane named "" to be unstealable
+		format slot 25 of player with black glass pane named "" to be unstealable
+		format slot 26 of player with black glass pane named "" to be unstealable
+on right click with compass:
+	if {distance.compass.%player%} is not set:
+		set {distance.compass.%player%} to 0
+	cancel event
+	open chest with 6 rows named "&8 ➥ Navigation" to player
+	wait 1 tick
+	format slot 0 of player with black glass pane named "" to be unstealable
+	format slot 1 of player with black glass pane named "" to be unstealable
+	format slot 9 of player with black glass pane named "" to be unstealable
+	format slot 10 of player with black glass pane named "" to be unstealable
+	format slot 18 of player with black glass pane named "" to be unstealable
+	format slot 19 of player with black glass pane named "" to be unstealable
+	format slot 27 of player with black glass pane named "" to be unstealable
+	format slot 28 of player with black glass pane named "" to be unstealable
+	format slot 36 of player with black glass pane named "" to be unstealable
+	format slot 37 of player with black glass pane named "" to be unstealable
+	format slot 45 of player with black glass pane named "" to be unstealable
+	format slot 46 of player with black glass pane named "" to be unstealable
+	format slot 7 of player with black glass pane named "" to be unstealable
+	format slot 8 of player with black glass pane named "" to be unstealable
+	format slot 16 of player with black glass pane named "" to be unstealable
+	format slot 17 of player with black glass pane named "" to be unstealable
+	format slot 25 of player with black glass pane named "" to be unstealable
+	format slot 26 of player with black glass pane named "" to be unstealable
+	format slot 34 of player with black glass pane named "" to be unstealable
+	format slot 35 of player with black glass pane named "" to be unstealable
+	format slot 43 of player with black glass pane named "" to be unstealable
+	format slot 44 of player with black glass pane named "" to be unstealable
+	format slot 52 of player with black glass pane named "" to be unstealable
+	format slot 53 of player with black glass pane named "" to be unstealable
+	if {settings.color.%player's UUID%} is "blue":
+		format slot 2 of player with blue glass pane named "" to be unstealable
+		format slot 11 of player with blue glass pane named "" to be unstealable
+		format slot 38 of player with blue glass pane named "" to be unstealable
+		format slot 48 of player with blue glass pane named "" to be unstealable
+		format slot 49 of player with blue glass pane named "" to be unstealable
+		format slot 50 of player with blue glass pane named "" to be unstealable
+		format slot 42 of player with blue glass pane named "" to be unstealable
+		format slot 33 of player with blue glass pane named "" to be unstealable
+		format slot 24 of player with blue glass pane named "" to be unstealable
+		format slot 15 of player with blue glass pane named "" to be unstealable
+		format slot 6 of player with blue glass pane named "" to be unstealable
+		format slot 14 of player with blue glass pane named "" to be unstealable
+		format slot 13 of player with blue glass pane named "" to be unstealable
+		format slot 12 of player with blue glass pane named "" to be unstealable
+	if {settings.color.%player's UUID%} is "gray":
+		format slot 2 of player with gray glass pane named "" to be unstealable
+		format slot 11 of player with gray glass pane named "" to be unstealable
+		format slot 38 of player with gray glass pane named "" to be unstealable
+		format slot 48 of player with gray glass pane named "" to be unstealable
+		format slot 49 of player with gray glass pane named "" to be unstealable
+		format slot 50 of player with gray glass pane named "" to be unstealable
+		format slot 42 of player with gray glass pane named "" to be unstealable
+		format slot 33 of player with gray glass pane named "" to be unstealable
+		format slot 24 of player with gray glass pane named "" to be unstealable
+		format slot 15 of player with gray glass pane named "" to be unstealable
+		format slot 6 of player with gray glass pane named "" to be unstealable
+		format slot 14 of player with gray glass pane named "" to be unstealable
+		format slot 13 of player with gray glass pane named "" to be unstealable
+		format slot 12 of player with gray glass pane named "" to be unstealable
+	if {settings.color.%player's UUID%} is "red":
+		format slot 2 of player with red glass pane named "" to be unstealable
+		format slot 11 of player with red glass pane named "" to be unstealable
+		format slot 38 of player with red glass pane named "" to be unstealable
+		format slot 48 of player with red glass pane named "" to be unstealable
+		format slot 49 of player with red glass pane named "" to be unstealable
+		format slot 50 of player with red glass pane named "" to be unstealable
+		format slot 42 of player with red glass pane named "" to be unstealable
+		format slot 33 of player with red glass pane named "" to be unstealable
+		format slot 24 of player with red glass pane named "" to be unstealable
+		format slot 15 of player with red glass pane named "" to be unstealable
+		format slot 6 of player with red glass pane named "" to be unstealable
+		format slot 14 of player with red glass pane named "" to be unstealable
+		format slot 13 of player with red glass pane named "" to be unstealable
+		format slot 12 of player with red glass pane named "" to be unstealable
+	if {settings.color.%player's UUID%} is "purple":
+		format slot 2 of player with purple glass pane named "" to be unstealable
+		format slot 11 of player with purple glass pane named "" to be unstealable
+		format slot 38 of player with purple glass pane named "" to be unstealable
+		format slot 48 of player with purple glass pane named "" to be unstealable
+		format slot 49 of player with purple glass pane named "" to be unstealable
+		format slot 50 of player with purple glass pane named "" to be unstealable
+		format slot 42 of player with purple glass pane named "" to be unstealable
+		format slot 33 of player with purple glass pane named "" to be unstealable
+		format slot 24 of player with purple glass pane named "" to be unstealable
+		format slot 15 of player with purple glass pane named "" to be unstealable
+		format slot 6 of player with purple glass pane named "" to be unstealable
+		format slot 14 of player with purple glass pane named "" to be unstealable
+		format slot 13 of player with purple glass pane named "" to be unstealable
+		format slot 12 of player with purple glass pane named "" to be unstealable
+	if {settings.color.%player's UUID%} is "lime":
+		format slot 2 of player with lime glass pane named "" to be unstealable
+		format slot 11 of player with lime glass pane named "" to be unstealable
+		format slot 38 of player with lime glass pane named "" to be unstealable
+		format slot 48 of player with lime glass pane named "" to be unstealable
+		format slot 49 of player with lime glass pane named "" to be unstealable
+		format slot 50 of player with lime glass pane named "" to be unstealable
+		format slot 42 of player with lime glass pane named "" to be unstealable
+		format slot 33 of player with lime glass pane named "" to be unstealable
+		format slot 24 of player with lime glass pane named "" to be unstealable
+		format slot 15 of player with lime glass pane named "" to be unstealable
+		format slot 6 of player with lime glass pane named "" to be unstealable
+		format slot 14 of player with lime glass pane named "" to be unstealable
+		format slot 13 of player with lime glass pane named "" to be unstealable
+		format slot 12 of player with lime glass pane named "" to be unstealable
+	format slot 3 of player with paper named "&fZiel eingeben..." to close then run [set {%player%.gssuchen.chat} to true]->[send "&2Bitte jetzt GS-Namen eingeben, [mie_XXX oder kau_XXX]"]
+	format slot 4 of player with compass named "&7Entfernung zum Ziel : &a%{distance.compass.%player%}% Meter" to be unstealable
+	format slot 5 of player with barrier named "&7» &c&lZiel löschen" to close then run [execute player command "loopziellöschen"]
+	format slot 20 of player with skull of ("MHF_Exclamation" parsed as an offline player) named "&7» &b&oInteressantes in der Nähe" to close then run [execute player command "loopindernähe"]
+	format slot 29 of player with skull of ("ABigDwarf" parsed as an offline player) named "&7» &3&oÖffentliche Orte" to close then run [execute player command "loopalleorte"]
+	format slot 47 of player with daylight detector named "&7Einstellungen" to close then run [execute player command "settingsnavi"]
+	format slot 51 of player with gold block named "&7» &6Meine Orte" to close then run [execute player command "loopeigeneorte"]
+command /loopziellöschen:
+	trigger:
+		delete {%player%.naechster.punkt.name}
+		delete {%player%.naechster.punkt}
+		delete {%{%player%.naechster.punkt.name}%_location}
+		delete {%player%.compass.ziel}
+		set {distance.compass.%player%} to 0
+		send "&2✔ Ziel gelöscht" to player
+		set player's compass target to location of player
+command /loopindernähe:
+	trigger:
+		wait 3 ticks
+		open chest with 4 rows named "&8 ➥ Navigation" to player
+		loop numbers from 0 to 9:
+			format slot loop-number of player with white glass pane named "" to be unstealable
+		execute player command "/debugcompass Bushaltestelle"
+		format slot 10 of player with paper named "&7 %{%player%.naechster.punkt.name.Bushaltestelle}%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{%player%.naechster.punkt.Bushaltestelle}% Meter" to close then run [set player's compass target to {%{%player%.naechster.punkt.name.Bushaltestelle}%_location}]->[play sound "notification_success" with volume 1000 with pitch 1 at player for player]->[set {%player%.compass.ziel} to true]->[set {%player%.compass.ziel.location} to {%{%player%.naechster.punkt.name.Bushaltestelle}%_location}]
+		execute player command "/debugcompass Zughaltestelle"
+		format slot 11 of player with paper named "&7 %{%player%.naechster.punkt.name.Zughaltestelle}%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{%player%.naechster.punkt.Zughaltestelle}% Meter" to close then run [set player's compass target to {%{%player%.naechster.punkt.name.Zughaltestelle}%_location}]->[play sound "notification_success" with volume 1000 with pitch 1 at player for player]->[set {%player%.compass.ziel} to true]->[set {%player%.compass.ziel.location} to {%{%player%.naechster.punkt.name.Zughaltestelle}%_location}]
+		execute player command "/debugcompass Bankautomat"
+		format slot 12 of player with paper named "&7 %{%player%.naechster.punkt.name.Bankautomat}%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{%player%.naechster.punkt.Bankautomat}% Meter" to close then run [set player's compass target to {%{%player%.naechster.punkt.name.Bankautomat}%_location}]->[play sound "notification_success" with volume 1000 with pitch 1 at player for player]->[set {%player%.compass.ziel} to true]->[set {%player%.compass.ziel.location} to {%{%player%.naechster.punkt.name.Bankautomat}%_location}]
+		execute player command "/debugcompass Tankstelle"
+		format slot 13 of player with paper named "&7 %{%player%.naechster.punkt.name.Tankstelle}%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{%player%.naechster.punkt.Tankstelle}% Meter" to close then run [set player's compass target to {%{%player%.naechster.punkt.name.Tankstelle}%_location}]->[play sound "notification_success" with volume 1000 with pitch 1 at player for player]->[set {%player%.compass.ziel} to true]->[set {%player%.compass.ziel.location} to {%{%player%.naechster.punkt.name.Tankstelle}%_location}]
+command /loopeigeneorte:
+	trigger:
+		wait 2 ticks
+		open chest with 2 rows named "&8 ➥ &0[eigene Orte] &7Navigation" to player
+		set {zaehler.gui.eigeneorte.%player%} to 0
+		loop {locations.%player%.list::*}:
+			set {_distance_%loop-value%_%player%} to distance between player and {%loop-value%_%player%_location}
+			set {_distance_%loop-value%_%player%} to round({_distance_%loop-value%_%player%})
+			set slot {zaehler.gui.eigeneorte.%player%} of player's current inventory to paper named "&7 %loop-value%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{_distance_%loop-value%_%player%}% Meter"
+			set {%{zaehler.gui.eigeneorte.%player%}%.location} to {%{%loop-value%_Name}%_location}
+			set {%{zaehler.gui.eigeneorte.%player%}%.name} to loop-value
+			add 1 to {zaehler.gui.eigeneorte.%player%}
+		set slot 16 of player's current inventory to gold block named "&2Punkt hinzufügen"
+		set slot 17 of player's current inventory to redstone block named "&cPunkt löschen"
+		delete {zaehler.gui.eigeneorte.%player%}
+on inventory click:
+	if event-item is gold block:
+		if inventory name of player's current inventory is "&8 ➥ &0[eigene Orte] &7Navigation":
+			cancel event
+			set {%player%.addposition} to true
+			send "&2Schreibe jetzt den Namen des Punktes"
+			close player's inventory
+			stop
+	if event-item is redstone block:
+		if inventory name of player's current inventory is "&8 ➥ &0[eigene Orte] &7Navigation":
+			cancel event
+			set {%player%.removeposition} to true
+			send "&2Schreibe jetzt den Namen des Punktes, den du löschen willst"
+			close player's inventory
+			stop
+	if inventory name of player's current inventory is "&8 ➥ &0[eigene Orte] &7Navigation":
+		cancel event		
+		loop {locations.%player%.list::*}:
+			set {_index.event.slot.eigeneorte} to Index of event-slot
+			add 1 to {_index.event.slot.eigeneorte}
+			if "%{_index.event.slot.eigeneorte}%" is loop-index:
+				set {_warp.name.%player%} to loop-value
+				set player's compass target to {%{_warp.name.%player%}%_%player%_location}
+				play sound "notification_success" with volume 1000 with pitch 1 at player for player
+				set {%player%.compass.ziel} to true
+				set {%player%.compass.ziel.location} to {%{_warp.name.%player%}%_%player%_location}
+				stop loop
+every second:
+	loop all players:
+		if {%loop-player%.compass.ziel} is true:
+			if tool of loop-player is compass:
+				set {distance.compass.%loop-player%} to distance between loop-player and {%loop-player%.compass.ziel.location}
+				set {distance.compass.%loop-player%} to round({distance.compass.%loop-player%})
+				set action bar of loop-player to " &0&l %{distance.compass.%loop-player%}% Meter"
+command /debugcompass <text>:
+	trigger:
+		loop {locations.names.list::*}:
+			if "%loop-value%" contains arg-1:
+				set {%loop-value%_distance} to distance between player and {%{%loop-value%_Name}%_location}
+				set {%loop-value%_distance} to round({%loop-value%_distance})			
+				add {%loop-value%_distance} to {distance.list.compass::*}
+		set {distance.list.compass.sorted::*} to sorted {distance.list.compass::*}
+		delete {distance.list.compass::*}
+		set {%player%.naechster.punkt.%arg-1%} to first element of {distance.list.compass.sorted::*}
+		loop {locations.names.list::*}:
+			if "%loop-value%" contains arg-1:
+				set {%loop-value%_distance} to distance between player and {%{%loop-value%_Name}%_location}
+				set {%loop-value%_distance} to round({%loop-value%_distance})			
+				if {%loop-value%_distance} is {%player%.naechster.punkt.%arg-1%}:
+					set {%player%.naechster.punkt.name.%arg-1%} to "%loop-value%"
+					stop loop
+		delete {distance.list.compass.sorted::*}
+command /ortesuchenorten <text>:
+	trigger:
+		set player's compass target to {%arg 1%_location}
+		play sound "notification_success" with volume 1000 with pitch 1 at player for player
+		set {%player%.compass.ziel} to true
+		set {%player%.compass.ziel.location} to {%arg 1%_location}
+command /removepoint <text>:
+	permission: *
+	trigger:
+		remove {%arg 1%_Mid} from {locations.list::*}
+		delete {%arg 1%_Mid}
+		remove arg 1 from {locations.names.list::*}
+command /listpoints:
+	permission: *
+	trigger:
+		loop {locations.names.list::*}:
+			send ""
+			send "%loop-value%"
+			send ""
+command /pointlocation <text>:
+	permission: *
+	trigger:
+		send "%{%{%arg 1%_Name}%_location}%"
+command /setpoint <text>:
+	permission: *
+	trigger:
+		set {%arg 1%_Name} to arg 1
+		add arg 1 to {locations.names.list::*}
+		set {%{%arg 1%_Name}%_location} to player's location
+		send "%{%arg 1%_Name}% wurde erfolgreich zu %{%{%arg 1%_Name}%_location}% gesetzt"
+command /mid <text>:
+    permission: *
+    trigger:
+        set {_distance} to distance between player and {%{%arg 1%_Name}%_location}
+        set {_distance} to round({_distance})
+        send "%{_distance}%"
+command /setgpsplayerpunkt <text>:
+	trigger:
+		if {%player's uuid%.locations} >= 5:
+			send "&e&l➣  &f&l⚠ &6&lZu viele eigene Orte! Kaufe VIP für mehr!"
+			stop
+		if {%arg 1%_%player%_location} is set:
+			send "&cDieser Punkt existiert bereits!"
+			stop
+		else:
+			add arg 1 to {locations.%player%.list::*}
+			set {%arg 1%_%player%_location} to player's location
+			add 1 to {%player's uuid%.locations}
+			send "&2✔ Punkt gesetzt"
+command /removegpsplayerpunkt <text>:
+	trigger:
+		remove arg 1 from {locations.%player%.list::*}
+		delete {%{%player%.%arg 1%.name}%_location}
+		delete {%arg 1%_%player%_location}
+		remove 1 from {%player's uuid%.locations}

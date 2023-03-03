@@ -1,0 +1,73 @@
+on region enter:
+	if "%event-region%" contains "bus_innenstadt":
+		execute player command "/busgui Bushaltestelle Innenstadt"
+	if "%event-region%" contains "bus_skyline":
+		execute player command "/busgui Bushaltestelle Skyline"
+	if "%event-region%" contains "bus_flughafen":
+		execute player command "/busgui Bushaltestelle Flughafen"
+	if "%event-region%" contains "bus_krankenhaus":
+		execute player command "/busgui Bushaltestelle Krankenhaus"
+	if "%event-region%" contains "bus_shemond":
+		execute player command "/busgui Bushaltestelle Shemond-Lagoon"
+	if "%event-region%" contains "bus_unknown":
+		execute player command "/busgui Bushaltestelle Unknown-Frontier"
+	if "%event-region%" contains "bus_industriegebiet":
+		execute player command "/busgui Bushaltestelle Industriegebiet"
+command /busgui <text>:
+	trigger:
+		open chest with 6 rows named "&8 ➥ Busfahren" to player
+		delete {bus.names.minimal.temp.list::*}
+		set {_tmp.bus.loop} to 0
+		loop {locations.names.list::*}:
+			if "%loop-value%" contains "Bushaltestelle":
+				add loop-value to {bus.names.minimal.temp.list::*}
+				if "%loop-value%" contains arg-1:
+					set {remove.bus.%player%.current} to loop-value
+				else:
+					set {_distance.bus.%loop-value%} to distance between player and {%{%loop-value%_Name}%_location}
+					set {distance.bus.%player%.%loop-value%} to round({_distance.bus.%loop-value%})
+					set slot {_tmp.bus.loop} of player's current inventory to paper named "%loop-value%" with lore "&7%{distance.bus.%player%.%loop-value%}% Meter" 
+					add 1 to {_tmp.bus.loop}
+on inventory click:
+	if inventory name of player's current inventory is "&8 ➥ Busfahren":
+		if {%player%.bus.delay} is true:
+			cancel event
+			stop
+		else:
+			cancel event
+			send "&2Der Bus fährt gleich los..."
+			add 25 to {%uuid of player%_exp}
+			set {%player%.bus.delay} to true
+			set {%player%.wartezeit} to a random integer between 1 and 5
+			wait 1 tick
+			wait "%{%player%.wartezeit}% seconds" parsed as timespan
+			delete {%player%.bus.delay}
+			loop {bus.names.minimal.temp.list::*}:
+				if "%loop-value%" contains "Bus":
+					remove {remove.bus.%player%.current} from {bus.names.minimal.temp.list::*}
+				else:
+					remove loop-value from {bus.names.minimal.temp.list::*}
+					remove {remove.bus.%player%.current} from {bus.names.minimal.temp.list::*}
+			loop {bus.names.minimal.temp.list::*}:
+				add loop-value to {bus.names.minimal.list::*}
+			set {_index.event.slot.bus} to Index of event-slot
+			add 1 to {_index.event.slot.bus}
+			loop {bus.names.minimal.list::*}:
+				if "%{_index.event.slot.bus}%" is loop-index:
+					set {_warp.name.%player%.Dauer} to ( {distance.bus.%player%.%loop-value%} / 50 ) * 3
+					set {_warp.name.%player%.Dauer} to round({_warp.name.%player%.Dauer})
+					teleport player to location -134, 65, -392 in world "world"
+					set {name.bus.%player%} to loop-value
+					set {warp.name.bus.%player%.Dauer} to {_warp.name.%player%.Dauer}
+					set {warp.name.bus.%player%} to true
+					delete {bus.names.minimal.list::*}
+					stop loop	
+every second:
+	loop all players:
+		if {warp.name.bus.%loop-player%} is true:
+			if {warp.name.bus.%loop-player%.Dauer} <= 1:
+				teleport loop-player to {%{%{name.bus.%loop-player%}%_Name}%_location}
+				delete {warp.name.bus.%loop-player%}
+				delete {warp.name.bus.%loop-player%.Dauer}
+			remove 1 from {warp.name.bus.%loop-player%.Dauer}
+			set action bar of loop-player to " &0&lNoch %{warp.name.bus.%loop-player%.Dauer}% Sekunden"

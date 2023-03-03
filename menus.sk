@@ -1,0 +1,207 @@
+command /m:
+	aliases: /menu
+	trigger:
+		wait 2 ticks
+		open chest with 6 rows named "&7%player% | Menü" to player
+		wait 2 ticks
+		format slot 2 of player with black glass pane named " " to be unstealable
+		format slot 3 of player with black glass pane named " " to be unstealable
+		format slot 5 of player with black glass pane named " " to be unstealable
+		format slot 6 of player with black glass pane named " " to be unstealable
+		format slot 7 of player with cauldron named "&cMüll" to close then run [execute player command "/trash"]
+		format slot 9 of player with black glass pane named " " to be unstealable
+		format slot 10 of player with black glass pane named " " to be unstealable
+		format slot 11 of player with black glass pane named " " to be unstealable
+		format slot 12 of player with black glass pane named " " to be unstealable
+		format slot 14 of player with black glass pane named " " to be unstealable
+		format slot 15 of player with black glass pane named " " to be unstealable
+		format slot 16 of player with black glass pane named " " to be unstealable
+		format slot 17 of player with black glass pane named " " to be unstealable
+		format slot 18 of player with black glass pane named " " to be unstealable
+		format slot 20 of player with black glass pane named " " to be unstealable
+		format slot 21 of player with black glass pane named " " to be unstealable
+		format slot 23 of player with black glass pane named " " to be unstealable
+		format slot 26 of player with black glass pane named " " to be unstealable
+		format slot 27 of player with black glass pane named " " to be unstealable
+		format slot 29 of player with black glass pane named " " to be unstealable
+		format slot 30 of player with black glass pane named " " to be unstealable
+		format slot 32 of player with black glass pane named " " to be unstealable
+		format slot 35 of player with black glass pane named " " to be unstealable
+		format slot 36 of player with black glass pane named " " to be unstealable
+		format slot 37 of player with black glass pane named " " to be unstealable
+		format slot 38 of player with black glass pane named " " to be unstealable
+		format slot 39 of player with black glass pane named " " to be unstealable
+		format slot 41 of player with black glass pane named " " to be unstealable
+		format slot 42 of player with black glass pane named " " to be unstealable
+		format slot 43 of player with black glass pane named " " to be unstealable
+		format slot 44 of player with black glass pane named " " to be unstealable
+		format slot 46 of player with black glass pane named " " to be unstealable
+		format slot 47 of player with black glass pane named " " to be unstealable
+		format slot 48 of player with black glass pane named " " to be unstealable
+		format slot 50 of player with black glass pane named " " to be unstealable
+		format slot 51 of player with black glass pane named " " to be unstealable
+		format slot 52 of player with black glass pane named " " to be unstealable
+		format slot 22 of player with black glass pane named " " to be unstealable
+		format slot 31 of player with black glass pane named " " to be unstealable
+		format slot 40 of player with black glass pane named " " to be unstealable
+		format slot 0 of player with skull of ("zasf" parsed as an offline player) named "&7» &aProfile anschauen &c[SOON]" with lore "&7» Schau dir die Profile aller Spieler an, um mehr über sie herauszufinden" to be unstealable
+		format slot 1 of player with map named "&7» &aProfil anpassen &c[SOON]" with lore "&7» Passe dein Profil an, um das rp zu verbessern" to be unstealable
+		format slot 4 of player with paper named "&7» &cSpielerdaten" with lore "" and "&7Fraktion : %{%player's uuid%_Fraktion}%" to close then run [send "&e&l➣  &4&l⚠ &c&l Aktualisiere deine Daten beim Einwohnermeldeamt, wenn du sie ändern willst."]
+		format slot 8 of player with paper named "&7» Einstellungen &c[SOON]" to be unstealable
+		format slot 19 of player with stone sword named "&7» Skills" to close then run [execute player command "skills"]
+		format slot 28 of player with clock named "&7» Quests &c[SOON]" to be unstealable
+		format slot 13 of player with skull of ("%player%" parsed as an offline player) named "&7» %player%" with lore "&7%{%player's UUID%_level}% -> %{%player's UUID%_level2}%	" and "" and "&7%{%player's UUID%_level}% / %{%{%player's UUID%_level2}%_levelneed}%" to be unstealable
+		format slot 24 of player with crafting table named "&7» Crafting" to close then run [execute player command "handcraftingworkbench"]
+		format slot 25 of player with crafting table named "&7» Crafting" to close then run [execute player command "handcraftingworkbench"]
+		format slot 33 of player with crafting table named "&7» Crafting" to close then run [execute player command "handcraftingworkbench"]
+		format slot 34 of player with crafting table named "&7» Crafting" to close then run [execute player command "handcraftingworkbench"]
+		format slot 45 of player with shields named "&7» Damage-Log" to close then run [execute player command "damagelog"]
+		format slot 53 of player with skull of ("Speaker" parsed as an offline player) named "&7» &8Freundesmenü" to close then run [execute player command "/friend list"]
+		
+		
+command /handcraftingworkbench [<text>]:
+	trigger:
+		if arg-1 is not "shovelwood" or "pickaxewood" or "hoewood" or "swordwood" or "axewood" or "helmetleather" or "chestplateleather" or "leggingsleather" or "bootsleather" or "stick":
+			wait 5 ticks
+			open chest with 3 rows named "&7Portable Crafting" to player
+			format slot 0 of player with wooden shovel named "&0⚒ &7Holzschaufel" with lore "&7⚒ &c1 Stock" and "&7⚒ &c1 Holzbrett" to close then run [execute player command "/handcraftingworkbench shovelwood"]
+			format slot 1 of player with wooden pickaxe named "&0⚒ &7Holzspitzhacke" with lore "&7⚒ &c2 Stock" and "&7⚒ &c2 Holzbrett" to close then run [execute player command "/handcraftingworkbench pickaxewood"]
+			format slot 2 of player with wooden hoe named "&0⚒ &7Holzhacke" with lore "&7⚒ &c1 Stock" to close then run [execute player command "/handcraftingworkbench hoewood"]
+			format slot 3 of player with wooden sword named "&0⚒ &7Holzschwert" with lore "&7⚒ &c2 Stöcke" and "&7⚒ &c3 Holzbretter" and "&7⚒ &c1 Feuerstein (Schleifstein)" to close then run [execute player command "/handcraftingworkbench swordwood"]
+			format slot 4 of player with wooden axe named "&0⚒ &7Holzaxt" with lore "&7⚒ &c2 Stöcke" and "&7⚒ &c2 Holzbretter" and "&7⚒ &c1 Feuerstein (Schleifstein)" to close then run [execute player command "/handcraftingworkbench axewood"]
+			format slot 5 of player with leather helmet named "&0⚒ &7Lederhelm" with lore "&7⚒ &c2 Leder" to close then run [execute player command "/handcraftingworkbench helmetleather"]
+			format slot 6 of player with leather chestplate named "&0⚒ &7Lederbrustplatte" with lore "&7⚒ &c4 Leder" to close then run [execute player command "/handcraftingworkbench chestplateleather"]
+			format slot 7 of player with leather leggings named "&0⚒ &7Lederhose" with lore "&7⚒ &c4 leder" to close then run [execute player command "/handcraftingworkbench leggingsleather"]
+			format slot 8 of player with leather boots named "&0⚒ &7Lederstiefel" with lore "&7⚒ &c2 Leder" to close then run [execute player command "/handcraftingworkbench bootsleather"]
+			format slot 9 of player with stick named "&0⚒ &7Stock" with lore "&7⚒ &c1 Holzbrett" to close then run [execute player command "/handcraftingworkbench stick"]
+		if arg-1 is "shovelwood":
+			if player has 1 stick and 1 of any planks:
+				remove 1 of stick from player's inventory
+				remove 1 of any planks from player's inventory
+				give player 1 wooden shovel
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "pickaxewood":
+			if player has 2 stick and 2 of any planks:
+				remove 2 of stick from player's inventory
+				remove 2 of any planks from player's inventory
+				give player 1 wooden pickaxe
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "hoewood":
+			if player has 1 stick:
+				remove 1 of stick from player's inventory
+				give player 1 wooden hoe
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "swordwood":
+			if player has 2 stick and 3 of any planks and 1 flint:
+				remove 2 of stick from player's inventory
+				remove 3 of any planks from player's inventory
+				give player 1 wooden sword
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "axewood":
+			if player has 2 stick and 2 of any planks and 1 flint:
+				remove 2 of stick from player's inventory
+				remove 2 of any planks from player's inventory
+				give player 1 wooden axe
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "helmetleather":
+			if player has 2 leather:
+				remove 2 of leather from player's inventory
+				give player 1 leather helmet
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "chestplateleather":
+			if player has 4 leather:
+				remove 4 of leather from player's inventory
+				give player 1 leather chestplate
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "leggingsleather":
+			if player has 4 leather:
+				remove 4 of leather from player's inventory
+				give player 1 leather leggings
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "bootsleather":
+			if player has 2 leather:
+				remove 2 of leather from player's inventory
+				give player 1 leather boots
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+		if arg-1 is "stick":
+			if player has 1 of any planks:
+				remove 1 of any planks from player's inventory
+				give player 4 sticks
+			else:
+				send "&e&l➣  &4&l✘ &6&lZu wenig Resourcen"
+				
+				
+command /skillsreset:
+	permission: *
+	trigger:
+		delete {%player%.skills.handwerk}
+		
+		
+command /skills:
+	trigger:
+		if {%player%.skills.handwerk} is not set:
+			set {%player%.skills.handwerk} to 1
+		wait 5 ticks
+		open chest with 3 rows named "&0Skills" to player
+		format slot 0 of player with black glass pane named " " to be unstealable
+		format slot 1 of player with black glass pane named " " to be unstealable
+		format slot 2 of player with black glass pane named " " to be unstealable
+		format slot 3 of player with black glass pane named " " to be unstealable
+		format slot 4 of player with black glass pane named " " to be unstealable
+		format slot 5 of player with black glass pane named " " to be unstealable
+		format slot 6 of player with black glass pane named " " to be unstealable
+		format slot 7 of player with black glass pane named " " to be unstealable
+		format slot 8 of player with black glass pane named " " to be unstealable
+		format slot 9 of player with black glass pane named " " to be unstealable
+		format slot 17 of player with black glass pane named " " to be unstealable
+		format slot 18 of player with black glass pane named " " to be unstealable
+		format slot 19 of player with black glass pane named " " to be unstealable
+		format slot 20 of player with black glass pane named " " to be unstealable
+		format slot 21 of player with black glass pane named " " to be unstealable
+		format slot 22 of player with black glass pane named " " to be unstealable
+		format slot 23 of player with black glass pane named " " to be unstealable
+		format slot 24 of player with black glass pane named " " to be unstealable
+		format slot 25 of player with black glass pane named " " to be unstealable
+		format slot 26 of player with black glass pane named " " to be unstealable
+		format slot 10 of player with netherite pickaxe named "&7⚒ Handwerkliches Geschick  &3[LVL : %{%player%.skills.handwerk}%]" to close then run [execute player command "Handwerkupgradeskills"]
+		
+		
+command /Handwerkupgradeskills:
+	trigger:
+		set {_handwerk.tmp.cost.lvl} to {%player%.skills.handwerk} * 5
+		set {_handwerk.tmp.player.lvl} to player's level
+		if {_handwerk.tmp.player.lvl} >= {_handwerk.tmp.cost.lvl}:
+			add 1 to {%player%.skills.handwerk}
+			remove {_handwerk.tmp.cost.lvl} from player's level
+			send "Erfolgreich"
+		else:
+			send "Dein EXP Level ist aktuell %player's level%, du benötigst jedoch %{_handwerk.tmp.cost.lvl}%"
+			
+			
+on rightclick on player:
+	if player is sneaking:
+		wait 2 ticks
+		open chest with 1 row named "&7%clicked player% | Menü" to player
+		wait 2 ticks
+		format slot 0 of player with white glass pane named "" to be unstealable
+		format slot 1 of player with skull of ("vvvvvvvvvvvv" parsed as an offline player) named "&7» &6Ontime abfragen" to close then run [execute player command "/ot %clicked player%"]
+		format slot 2 of player with white glass pane named "" to be unstealable
+		format slot 4 of player with skull of ("sean1346" parsed as an offline player) named "&7» &2Bargeld geben" to close then run [execute player command "/Bargeldgeben %clicked player%"]
+		if player has permission "*":
+			format slot 3 of player with skull of ("MHF_Redstone" parsed as an offline player) named "&5 Documentation abfragen" to close then run [execute player command "/documentation %clicked player%"]
+			format slot 5 of player with skull of ("MHF_Redstone" parsed as an offline player) named "&4 Spieler sperren (1 Minute)" to close then run [execute player command "/kick %clicked player% Regelverstoß"]
+		else:
+			format slot 3 of player with white glass pane named "" to be unstealable
+			format slot 5 of player with white glass pane named "" to be unstealable
+		format slot 6 of player with white glass pane named "" to be unstealable
+		format slot 7 of player with skull of ("MHF_Prisma_Dark" parsed as an offline player) named "&2%clicked player% Als Freund hinzufügen" to close then run [execute player command "/friend add %clicked player%"]
+		format slot 8 of player with skull of ("MHF_Exclamation" parsed as an offline player) named "&8Spieler melden..." to close then run [execute player command "/report %clicked player%"]

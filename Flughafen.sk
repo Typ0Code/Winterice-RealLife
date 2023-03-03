@@ -1,0 +1,35 @@
+command /Flughafenguiteleportticketkaufen:
+	trigger:
+		if {Farmwelt.tickets.%player's UUID%} is not set:
+			set {Farmwelt.tickets.%player's UUID%} to 0
+		wait 3 ticks
+		open chest with 3 rows named "&0Farming Airlines" to player
+		format slot 0 of player with black glass pane named " " to be unstealable
+		format slot 1 of player with black glass pane named " " to be unstealable
+		format slot 2 of player with black glass pane named " " to be unstealable
+		format slot 3 of player with black glass pane named " " to be unstealable
+		format slot 4 of player with black glass pane named " " to be unstealable
+		format slot 5 of player with black glass pane named " " to be unstealable
+		format slot 6 of player with black glass pane named " " to be unstealable
+		format slot 7 of player with black glass pane named " " to be unstealable
+		format slot 8 of player with black glass pane named " " to be unstealable
+		format slot 9 of player with black glass pane named " " to be unstealable
+		format slot 13 of player with skull of ("alma" parsed as an offline player) named "&7>>> Farmwelt ( 99 Euro )" with lore "" and "&7Du hast bereits  %{Farmwelt.tickets.%player's UUID%}%  Tickets" to close then run [execute player command "Farmweltticketkaufen"]
+		format slot 17 of player with black glass pane named " " to be unstealable
+		format slot 18 of player with black glass pane named " " to be unstealable
+		format slot 19 of player with black glass pane named " " to be unstealable
+		format slot 20 of player with black glass pane named " " to be unstealable
+		format slot 21 of player with black glass pane named " " to be unstealable
+		format slot 22 of player with black glass pane named " " to be unstealable
+		format slot 23 of player with black glass pane named " " to be unstealable
+		format slot 24 of player with black glass pane named " " to be unstealable
+		format slot 25 of player with black glass pane named " " to be unstealable
+		format slot 26 of player with black glass pane named " " to be unstealable
+command /Farmweltticketkaufen:
+	trigger:
+		if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 99:
+			add 1 to {Farmwelt.tickets.%player's UUID%}
+			remove 99 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+			send "&e&l➣  &2&l✔ Kauf erfolgreich!"
+		else:
+			send "&e&l➣  &4&l⚠ &c&lZu wenig Geld!"

@@ -1,0 +1,192 @@
+on chat:
+	cancel event
+	if {%player%.add.player} is true:
+		set {_p.add} to message parsed as player
+		set {_baurechteregion} to the first 7 characters of "%region at player%"
+		loop {%{_baurechteregion}%.mitglieder::*}:
+			if loop-value is {_p.add}:
+				send "&e&l➣  &4&l⚠ &c&lDieser Spieler ist bereits Mitglied deines Grundstückes"
+				stop
+		if {_p.add} is online:
+			if {%{_baurechteregion}%.gs.owner} is player's UUID:
+				execute console command "rg addowner -w world %{_baurechteregion}% %{_p.add}%"
+				add {_p.add} to {%{_baurechteregion}%.mitglieder::*}
+				send "&e&l➣  &2&l✔ Hinzufügen erfolgreich!"
+				delete {%player%.add.player}
+				stop
+			else:
+				send "&e&l➣  &4&l⚠ &c&lDies ist nicht dein Grundstück!"
+				delete {%player%.add.player}
+				stop
+		else:
+			send "&e&l➣  &4&l⚠ &c&lDieser Spieler ist nicht online"
+			stop
+		delete {%player%.add.player}
+	if {%player%.remove.player} is true:
+		set {_p.rem} to message parsed as offline player
+		set {_baurechteregion} to the first 7 characters of "%region at player%"
+		loop {%{_baurechteregion}%.mitglieder::*}:
+			if loop-value is {_p.rem}:
+				set {_baurechteregion} to the first 7 characters of "%region at player%"
+				if {%{_baurechteregion}%.gs.owner} is player's UUID:
+					execute console command "rg removeowner -w world %{_baurechteregion}% %{_p.rem}%"
+					remove {_p.rem} from {%{_baurechteregion}%.mitglieder::*}
+					send "&e&l➣  &2&l✔ Entfernen erfolgreich!"
+					delete {%player%.remove.player}
+					stop
+				else:
+					send "&e&l➣  &4&l⚠ &c&lDies ist nicht dein Grundstück!"
+					delete {%player%.remove.player}
+					stop
+		send "&cDieser Spieler konnte auf deinem Grundstück nicht gefunden werden."
+		delete {%player%.remove.player}
+		stop
+	if {%player's uuid%.Bank.ueberweisung.einzahlen} is true:
+		if message matches "[a-zA-Z]+":
+			send "&7Bitte eine Zahl eingeben!"
+			stop	
+		set {%player's uuid%.geld.einzahlen.summe} to message parsed as an number
+		execute player command "/bankgive %{%player's uuid%.geld.einzahlen.summe}%"
+		delete {%player's uuid%.geld.einzahlen.summe}
+		delete {%player's uuid%.Bank.ueberweisung.einzahlen}
+		stop
+	if {%player's uuid%.Bank.ueberweisung.auszahlen} is true:
+		if message matches "[a-zA-Z]+":
+			send "&7Bitte eine Zahl eingeben!"
+			stop	
+		set {%player's uuid%.geld.auszahlen.summe} to message parsed as an number
+		execute player command "/bankget %{%player's uuid%.geld.auszahlen.summe}%"
+		delete {%player's uuid%.geld.auszahlen.summe}
+		delete {%player's uuid%.Bank.ueberweisung.auszahlen}
+		stop
+	if {%player's UUID%.reportsystem.chat.grund} is true:
+		if length of message <= 25:
+			send "&e&l➣  &4&l⚠ &c&lBitte benutze mehr als 25 Buchstaben..."
+			delete {%player's UUID%.reportsystem.chat.grund}
+			send "&4Report abgebrochen... Benutze >/report %{%player's UUID%.reportsystem.name}%< für einen neuen Report"
+			stop
+		else:
+			set {Teammitglieder_online} to false
+			wait 1 tick
+			set {%player's UUID%.reportsystem.grund.%{%player's UUID%.reportsystem.name}%} to message
+			loop all players:
+				if {%loop-player's uuid%_teamdienst} is true:
+					set {Teammitglieder_online} to true
+					send "&e&l➣  &c&l⚠ &7&lDer Spieler &2%player% &7&lhat den Spieler &c%{%player's UUID%.reportsystem.name}% &7für    &8&l%{%player's UUID%.reportsystem.grund.%{%player's UUID%.reportsystem.name}%}%   &7gemeldet" to loop-player
+			if {Teammitglieder_online} is true:
+				send "&e&l➣  &2&l✔ Meldung erfolgreich"
+				set {Teammitglieder_online} to false
+			else:
+				send "&e&l➣  &4&l⚠ &cAktuell kein Teammitglied online! Versuche es auf Discord!"
+				set {Teammitglieder_online} to false
+		delete {%player's UUID%.reportsystem.chat.grund}
+		delete {%player's UUID%.reportsystem.name}
+		delete {%player's UUID%.reportsystem.grund.%{%player's UUID%.reportsystem.name}%}
+		stop
+	if {%player's uuid%.Bank.ueberweisung.chat.betrag} is true:
+		if message matches "[a-zA-Z]+":
+			send "&7Bitte eine Zahl eingeben!"
+			stop
+		set {%player's uuid%.geld.summe} to message parsed as an number
+		set {%player's uuid%.Bank.ueberweisung.chat.nummer} to true
+		delete {%player's uuid%.Bank.ueberweisung.chat.betrag}
+		send "&7Nun Kontonummer eingeben :"
+		stop
+	if {%player's uuid%.Bank.ueberweisung.chat.nummer} is true:
+		if message contains "DE":
+			if length of message <= 12:
+				set message to the last (length of message - 2) characters of message
+				set {Kontonummer.temp.%player's uuid%} to message
+				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= {%player's uuid%.geld.summe}:
+					remove {%player's uuid%.geld.summe} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+					add {%player's uuid%.geld.summe} to {%{Kontonummer.temp.%player's uuid%}%_kontostand_bank}
+					send "&2Erfolgreich!"
+					delete {%player's uuid%.Bank.ueberweisung.chat.nummer}
+					delete {Kontonummer.temp.%player's uuid%}
+					delete {%player's uuid%.geld.summe}
+					stop
+				else:
+					send "&cZu wenig Geld!"
+					delete {%player's uuid%.Bank.ueberweisung.chat.nummer}
+					stop
+			else:
+				send "&cKeine Kontonummer!"
+				stop
+		else:
+			send "&cKeine Kontonummer!"
+			stop
+	if {%player%.addposition} is true:
+		set {_positionname.%player%} to message
+		execute player command "/setgpsplayerpunkt %{_positionname.%player%}%"
+		delete {%player%.addposition}
+		stop
+	if {%player%.removeposition} is true:
+		set {_positionname.%player%} to message
+		execute player command "/removegpsplayerpunkt %{_positionname.%player%}%"
+		delete {%player%.removeposition}
+		stop
+	if {%player%.gssuchen.chat} is true:
+		set {_gssuchen} to message
+		execute player command "/ortesuchenorten %{_gssuchen}%"
+		delete {%player%.gssuchen.chat}
+		stop
+	if first character of message is "##":
+		if length of message is less than 2 :
+			stop
+		set message to the last (length of message - 1) characters of message
+		send "&f&l[AKTION] &7%player% &7%message%" to all players in radius 5 of player
+		stop
+	if first character of message is "!":
+		if amount of players in radius 65 of player is less than 2:
+			if length of message is less than 2 :
+				stop		
+			if {%player's uuid%_teamdienst} is true:
+				set message to the last (length of message - 1) characters of message
+				send "&7[&cS&7] &c&l[ADMIN] &c%player% » &r%message%" to all players in radius 65 of player
+				send "&e&l➣  &4&l⚠ &6&lNiemand hat dich gehört!" to player
+				stop	
+			set message to the last (length of message - 1) characters of message
+			send "&7[&cS&7] [%{%player's uuid%_Fraktion}%] &7%player% » &r%message%" to all players in radius 65 of player
+			send "&e&l➣  &4&l⚠ &6&lNiemand hat dich gehört!" to player
+			stop
+		if {%player's uuid%_teamdienst} is true:
+			set message to the last (length of message - 1) characters of message
+			send "&7[&cS&7] &c&l[ADMIN] &c%player% » &r%message%" to all players in radius 65 of player
+			stop			
+		set message to the last (length of message - 1) characters of message
+		send "&7[&cS&7] [%{%player's uuid%_Fraktion}%] &7%player% » &r%message%" to all players in radius 65 of player
+		stop
+	if first character of message is "+":
+		if amount of players in radius 5 of player is less than 2:
+			if length of message is less than 2 :
+				stop
+			if {%player's uuid%_teamdienst} is true:
+				set message to the last (length of message - 1) characters of message
+				send "&7[&8F&7] &c&l[ADMIN] &c%player% » &r%message%" to all players in radius 5 of player
+				send "&e&l➣  &4&l⚠ &6&lNiemand hat dich gehört!" to player
+				stop
+			set message to the last (length of message - 1) characters of message
+			send "&7[&8F&7] [%{%player's uuid%_Fraktion}%] &7%player% » &r%message%" to all players in radius 5 of player
+			send "&e&l➣  &4&l⚠ &6&lNiemand hat dich gehört!" to player
+			stop
+		if {%player's uuid%_teamdienst} is true:
+			set message to the last (length of message - 1) characters of message
+			send "&7[&8F&7] &c&l[ADMIN] &c%player% » &r%message%" to all players in radius 5 of player
+			stop	
+		set message to the last (length of message - 1) characters of message
+		send "&7[&8F&7] [%{%player's uuid%_Fraktion}%] &7%player% » &r%message%" to all players in radius 5 of player
+		stop
+	if amount of players in radius 20 of player is less than 2:
+		if {%player's uuid%_teamdienst} is true:
+			send "&7[&8N&7] &c&l[ADMIN] &c%player% » &r%message%" to all players in radius 20 of player
+			send "&e&l➣  &4&l⚠ &6&lNiemand hat dich gehört!" to player
+			stop	
+		send "&7[&8N&7] [%{%player's uuid%_Fraktion}%] &7%player% » &7%message%" to all players in radius 20 of player
+		send "&e&l➣  &4&l⚠ &6&lNiemand hat dich gehört!" to player
+		play sound "notification_info" with volume 100 with pitch 1 at player for player
+		stop
+	if {%player's uuid%_teamdienst} is true:
+		send "&7[&8N&7] &c&l[ADMIN] &c%player% » &r%message%" to all players in radius 20 of player
+		stop	
+	send "&7[&8N&7] [%{%player's uuid%_Fraktion}%] &7%player% » &7%message%" to all players in radius 20 of player			
+	stop

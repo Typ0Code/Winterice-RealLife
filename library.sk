@@ -1,0 +1,292 @@
+on right click on player head:
+	if "%region at player%" contains "buecherei":
+		cancel event
+		execute player command "addbook"
+on right click on bookshelf:
+	if "%region at player%" contains "buecherei":
+		cancel event
+		execute player command "lib"
+options:
+	permission: library.use
+	library-reset: 604800
+	fee-percentage: 0.25
+command /addbook [<text>]:
+	trigger:
+		if player's tool is a written book:
+			if player's tool's author is player:
+				if arg-1 is set:
+					set {_amount} to arg-1 parsed as integer
+					if {_amount} >= 100:
+						set {_i} to 0
+						loop {library::books::*}:
+							add 1 to {_i}
+						if {_i} < 900:
+							set {_published} to 0
+							loop {library::stats::%player%::publishedbooks::*}:
+								add 1 to {_published}
+							if {_published} < 20:
+								set {_deduct} to {_amount}/{@fee-percentage}
+								if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= {_deduct}:
+									remove {_deduct} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+									add 1 to {library::stats::%player%::publishedbooks::*}
+									add player's tool to {library::books::*}
+									add arg-1 to {library::cost::*}
+									send "&aBook added to the Library! You were charged $%{_deduct}% ({@fee-percentage}%%)"
+								else:
+									send "&cYou don't have enough money to publish this book!"
+							else:
+								send "&cYou can only publish 20 books at once!"
+						else:
+							send "&cLibrary is full at this moment, try again later!"
+					else:
+						send "&cYou cannot publish a book for less than $100."
+				else:
+					send "&cPlease specify a price that people will buy your book for!"
+					send "&c&lExample: &c/addbook 500"
+			else:
+				send "&cThis book doesn't belong to you!"
+		else:
+			send "&cLibrary only accepts written books, sorry!"
+command /removebook [<text>]:
+	trigger:
+		if arg-1 is set:
+			set {_book} to arg-1 parsed as integer
+			loop {library::books::*}:
+				add 1 to {_count}
+			if {_book} <= {_count}:
+				if {library::books::%{_book}%} is not a book:
+					if {library::books::%{_book}%}'s author is player:
+						remove 1 from {library::stats::%player%::publishedbooks::*}
+						delete {library::stats::%player%::timessold::%{_book}%::*}
+						set {library::books::%{_book}%} to a book
+						set {library::cost::%{_book}%} to 0
+						send "&aYou have removed your own book."
+					else if player has permission "library.superuser":
+						set {_author} to {library::books::%{_book}%}'s author parsed as offline player
+						if {_author} is online:
+							send "&cYour book has been removed from the Library by an Administrator!" to {_author}
+						remove 1 from {library::stats::%{_author}%::publishedbooks::*}
+						delete {library::stats::%{_author}%::timessold::%{_book}%::*}
+						set {library::books::%{_book}%} to a book
+						set {library::cost::%{_book}%} to 0
+						send "&aBook with identifier %arg-1% removed!"
+				else:
+					send "&cThis book has been already removed."
+			else:
+				send "&cThis book doesn't exist!"
+		else:
+			send "&cPlease use &l/removebook [number]"
+command /mybooks:
+	trigger:
+		loop {library::stats::%player%::publishedbooks::*}:
+			add 1 to {_published}
+		if {_published} >= 1:
+			set {_gui} to a new chest inventory with 4 row with name "&0My published books &l(%{_published}%/20)"
+			set slot 27 of {_gui} to red stained glass pane named "&c<- Go back"
+			loop numbers from 28 to 35:
+				set slot loop-number of {_gui} to black stained glass pane
+			set {_i} to 0
+			set {_total-sold} to 0
+			loop {library::stats::%player%::soldbooks::*}:
+				add 1 to {_total-sold}
+			loop {library::books::*}:
+				add 1 to {_i}
+				if loop-value's author is player:
+					add 1 to {_slot}
+					delete {_cost}
+					delete {_fees}
+					delete {_times-sold}
+					delete {_profits}
+					if {library::stats::%player%::timessold::%{_i}%::*} exists:
+						set {_cost} to {library::cost::%{_i}%} parsed as integer
+						set {_fees} to rounded down {_cost}/{@fee-percentage}
+						loop {library::stats::%player%::timessold::%{_i}%::*}:
+							add 1 to {_times-sold}
+						set {_profits} to {_times-sold}*{_cost}-{_fees}
+						set slot {_slot}-1 of {_gui} to {library::books::%{_i}%} with lore "&8Book identifier: %{_i}%" and "&r" and "&aThis book has been sold" and "&aa total of %{_times-sold}% time(s)!" and "&a&l&n$%{_profits}% in profits" and "&r" and "&8> &c&lCLICK TO REMOVE"
+					else:
+						set slot {_slot}-1 of {_gui} to {library::books::%{_i}%} with lore "&8Book identifier: %{_i}%" and "&r" and "&8> &c&lCLICK TO REMOVE"
+					if {_total-sold} >= 1:
+						set slot 31 of {_gui} to bookshelf named "&dYou sold a total of %{_total-sold}% books!"
+			open {_gui} to player
+		else:
+			send "&cYou don't have any books published yet! Become an author by using /addbook."
+command /library [<text>]:
+	aliases: /lib
+	trigger:
+		if arg-1 is set:
+			set {_int} to arg-1 parsed as integer
+			if {_int} >= 1:
+				loop {library::books::*}:
+					add 1 to {_book}
+				set {_spots} to (900-{_book})
+				set {_maxpages} to rounded up {_book}/45
+				if {_maxpages} > 0:
+					set {_book} to 0
+					set {_gui} to a new chest inventory with 6 row with name "&0Library &l(page %arg-1%)"
+					loop numbers from 45 to 54:
+						set slot loop-number of {_gui} to black stained glass pane
+					if {quotes::*} exists:
+						loop {quotes::*}:
+							add 1 to {_q}
+							set {_quote.%{_q}%} to loop-value
+					loop {library::books::*}:
+						add 1 to {_book}
+						set {_rpointer.1} to 45*(arg-1) parsed as integer
+						remove 45 from {_rpointer.1}
+						set {_rpointer.2} to 45*(arg-1) parsed as integer
+						if {_int} <= {_maxpages}:
+							set {_init-gui} to true
+							if {_book} > {_rpointer.1}:
+								if {_book} <= {_rpointer.2}:
+									if {_i} is not 45:
+										add 1 to {_i}
+										if {library::books::%{_book}%} is a book:
+											if {quotes::*} exists:
+												set slot {_i}-1 of {_gui} to a book named "&cThis book has been removed." with lore "&r" and "&8Have this random quote instead..." and "&8> %{_quote.%{_book}%}%"
+											else:
+												set slot {_i}-1 of {_gui} to a book named "&cThis book has been removed."
+										else if player has permission "library.superuser":
+											set slot {_i}-1 of {_gui} to {library::books::%{_book}%} with lore "&6&lBook cost: &6$%{library::cost::%{_book}%}%" and "&r" and "&c     &m               &r" and "&cRemove this book with" and "   &c/removebook %{_book}%" and "&c     &m               &r"
+										else:
+											set slot {_i}-1 of {_gui} to {library::books::%{_book}%} with lore "&6&lBook cost: &6$%{library::cost::%{_book}%}%"
+							if ({_rpointer.1}/45) > 0:
+								set slot 45 of {_gui} to red stained glass pane named "&c<- Go to page %({_rpointer.1}/45)%"
+							else:
+								set slot 45 of {_gui} to red stained glass pane named "&cIts a dead end..."
+							if ({_rpointer.1}/45)+2 < 21:
+								set slot 53 of {_gui} to lime stained glass pane named "&aGo to page %({_rpointer.1}/45)+2% ->"
+							else:
+								set slot 53 of {_gui} to lime stained glass pane named "&aIts a dead end..."
+							if {library::stats::%player%::publishedbooks::*} exists:
+								set slot 48 of {_gui} to a chest named "&dView own books!"
+						else:
+							stop
+					if {_init-gui} is true:
+						open {_gui} to player
+						set {library.timer.%player%} to true
+						while {library.timer.%player%} is true:
+							if {library.reset-timer} >= 1:
+								if {library::stats::%player%::publishedbooks::*} >= 1:
+									set slot 50 of {_gui} to clock named "&aLibrary will reset in" with lore "&aexactly &n%{library.reset-timer}%&a seconds!" and "" and "&8> %{_spots}% library spots left." and "&8> Become an author! &e/addbook"
+								else:
+									set slot 49 of {_gui} to clock named "&aLibrary will reset in" with lore "&aexactly &n%{library.reset-timer}%&a seconds!" and "" and "&8> %{_spots}% library spots left." and "&8> Become an author! &e/addbook"
+								wait 1 second
+							else:
+								wait 2 seconds
+								close player's inventory
+				else:
+					send "&cLibrary has no available books! Publish some using /addbook."
+		else:
+			execute player command "/library 1"
+command /clearlibrary:
+	permission: library.superuser
+	trigger:
+		set {library.reset-timer} to 0
+on inventory click:
+	if name of event-inventory contains "&0My published books":
+		cancel event
+		if clicked slot is a written book:
+			set {_trigger} to line 1 of clicked slot's lore
+			replace all "&8Book identifier: " with "" in {_trigger}
+			execute player command "/removebook %{_trigger}%"
+			if {library::stats::%player%::publishedbooks::*} >= 1:
+				execute player command "/mybooks"
+			else:
+				execute player command "/library"
+		else if clicked slot's name contains "&c<- Go back":
+			execute player command "/library"
+	else if name of event-inventory contains "&0Library":
+		cancel event
+		if clicked slot's name doesn't contain uncolored "Library will be reset in":
+			if clicked slot is red stained glass pane:
+				if clicked slot's name doesn't contain uncolored "Its a dead end...":
+					set {_trigger} to clicked slot's name
+					replace all "Go to page " and "&c<- " with "" in {_trigger}
+					execute player command "/library %{_trigger}%"
+			else if clicked slot is lime stained glass pane:
+				if clicked slot's name doesn't contain uncolored "Its a dead end...":
+					set {_trigger} to clicked slot's name
+					replace all "&aGo to page " and " ->" with "" in {_trigger}
+					execute player command "/library %{_trigger}%"
+			else:
+				if clicked slot is a book:
+					stop
+				else if clicked slot is a written book:
+					set {_num} to index of clicked slot+1
+					if {library::books::%{_num}%} exists:
+						if clicked slot's author is not player:
+							set {_cost} to {library::cost::%{_num}%} parsed as integer
+							if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= {_cost}:
+								set {_author} to clicked slot's author parsed as offline player
+								add {_cost} to {%{%{_author}'s uuid%_kontonummer_bank}%_kontostand_bank}
+								if {_author} is online:
+									send "&6%player% has purchased your book! You earned $%{library::cost::%{_num}%}%." to {_author}
+								add 1 to {library::stats::%{_author}%::soldbooks::*}
+								add {_cost} to {library::stats::%{_author}%::profits::*}
+								add 1 to {library::stats::%{_author}%::timessold::%{_num}%::*}
+								send "&6Great purchase! You were charged $%{library::cost::%{_num}%}%." to player
+								remove {_cost} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+								add {library::books::%{_num}%} to player's inventory
+							else:
+								send "&6&lThis book costs $%{library::cost::%{_num}%}%!"
+								stop
+						else:
+							send "&cThis book belongs to you!"
+						set {_trigger} to event-inventory's name
+						replace all "&0Library &l(page " and ")" with "" in {_trigger}
+						execute player command "/library %{_trigger}%"
+				if clicked slot's name contains "View own books":
+					execute player command "/mybooks"
+command /quotes [<text>]:
+	permission: library.superuser
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "clear":
+				loop {quotes::*}:
+					add 1 to {_i}
+				delete {quotes::*}
+				send "&aRemoved %{_i}% quotes!"
+			else if arg-1 is "default":
+				add "A day without laughter is a day wasted." to {quotes::*}
+				add "You cannot be anything if you want to be everything." to {quotes::*}
+				add "The cure for boredom is curiosity. There is no cure for curiosity." to {quotes::*}
+				add "If you’re too open-minded; your brains will fall out." to {quotes::*}
+				add "The road to success is always under construction." to {quotes::*}
+				add "When life gives you lemons, squirt someone in the eye." to {quotes::*}
+				add "I was born to make mistakes, not to fake perfection." to {quotes::*}
+				add "Don’t sweat the petty things and don’t pet the sweaty things." to {quotes::*}
+				add "Tomorrow is often the busiest day of the week." to {quotes::*}
+				add "If you’re going through hell, keep going." to {quotes::*}
+				add "Accept who you are. Unless you’re a serial killer." to {quotes::*}
+				add "Worrying is like paying a debt you don’t owe." to {quotes::*}
+				add "To err is human; to admit it, superhuman." to {quotes::*}
+				add "Confidence is 10%% work and 90%% delusion." to {quotes::*}
+				add "The happier we get, the less we see." to {quotes::*}
+				add "I’m not arguing. I’m simply explaining why I’m right." to {quotes::*}
+				add "When nothing is going right, go left." to {quotes::*}
+				add "If I were two-faced, would I be wearing this one?" to {quotes::*}
+				add "This suspense is terrible. I hope it will last." to {quotes::*}
+				add "I drank some boiling water because I wanted to whistle." to {quotes::*}
+				add "The average dog is a nicer person than the average person." to {quotes::*}
+				add "I was just viciously body-shamed by my mirror." to {quotes::*}
+				add "If a book about failures doesn’t sell, is it a success?" to {quotes::*}
+				add "Talking about music is like dancing about architecture." to {quotes::*}
+				add "Our toaster has two settings: too soon or too late." to {quotes::*}
+				add "How many people here have telekinetic powers? Raise my hand." to {quotes::*}
+				send "&cDefault quotes added to the list."
+			else:
+				add arg-1 to {quotes::*}
+				send "&aAdded &8%arg-1%&a to the list of quotes!"
+on inventory close:
+	if name of event-inventory contains "&0Library":
+		delete {library.timer.%player%}
+every 1 second:
+	if {library.reset-timer} exists:
+		if {library.reset-timer} <= 0:
+			set {library.reset-timer} to {@library-reset}
+			delete {library::*}
+		else:
+			remove 1 from {library.reset-timer}
+	else:
+		set {library.reset-timer} to {@library-reset}
