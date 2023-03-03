@@ -3,7 +3,7 @@ command /Documentation [<offline player>]:
 	trigger:
 		if arg-1 is set:
 			send ""
-			send "&7DOCUMENTATION LOADING..."
+			send "&7DOCUMENTATION LOADING...."
 			send ""
 			wait 5 ticks
 			send "%{%arg-1's uuid%_teamdienst}% &l<- Teamdienst (Boolean)"
