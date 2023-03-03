@@ -1,3 +1,4 @@
 on connect:
 	if {%player%_gesperrt} is true:
 		kick player because "&7Bitte warte einen Moment.. Du wurdest eben erst gesperrt!"
+		
