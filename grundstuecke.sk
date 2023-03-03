@@ -61,7 +61,7 @@ on right click on sign:
 command /rent1321342323n* [<text>]:
 	trigger:
 		if arg-1 is not set:
-			cancel event
+			stop
 		else:
 			execute console command "rg removeowner -w world -a %arg 1%"
 			remove {%arg 1%.gs.price} from {%UUID of player%.stuendlicheabrechnung.miete}
@@ -74,7 +74,7 @@ command /rent1321342323n* [<text>]:
 command /rent1321342323y* [<text>]:
 	trigger:
 		if arg-1 is not set:
-			cancel event
+			stop
 		else:
 			execute console command "rg removeowner -w world -a %arg 1%"
 			delete {%arg 1%.mitglieder::*}
@@ -87,7 +87,7 @@ command /rent1321342323y* [<text>]:
 command /rent1321342323 [<text>]:
 	trigger:
 		if arg-1 is not set:
-			cancel event
+			stop
 		else:
 			remove {%arg 1%.gs.price} from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 			add {%arg 1%.gs.price} to {%UUID of player%.stuendlicheabrechnung.miete}
@@ -97,7 +97,7 @@ command /rent1321342323 [<text>]:
 command /sell1321342323n* [<text>]:
 	trigger:
 		if arg-1 is not set:
-			cancel event
+			stop
 		else:
 			delete {%arg 1%.gs.owner}
 			execute console command "rg removeowner -w world -a %arg 1%"
@@ -107,7 +107,7 @@ command /sell1321342323n* [<text>]:
 command /sell1321342323y* [<text>]:
 	trigger:
 		if arg-1 is not set:
-			cancel event
+			stop
 		else:
 			delete {%arg 1%.gs.owner}
 			execute console command "rg removeowner -w world -a %arg 1%"
@@ -117,7 +117,7 @@ command /sell1321342323y* [<text>]:
 command /sell1321342323 [<text>]:
 	trigger:
 		if arg-1 is not set:
-			cancel event
+			stop
 		else:
 			add 150 to {%uuid of player%_exp}
 			execute console command "rg addowner -w world %{%arg 1%.gs.name}% %player%"
@@ -126,7 +126,7 @@ command /sell1321342323 [<text>]:
 
 command /baurechte:
 	trigger:
-		if %region at player%" does not contain "kau" or "mie":
+		if "%region at player%" does not contain "kau" or "mie":
 			send "&e&l➣  &4&l⚠ &c&l Du befindest dich auf keinem Grundstück!"
 			stop
 		set {_baurechteregion} to the first 7 characters of "%region at player%"
