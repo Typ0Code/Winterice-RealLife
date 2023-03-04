@@ -1,39 +1,57 @@
-command /loopalleorte:
+# Dieses Skript ist async geschrieben. Das bedeutet, es wird basierend auf mathematik, keinen Delay zwischen den Aktionen geben. Somit sind alle berechnungen in unter einem Tick möglich (schneller,als Minecraft es anzeigen kann).
+
+command /loopalleorte: #Zeigt alle Orte außer Bus, Zug, Bankautomaten und tankstellen an
 	trigger:
 		wait 2 ticks
 		open chest with 6 rows named "&8 ➥ &0[Alle] &7Navigation" to player
-		set {zaehler.gui.alleorte.%player%} to 0
-		set {locations.names.list.sorted::*} to sorted {locations.names.list::*}
-		loop {locations.names.list.sorted::*}:
-			if "%loop-value%" contains "Bus" or "Zug" or "Bankautomat" or "Tankstelle":
-			else:
-				set {_distance_%loop-value%_%player%} to distance between player and {%{%loop-value%_Name}%_location}
-				set {_distance_%loop-value%_%player%} to round({_distance_%loop-value%_%player%})
-				set slot {zaehler.gui.alleorte.%player%} of player's current inventory to paper named "&7 %loop-value%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{_distance_%loop-value%_%player%}% Meter"
-				set {%{zaehler.gui.alleorte.%player%}%.location} to {%{%loop-value%_Name}%_location}
-				set {%{zaehler.gui.alleorte.%player%}%.name} to loop-value
-				add 1 to {zaehler.gui.alleorte.%player%}
-		delete {zaehler.gui.alleorte.%player%}
+		set {zaehler.gui.alleorte.%player%} to 0 # Deklariere Variable zu int 0
+		set {locations.names.list.sorted::*} to sorted {locations.names.list::*} #Sortiere alle orte nach Alphabet
+		loop {locations.names.list.sorted::*}: # Gehe alle Orte durch, welche existieren
+			if "%loop-value%" contains "Bus" or "Zug" or "Bankautomat" or "Tankstelle": #Überprüfe, ob die Orte jeweils mit Bus, Zug, Bankautomat oder Tankstelle anfangen. Wenn ja, keine weitere Aktion
+			else: #Wenn ja
+				set {_distance_%loop-value%_%player%} to distance between player and {%{%loop-value%_Name}%_location} #Berechne distanz zum jeweiligen Punkt
+				set {_distance_%loop-value%_%player%} to round({_distance_%loop-value%_%player%}) #Runde Distanz auf volle Blöcke
+				set slot {zaehler.gui.alleorte.%player%} of player's current inventory to paper named "&7 %loop-value%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{_distance_%loop-value%_%player%}% Meter" # Zeige den Punkt in der GUI an
+				set {%{zaehler.gui.alleorte.%player%}%.location} to {%{%loop-value%_Name}%_location} #Setze anhand der Position des Items die Koordinaten des Ortes. Hierfür wird die Zählvariable {zaehler.gui.alleorte.%player%} genutzt,
+				set {%{zaehler.gui.alleorte.%player%}%.name} to loop-value # Setze Namen des Ortes zum Item
+				add 1 to {zaehler.gui.alleorte.%player%} #Erhöhe Zählvariable um 1 und gehe wieder an anfang bis loop zuende ist
+		delete {zaehler.gui.alleorte.%player%} # wird ausgeführt, sobald loop zuende und gui fertig ist. Löscht die zählvariable
 on inventory click:
-	if inventory name of player's current inventory is "&8 ➥ &0[Alle] &7Navigation":
-		cancel event
-		set {locations.names.minimal.temp.list::*} to {locations.names.list::*}
+	if inventory name of player's current inventory is "&8 ➥ &0[Alle] &7Navigation": #Wenn Spieler auf ein Item der GUI Alleorte drückt
+		cancel event #lasse den Spieler das Item nicht rauß nehmen
+		set {locations.names.minimal.temp.list::*} to {locations.names.list::*} #hole alle orte, welche existieren
 		loop {locations.names.minimal.temp.list::*}:
 			if "%loop-value%" contains "Bus" or "Zug" or "Bankautomat" or "Tankstelle":
-				remove loop-value from {locations.names.minimal.temp.list::*}
-		loop {locations.names.minimal.temp.list::*}:
-			add loop-value to {locations.names.minimal.list::*}
-		loop {locations.names.minimal.list::*}:
-			set {_index.event.slot.allwarps} to Index of event-slot
-			add 1 to {_index.event.slot.allwarps}
-			if "%{_index.event.slot.allwarps}%" is loop-index:
-				set {_warp.name.%player%} to loop-value
-				set player's compass target to {%{_warp.name.%player%}%_location}
-				play sound "notification_success" with volume 1000 with pitch 1 at player for player
-				set {%player%.compass.ziel} to true
-				set {%player%.compass.ziel.location} to {%{_warp.name.%player%}%_location}
-				delete {locations.names.minimal.list::*}
-				stop loop
+				remove loop-value from {locations.names.minimal.temp.list::*} #entferne alle orte, welche bus,zug,bankkautomat oder Tankstelle im namen haben
+# Hinweis : Skript sortiert Listen nicht automatisch nach Entfernen neu. Hier ein Beispiel :
+#
+# ursprüngliche Liste :
+#     1           Bahnhof_1
+#     2           Marionettenplatz
+#     3           Bühne
+#
+# ENTFERNE ICH NUN BAHNHOF_1, wie es in diesem Beispiel passiert dann sieht die Liste nun so aus für Skript
+#
+#    2          Marionettenplatz
+#    3          Bühne
+#
+#    Der Index 1 fehlt also, da dieser ja rauß gelöscht wurde vorher. Somit beginnt die Liste erst beim index 2. Da index 1 jedoch trotzdem durchgeloopt wird, ist das Ergebnis dort "null"
+#     Da das die gui auseinander werfen würde, müssen wir eine neue Liste erstellen. Hierbei sortiert Skript dann automatisch werte, welche "null" sind heraus.
+
+
+		loop {locations.names.minimal.temp.list::*}: #Sortiere Liste neu, um den Index der einzelnen Objekte wieder richtig zu haben
+			add loop-value to {locations.names.minimal.list::*} #Füge alle Objekte zur neuen Liste hinzu.
+		loop {locations.names.minimal.list::*}: # Lade alle Daten aus der neuen Liste
+			set {_index.event.slot.allwarps} to Index of event-slot #Hole die ID des geklickten Items (SIEHE ZEILE 15 UND 16, wo wir Koordinaten und Namen zum Itemslot gesetzt haben)
+			add 1 to {_index.event.slot.allwarps} # Füge eins zum GUI Slot Hinzu, da GUIS mit 0, Lists jedoch mit 1 beginnen. 
+			if "%{_index.event.slot.allwarps}%" is loop-index: #Überprüfe nochmal, ob zu dem Item ein Ort gehört und der slot zum index passt
+				set {_warp.name.%player%} to loop-value # erstelle temporäre Variable mit dem Namen des Ortes
+				set player's compass target to {%{_warp.name.%player%}%_location} # Hole Koordinaten vom dem Ort und setze Kompassnadel richtung Ort
+				play sound "notification_success" with volume 1000 with pitch 1 at player for player #Spiele Sound
+				set {%player%.compass.ziel} to true # Trage ein, dass der Kompass nun ein Ziel hat
+				set {%player%.compass.ziel.location} to {%{_warp.name.%player%}%_location} #Setze Ziel des Kompasses zu den Koordinaten des Ortes
+				delete {locations.names.minimal.list::*}  # Lösche die Temporäre Liste
+				stop loop #Stop loop, um Leistung zu sparen
 command /settingsnavi:
 	trigger:
 		wait 5 ticks
@@ -249,7 +267,7 @@ every second:
 				set {distance.compass.%loop-player%} to distance between loop-player and {%loop-player%.compass.ziel.location}
 				set {distance.compass.%loop-player%} to round({distance.compass.%loop-player%})
 				set action bar of loop-player to " &0&l %{distance.compass.%loop-player%}% Meter"
-command /debugcompass <text>:
+command /debugcompass <text>: #Gibt Entfernung von Spieler zu Ort an 
 	trigger:
 		loop {locations.names.list::*}:
 			if "%loop-value%" contains arg-1:

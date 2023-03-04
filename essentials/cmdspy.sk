@@ -1,10 +1,10 @@
-options:
+options: #Optionen für Nachrichten und commands
 	prefix: &8[&bCmd&3Inspect&8]
 	msg_format: <##54C693>%player% - /%command%
 	permission: cmdinspect.cmdinspect
-	permission_msg: &cYou do not have permission to use this command!
-	blacklisted_commands: "blacklisted1" or "blacklisted2" or "blacklisted3"
-	log_cancelled_commands: false
+	permission_msg: &cYou do not have permission to use this command! 
+	blacklisted_commands: "blacklisted1" or "blacklisted2" or "blacklisted3" # Hier Befehle eingeben, welche das Skript ignorieren soll
+	log_cancelled_commands: false # Soll das Skript commands anzeigen, welche nicht funktioniert haben oder es nicht gibt?
 	permission_ignore: "cmdinspect.ignore"
 command /cmdinspect:
 	permission: {@permission}
@@ -17,11 +17,11 @@ command /cmdinspect:
 			send "{@prefix} &fDisabled command inspecting." to player 
 			delete {cmdinspect::%player%}
 on command:
-	player is online #So cmd blocks/console don't show up
-	player does not have permission {@permission_ignore}
-	command is not {@blacklisted_commands}
+	player is online #So zeigt das Skript keine Commandblöcke und Konsole an
+	player does not have permission {@permission_ignore} # So zeigt das Skript nur Spieler ohne Teamrechte an
+	command is not {@blacklisted_commands} # Hier Befehle eingeben, welche das Skript ignorieren soll
 	if {@log_cancelled_commands} is false:
-		if event is cancelled:
+		if event is cancelled: #Wenn der Command nicht exisitert oder der Spieler den Befehl nicht ausführen konnte
 			stop
 	if arguments is not set:
 		loop all players:

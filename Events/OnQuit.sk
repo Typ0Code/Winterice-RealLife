@@ -1,28 +1,25 @@
 on quit:
 	if {%player%.pvp.isin} is true:
-		broadcast "Der Spieler %player% ist während pvp geleavt."
-	delete {%player%.damagelog::*}
-	delete {%player%.add.player}
-	delete {%player%.remove.player}
-	loop {locations.names.list::*}:
-		delete {distance.bus.%player%.%loop-value%}
-	delete {%player%.compass.ziel}
-	delete {%player%.compass.ziel.location}
-	delete {%player%.naechster.punkt.name}
-	delete {%player%.naechster.punkt.bankautomat}
-	delete {%player%.naechster.punkt.bushaltestelle}
-	delete {%player%.naechster.punkt.name.bankautomat}
-	delete {%player%.naechster.punkt.name.bushaltestelle}
-	delete {%player%.naechster.punkt.name.zughaltestelle}
-	delete {%player%.naechster.punkt.zughaltestelle}
-	delete {%{%player%.naechster.punkt.name}%_location}
-	delete {%player%.compass.ziel}
-	delete {%player%.thrust}
-	delete {%player%_gesperrt}
-	delete {%player%.wartezeit}
-	delete {%uuid of player%_delay}
-	delete {distance.compass.%player%}
-	delete {%player's uuid%.waffenbesitzkarte}
-	delete {%player's uuid%.Leichtwaffenschein}
-	delete {%player's uuid%.Schwerwaffenschein}
-	delete {%player's uuid%.Kriegswaffenschein}
+		broadcast "Der Spieler %player% ist während pvp geleavt." #Gebe allen Teammitgliedern die Information, dass ein Spieler PVP-Quittet ist
+	delete {%player%.damagelog::*} #Resette Damagelog
+	delete {%player%.add.player} #Resette Chataufforderung, Spieler zum grundstück hinzuzufügen (grundstuecke.sk - 139 )
+	delete {%player%.remove.player} #Resette Chataufforderung, Spieler vom grundstück zu entfernen (grundstuecke.sk - 140 )
+	loop {locations.names.list::*}: #gehe alle Orte durch, welche im Kompass existieren
+		delete {distance.bus.%player%.%loop-value%} #Lösche die variablen, welche die Entfernung vom Spieler zu diesen orten speichern
+	delete {%player%.compass.ziel} # Lösche Ziel vom kompass (Koordinate)
+	delete {%player%.compass.ziel.location} # Lösche Ziel vom kompass (name des ortes)
+	delete {%player%.naechster.punkt.name} # Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%player%.naechster.punkt.bankautomat} #  Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%player%.naechster.punkt.bushaltestelle} #  Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%player%.naechster.punkt.name.bankautomat} # Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%player%.naechster.punkt.name.bushaltestelle} # Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%player%.naechster.punkt.name.zughaltestelle} # Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%player%.naechster.punkt.zughaltestelle} # Entferne den nächst gelegenen Ort vom Spieler aus Spielervariable
+	delete {%{%player%.naechster.punkt.name}%_location} # Entferne Koordinaten der nächsten Punkte aus Spielervariable
+	delete {%player%.wartezeit} # Lösche Buswartezeit
+	delete {%uuid of player%_delay} #Lösche alle Delays vom Spieler
+	delete {distance.compass.%player%} # Lösche Distanz vom Spieler zum Ort welcher im Kompass angegeben wurde
+	delete {%player's uuid%.waffenbesitzkarte} # Lösche Variable des waffenstores, welche in der Gui den String "ja" oder "nein" anzeigt
+	delete {%player's uuid%.Leichtwaffenschein} # Lösche Variable des waffenstores, welche in der Gui den String "ja" oder "nein" anzeigt
+	delete {%player's uuid%.Schwerwaffenschein} # Lösche Variable des waffenstores, welche in der Gui den String "ja" oder "nein" anzeigt
+	delete {%player's uuid%.Kriegswaffenschein} # Lösche Variable des waffenstores, welche in der Gui den String "ja" oder "nein" anzeigt

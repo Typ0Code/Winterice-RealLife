@@ -5,30 +5,30 @@ Variables:
 command /xrayalerts [<text>]:
 	permission: derewah.xrayalerts
 	trigger:
-		if arg is "diamond":
-			if {xalerts::diamond::*} contains player:
-				remove player from {xalerts::diamond::*}
-				send message "{@p} &aDiamond Ore Alerts &cdisabled"
-			else:
-				add player to {xalerts::diamond::*}
-				send message "{@p} &aDiamond Ore Alerts &2enabled"
-		else if arg is "netherite":
-			if {xalerts::netherite::*} contains player:
-				remove player from {xalerts::netherite::*}
-				send message "{@p} &aNetherite Ore Alerts &cdisabled"
-			else:
-				add player to {xalerts::netherite::*}
-				send message "{@p} &aNetherite Ore Alerts &2enabled"
+		if arg is "diamond": # Wenn befehl /xrayalerts diamond ist
+			if {xalerts::diamond::*} contains player: # Wenn Spieler bereits XRay aktiviert hat 
+				remove player from {xalerts::diamond::*} # Lösche Spieler aus der Liste der User, die XRay aktiviert haben
+				send message "{@p} &aDiamond Ore Alerts &cdisabled" # Gebe Nachricht aus an Spieler, welche mit dem oben festgelegten prefix (siehe Options Zeile 2) beginnt
+			else: # Ansonsten
+				add player to {xalerts::diamond::*} # Füge Spieler zur Liste hinzu
+				send message "{@p} &aDiamond Ore Alerts &2enabled" # Gebe Nachricht aus an Spieler, welche mit dem oben festgelegten prefix (siehe Options Zeile 2) beginnt
+		else if arg is "netherite": # Wenn Befehl /xrayalerts netherite ist
+			if {xalerts::netherite::*} contains player: # Wenn Spieler bereits XRay aktiviert hat
+				remove player from {xalerts::netherite::*} # Lösche Spieler aus der Liste der User, die XRay aktiviert haben
+				send message "{@p} &aNetherite Ore Alerts &cdisabled" # Gebe Nachricht aus an Spieler, welche mit dem oben festgelegten prefix (siehe Options Zeile 2) beginnt
+			else: # Ansonsten
+				add player to {xalerts::netherite::*} # Füge Spieler zur Liste hinzu
+				send message "{@p} &aNetherite Ore Alerts &2enabled" # Gebe Nachricht aus an Spieler, welche mit dem oben festgelegten prefix (siehe Options Zeile 2) beginnt
 		else if arg is "tp":
-			if {xalerts::breaks::position} is set:
-				teleport player to {xalerts::breaks::position}
+			if {xalerts::breaks::position} is set: # Wenn ein Block abgebaut wurde in der letzten Zeit
+				teleport player to {xalerts::breaks::position} # Teleportiere zum letzten abgebauten Block
 			else:
 				send message "{@p} &cNo avaiable position."
 		else if arg is "debug":
-			clear {xalerts::*}
-			send message "{@p} &aThe plugin has been reset."
+			clear {xalerts::*} # Lösche alle Alerts
+			send message "{@p} &aThe plugin has been reset." # # Gebe Nachricht aus an Spieler, welche mit dem oben festgelegten prefix (siehe Options Zeile 2) beginnt
 		else:
-			send message "{@p} &cCorrect usage: /xrayalerts <diamond|netherite|tp|debug>"
+			send message "{@p} &cCorrect usage: /xrayalerts <diamond|netherite|tp|debug>" # Wenn kein Argument gesetzt wurde und nur /xrayalerts eingegeben wurde
 on break of diamond ore:
 	if {xalerts::breaks::diamond::*} does not contain player:
 		add player to {xalerts::breaks::diamond::*}

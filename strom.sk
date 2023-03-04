@@ -1,9 +1,9 @@
 options:
 	DefaultBlock: cyan glazed terracotta  
-	Check: 8    
-	Permission: RSDeluxe
+	Check: 8    # Wie oft soll nach Schlater / Knopfdrücken gesucht werden? Max 20, MUSS teilbar durch 4 sein.                         20 = 1 Sekunde.
+	Permission: RS
 	PermMsg: &c▌ &aYou don't have permission to use that command!
-command /signal [<text>]:
+command /signal [<text>]: #Admincommand um alle Signale zu sehen und/oder Signale zu deaktivieren / reaktivieren
 	permission message: {@PermMsg}
 	permission: {@Permission}.signal
 	trigger:
@@ -21,34 +21,40 @@ command /signal [<text>]:
 				loop {signalblocks::*}:
 					set block at loop-value to {@DefaultBlock} if block at loop-value != {@DefaultBlock} 
 			send "&c▌ &aSet signals to &d%{signals}%!"
-every {@Check} ticks:
-	loop {signalblocks::*}:
-		if (redstone power of block at loop-value) > 0:
-			add 0.01 to {%{%location of loop-value%.owner}%.abrechnung.strom}
-			if {link::%loop-value%} is set:
-				if block at {link::%loop-value%} is {@DefaultBlock} or redstone block:
-					set block at {link::%loop-value%} to redstone block
-		else if (redstone power of block at loop-value) = 0:
-			if {link::%loop-value%} is set:
-				if block at {link::%loop-value%} is redstone block:
-					set block at {link::%loop-value%} to {@DefaultBlock}
+every {@Check} ticks: #Überprüfe nach aktiven Schaltern / Knöpfen
+	loop {signalblocks::*}: #Gehe alle Signalblöcke durch
+		if (redstone power of block at loop-value) > 0: #Wenn redstone signal an einem Block
+			add 0.01 to {%{%location of loop-value%.owner}%.abrechnung.strom} #Füge 0.01€ zur Stromrechnung zu (also alle 8 Ticks bei aktivem Signal)
+			if {link::%loop-value%} is set: #Wenn der block mit einem anderen verbunden wurde, also Stromleitung erstellt wurde
+				if block at {link::%loop-value%} is {@DefaultBlock} or redstone block: #Wenn dort entweder der @DefaultBlock oder der redstone block ist
+					set block at {link::%loop-value%} to redstone block # setze zu redstone block
+		else if (redstone power of block at loop-value) = 0: #Wenn redstone signal nicht mehr vorhanden ist
+			if {link::%loop-value%} is set: #Wenn der block mit einem anderen verbunden wurde, also Stromleitung erstellt wurde
+				if block at {link::%loop-value%} is redstone block: # Wenn der block ein redstone block an der position ist
+					set block at {link::%loop-value%} to {@DefaultBlock} #Setze zurück zu default block
 command /signalblocks:
 	permission: *
 	trigger:
 		loop {signalblocks::*}:
 			broadcast "%loop-value%"
+			
+			
+# Bei linksklick : Ausgabe des verbunden blocks
 on left click on {@DefaultBlock}:
 	player has permission "{@Permission}.interact"
-	tool = air
-	player is sneaking
-	cancel event
-	if {link::%location of event-block%} is set:
+	tool = air #Nur wenn der Spieler nichts in der hand hat
+	player is sneaking #Nur wenn der Spieler sneakt
+	cancel event #cancel abbau event
+	if {link::%location of event-block%} is set: #wenn block mit einem anderen verbunden ist
 		set {_l1} to {link::%location of event-block%}
 		send "%{link::%location of event-block%}%"
 		send formatted "&c▌ &aLink of specified signal block is currently set at <command:%scmd({_l1})%><tooltip:&dClick to teleport!>%sformat({_l1})%<reset>"
 		send "&c▌ &aShift right-click to set a new link."
 	else:
 		send "&c▌ &aNo link is currently set for the specified signal block!"
+		
+		
+# Bei rechtsklick : Verbinde Block mit einem anderen.
 on right click on {@DefaultBlock}:
 	player has permission "{@Permission}.interact"
 	tool = air
@@ -57,7 +63,7 @@ on right click on {@DefaultBlock}:
 		send "&c▌ &aSneak Right-Click on another signal block to set the new link!"
 		set {lastsignal::%player's uuid%} to location of event-block
 	else:
-		if {lastsignal::%player's uuid%} = location of event-block:
+		if {lastsignal::%player's uuid%} = location of event-block: #Überprüfe, ob der geklickte Block derselbe vom Anfang ist
 			send "&c▌ &aYou can't set a link for a signal block to itself."
 			stop
 		set {link::%{lastsignal::%player's uuid%}%} to location of event-block
@@ -66,22 +72,32 @@ on right click on {@DefaultBlock}:
 		send formatted "&c▌ &aSet the link for signal block at <command:%scmd({_l1})%><tooltip:&dClick to teleport!>%sformat({_l1})%<reset> &ato signal block at <command:%scmd({_l2})%><tooltip:&dClick to teleport!>%sformat({_l2})%<reset>"
 		clear {lastsignal::%player's uuid%}
 function scmd(l: location) :: text:
-	return "/signaltp %x-coordinate of {_l}% %y-coordinate of {_l}% %z-coordinate of {_l}% %world of {_l}%"
-command /signaltp [<number>] [<number>] [<number>] [<world>]:
+	return "/signaltp %x-coordinate of {_l}% %y-coordinate of {_l}% %z-coordinate of {_l}% %world of {_l}%" #Funktion, um Ort des verbundenen Signal-blocks auszugeben 
+command /signaltp [<number>] [<number>] [<number>] [<world>]: #Teleportiert zu einem angegebenen signalblock
 	permission: {@Permission}.signaltp
 	permission message: {@PermMsg}
 	trigger:
 		teleport player to location(arg-1, arg-2, arg-3, arg-4)
 function sformat(l: location) :: text:
-	return "&d[&b%x-coordinate of {_l}% %y-coordinate of {_l}% %z-coordinate of {_l}%&d]"
-on place of {@DefaultBlock}:
+	return "&d[&b%x-coordinate of {_l}% %y-coordinate of {_l}% %z-coordinate of {_l}%&d]" #Funktion für Blockkoordinaten
+	
+	
+#Wenn der @DefaultBlock gesetzt wird, füge ihn zur Liste hinzu
+on place of {@DefaultBlock}: 
 	player has permission "{@Permission}.interact"
 	add location of event-block to {signalblocks::*}
 	set {%location of event-block%.owner} to "%player's UUID%"
+	
+	
+# Wenn der @DefaultBlock abgebaut wird, lösche ihn aus der Liste
 on break of {@DefaultBlock}:
 	player has permission "{@Permission}.interact"
 	remove location of event-block from {signalblocks::*}
 	delete {%location of event-block%.owner}
+	
+	
+	
+#Hier folgen nun kleinere Systeme, damit Fackeln und Laternen unattraktiver werden. Teamler sind von dieser Regelung ausgenommen. Fackeln beispielsweise gehen nach 5 Minuten aus, können aber mit Feuerzeug erneut eingeschaltet werden. Gleiches bei Laternen
 on place of torch:
 	if {%player's uuid%_teamdienst} is true:
 		stop

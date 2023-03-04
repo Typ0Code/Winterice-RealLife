@@ -1,5 +1,6 @@
+# Diese Datei möglichst nicht anrühren. Es ist der Core mit Autoupdater und git.
 options:
-	Version: e2975d4 #DO NOT TOUCH THIS
+	Version: e2975d4 #DO NOT TOUCH THIS / Synchronieren mit dem Winterice Dev Server
 	server-type: RealLife-Server
 	networkName: Winterice
 	primaryColor: &7 #MUST INCLUDE & 
