@@ -1,0 +1,208 @@
+
+options:
+    perm: AGBlocks #What permission is used for the command?
+    message: &cNo. #Permission message for the command
+    movefactor: 0.05 #How much do each block move?
+
+on tab complete of "/AGBlocks":
+    set tab completions for position 1 to "cone" and "buildmode" and "removenear" and "removetarget"
+    if tab arg-1 = "cone":
+        set tab completions for position 2 to (all integers from 1 to 20)
+        set tab completions for position 3 to (all integers from 1 to 20)
+    if tab arg-1 = "buildmode":
+        set tab completions for position 2 to "true" and "false"
+
+command /AGBlocks [<text>] [<text>] [<text>]:
+    permission: {@perm}.command
+    permission message: {@message}
+    trigger:
+        if arg-1 is not set:
+            errorMsg(player, "cone")
+            errorMsg(player, "buildmode")
+            errorMsg(player, "removenear")
+            errorMsg(player, "removetarget")
+        if arg-1 = "removetarget":
+            set {_e} to target of player
+            if isRegistered({_e}) is true:
+                if {_e} is an armor stand:
+                    loop passengers of {_e}:
+                        abKill(loop-value)
+                    abKill({_e})
+                else:
+                    if vehicle of {_e} is set:
+                        set {_e2} to vehicle of {_e}
+                        loop passengers of {_e2}:
+                            abKill(loop-value)
+                        abKill({_e2})
+                    else:
+                        abKill({_e})
+        if arg-1 = "removenear":
+            if arg-2 is not set:
+                errorMsg(player, "removenear")
+                stop
+            set {_n} to 0
+            loop all entities in radius (arg-2 parsed as a number) of player:
+                if isRegistered(loop-value) is true:
+                    abKill(loop-value)
+                    add 1 to {_n}
+            set {_n} to {_n} / 3 if {_n} > 0
+            send "&cKilled &e%{_n}% &dblocks."
+
+        if arg-1 = "cone":
+            if arg-2 is not set:
+                errorMsg(player, "cone")
+                stop
+            if arg-3 is not set:
+                errorMsg(player, "cone")
+                stop
+            set {_n} to arg-2 parsed as a number
+            set {_loc1} to location {_n} north and {_n} east of block at player
+            set {_loc2} to location {_n} south and {_n} west of block at player
+            set {_loc3} to location (arg-2 parsed as a number) above {_loc2}
+            set {_n2} to arg-3 parsed as a number
+            buildHill({_loc1}, {_loc2}, {_n}, {_n2})
+            teleport player to location ({_n2} + 2) meters above player
+        if arg-1 = "buildmode":
+            if arg-2 is not set:
+                errorMsg(player, "buildmode")
+
+            if arg-2 = "true":
+                set {buildmode::%player%} to true
+            else if arg-2 = "false":
+                set {buildmode::%player%} to false
+            else:
+                errorMsg(player, "buildmode")
+
+function errorMsg(p: player, t: text):
+    if {_t} = "buildmode":
+        send "&c/AGBlocks buildmode &e(true/false)" to {_p}
+    else if {_t} = "cone":
+        send "&c/AGBlocks cone &e<width> &e<height>" to {_p}
+    else if {_t} = "removenear":
+        send "&c/AGBlocks removenear &e<radius>" to {_p}
+    else if {_t} = "removetarget":
+        send "&c/AGBlocks removetarget" to {_p}
+
+
+function register(e: entity):
+    add "{custom:{registered:""true""}}" to nbt of {_e}
+function unregister(e: entity):
+    add "{custom:{registered:""false""}}" to nbt of {_e}
+function isRegistered(e: entity) :: boolean:
+    set {_c} to nbt compound of {_e}
+    if (tag "custom;registered" of {_c}) = "true":
+        return true
+    else:
+        return false
+function wasRegistered(e: entity) :: boolean:
+    set {_c} to nbt compound of {_e}
+    if (tag "custom;registered" of {_c}) = "false":
+        return true
+    else:
+        return false
+
+
+
+function AStp(e: entity, l: location):
+    add "{Pos:[%x-loc of {_l}%d,%y-loc of {_l}%d,%z-loc of {_l}%d]}" to nbt of {_e}
+
+on right click on shulker:
+    {buildmode::%player%} is true
+    set {_e} to vehicle of clicked entity
+    if {_e} is set:
+        if player is not sneaking:
+            AStp({_e}, location {@movefactor} below {_e})
+            #set block 1.5 above {_e} to air
+        else:
+            AStp({_e}, location {@movefactor} above {_e})
+            #set block 1.5 above {_e} to air
+
+on death:
+    if isRegistered(victim) is true:
+        if victim is a shulker:
+            kill victim
+            cancel drops
+            stop
+        cancel event
+        abKill(victim)
+    if wasRegistered(victim) is true:
+        kill victim
+        cancel drops
+
+function abKill(e: entity):
+    force {_e} to dismount any vehicle 
+    unregister({_e})
+    set {_w} to world of {_e}
+    teleport {_e} to location(0, -50, 0, {_w})
+    kill {_e}
+
+on damage of shulker:
+    {buildmode::%attacker%} is true
+    set {_e} to vehicle of victim
+    if {_e} is set:
+        if attacker is not sneaking:
+            cancel event
+            set {_loc} to location {@movefactor} in the horizontal facing of attacker from {_e}
+            AStp({_e}, {_loc})
+        else:
+            cancel event
+            set {_loc} to location -{@movefactor} in the horizontal facing of attacker from {_e}
+            AStp({_e}, {_loc})
+
+on place:
+    if {buildmode::%player%} is true:
+        set {_type} to type of event-block
+        cancel event
+        sBlock(event-location, {_type})
+
+
+function buildHill(l: location, l2: location, n1: number, n2: number):
+    set {_c} to center({_l}, {_l2})
+    loop all blocks within {_l} and {_l2}:
+        set {_dist} to distance between location of loop-value and {_c}
+        if {_dist} < {_n1}:
+            set {_height} to ({_n1} - {_dist}) * 2
+            set {_loc} to location of loop-value
+            set y-coord of {_loc} to (y-coord of loop-value - 1 + ({_height} / (11 - ({_n2}))))
+            set {_type} to "grass block" parsed as a material
+            sBlock({_loc}, {_type}, true)
+        
+
+function center(l: location, l2: location) :: location:
+    set {_xdif} to (x-coord of {_l} - x-coord of {_l2})
+    set {_zdif} to (z-coord of {_l} - z-coord of {_l2})
+    set {_l2} to {_l}
+    set x-coord of {_l2} to (x-coord of {_l} - ({_xdif} / 2))
+    set z-coord of {_l2} to (z-coord of {_l} - ({_zdif} / 2))
+    return {_l2}
+
+
+
+function sBlock(l: location, type: material, collisions: boolean = true):
+    set {_w} to world of {_l}
+    set {_type} to raw name of {_type}
+    spawn falling block at {_l} with nbt "{NoGravity:1b,BlockState:{Name:""%{_type}%""},Time:1}"
+    register(last spawned entity)
+
+    set {_e} to last spawned entity
+    spawn armor stand 1.95 below {_l} with nbt "{Invisible:1b,NoGravity:1b,Invulnerable:1b}"
+    register(last spawned entity)
+
+    set {_ar} to last spawned armor stand
+    set block 1.5 above {_ar} to air
+    if {_collisions} is true:
+
+        spawn shulker at location(0, 0, 0, {_w}) with nbt "{NoAI:1b,Silent:1b,NoGravity:1b,Invulnerable:1b}"
+        register(last spawned entity)
+        apply potion of invisibility without any particles to last spawned entity for 10000 seconds
+        set {_e2} to last spawned entity
+        make {_e2} and {_e} ride {_ar}
+    else:
+        make {_e} ride {_ar}
+
+
+
+on spawn of falling block:
+    while event-entity is alive:
+        wait 10 seconds
+        add "{Time:1}" to nbt of event-entity
