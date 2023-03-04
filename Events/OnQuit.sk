@@ -22,11 +22,7 @@ on quit:
 	delete {%player%.wartezeit}
 	delete {%uuid of player%_delay}
 	delete {distance.compass.%player%}
-	if {%player's uuid%.waffenbesitzkarte} is not "&2Ja":
-		delete {%player's uuid%.waffenbesitzkarte}
-	if {%player's uuid%.Leichtwaffenschein} is not "&2Ja":
-		delete {%player's uuid%.Leichtwaffenschein}
-	if {%player's uuid%.Schwerwaffenschein} is not "&2Ja":
-		delete {%player's uuid%.Schwerwaffenschein}
-	if {%player's uuid%.Kriegswaffenschein} is not "&2Ja":
-		delete {%player's uuid%.Kriegswaffenschein}
+	delete {%player's uuid%.waffenbesitzkarte}
+	delete {%player's uuid%.Leichtwaffenschein}
+	delete {%player's uuid%.Schwerwaffenschein}
+	delete {%player's uuid%.Kriegswaffenschein}

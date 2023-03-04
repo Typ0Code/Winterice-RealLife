@@ -1,13 +1,33 @@
 command /Waffenscheinmachengui:
 	trigger:
-		if {%player's uuid%.waffenbesitzkarte} is not "&2Ja":
+		if {%player's uuid%.waffenscheinid} is not 1 or 2 or 3 or 4:
 			set {%player's uuid%.waffenbesitzkarte} to "&cNein"
-		if {%player's uuid%.Leichtwaffenschein} is not "&2Ja":
+		else:
+			set {%player's uuid%.waffenbesitzkarte} to "&2Ja"
+			
+			
+		if {%player's uuid%.waffenscheinid} is not 2 or 3 or 4:
 			set {%player's uuid%.Leichtwaffenschein} to "&cNein"
-		if {%player's uuid%.Schwerwaffenschein} is not "&2Ja":
+		else:
+			set {%player's uuid%.Leichtwaffenschein} to "&2Ja"
+			
+			
+		if {%player's uuid%.waffenscheinid} is not 3 or 4:
 			set {%player's uuid%.Schwerwaffenschein} to "&cNein"
-		if {%player's uuid%.Kriegswaffenschein} is not "&2Ja":
+		else:
+			set {%player's uuid%.Schwerwaffenschein} to "&2Ja"
+			
+			
+		if {%player's uuid%.waffenscheinid} is not 4:
 			set {%player's uuid%.Kriegswaffenschein} to "&cNein"
+		else:
+			set {%player's uuid%.Kriegswaffenschein} to "&2Ja"
+			
+			
+		if {%player's uuid%.waffenscheinid} is not set or 0:
+			set {%player's uuid%.waffenscheinid} to 0
+			
+			
 		wait 2 ticks
 		open chest with 3 rows named "&8 ➥ &0[RATHAUS] &7Waffenschein" to player
 		format slot 0 of player with black glass pane named "" to be unstealable
@@ -41,9 +61,12 @@ command /Waffenscheinmachenlevel [<text>]:
 		if arg 1 is "1":
 			if {%player's uuid%_level} >= 5:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 4.999:
-					remove 4999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
-					send "&2✔ Du hast die Waffenbesitzkarte erfolgreich erworben!"
-					set {%player's uuid%.waffenbesitzkarte} to "&2Ja"
+					if {%player's uuid%.waffenscheinid} is not 1 or 2 or 3 or 4:
+						remove 4999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+						send "&2✔ Du hast die Waffenbesitzkarte erfolgreich erworben!"
+						set {%player's uuid%.waffenscheinid} to 1,
+					else:
+						send "&e➣  &4⚠ &6Du hast diesen bereits"
 				else:
 					send "&e➣  &4⚠ &6Nicht genug Geld"
 			else:
@@ -52,12 +75,12 @@ command /Waffenscheinmachenlevel [<text>]:
 		if arg 1 is "2":
 			if {%player's uuid%_level} >= 10:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 9.999:
-					if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+					if {%player's uuid%.waffenscheinid} is not 0 or 2 or 3 or 4:
 						remove 9999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 						send "&2✔ Du hast den Leichtwaffenschein erfolgreich erworben!"
-						set {%player's uuid%.Leichtwaffenschein} to "&2Ja"
+						set {%player's uuid%.waffenscheinid} to 2
 					else:
-						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine oder hast diesen bereits"
 				else:
 					send "&e➣  &4⚠ &6Nicht genug Geld"
 					stop
@@ -67,15 +90,12 @@ command /Waffenscheinmachenlevel [<text>]:
 		if arg 1 is "3":
 			if {%player's uuid%_level} >= 15:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 17.999:
-					if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
-						if {%player's uuid%.Leichtwaffenschein} is "&2Ja":
-							remove 17999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
-							send "&2✔ Du hast den Schwerwaffenschein erfolgreich erworben!"
-							set {%player's uuid%.Schwerwaffenschein} to "&2Ja"
-						else:	
-							send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+					if {%player's uuid%.waffenscheinid} is not 0 or 1 or 3 or 4:
+						remove 17999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+						send "&2✔ Du hast den Schwerwaffenschein erfolgreich erworben!"
+						set {%player's uuid%.waffenscheinid} to 3
 					else:
-						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine oder hast diesen bereits"
 						stop
 				else:
 					send "&e➣  &4⚠ &6Nicht genug Geld"
@@ -86,19 +106,12 @@ command /Waffenscheinmachenlevel [<text>]:
 		if arg 1 is "4":
 			if {%player's uuid%_level} >= 25:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 49.999:
-					if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
-						if {%player's uuid%.Leichtwaffenschein} is "&2Ja":
-							if {%player's uuid%.Schwerwaffenschein} is "&2Ja":
-								remove 49999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
-								send "&2✔ Du hast den &cKriegswaffenschein &2erfolgreich erworben!"
-								set {%player's uuid%.Kriegswaffenschein} to "&2Ja"
-							else:
-								send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
-						else:
-							send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
-							stop
+					if {%player's uuid%.waffenscheinid} is not 0 or 1 or 2 or 4:
+						remove 49999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
+						send "&2✔ Du hast den &cKriegswaffenschein &2erfolgreich erworben!"
+						set {%player's uuid%.waffenscheinid} to 4
 					else:
-						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine"
+						send "&e➣  &4⚠ &6Du hast nicht alle vorherigen Waffenscheine oder hast diesen bereits"
 						stop
 				else:
 					send "&e➣  &4⚠ &6Nicht genug Geld"
@@ -112,6 +125,7 @@ command /resetwaffenscheine:
 		delete {%player's uuid%.Leichtwaffenschein}
 		delete {%player's uuid%.Schwerwaffenschein}
 		delete {%player's uuid%.Kriegswaffenschein}
+		set {%player's uuid%.waffenscheinid} to 0
 command /Waffenladen1:
 	trigger:
 		wait 5 ticks
@@ -161,7 +175,7 @@ command /Waffekaufengunstore [<text>]:
 		if arg 1 is not set:
 			stop
 		if arg 1 is "1":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2990:
 					remove 2990 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -171,7 +185,7 @@ command /Waffekaufengunstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
 		if arg 1 is "2":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2800:
 					remove 2800 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -181,7 +195,7 @@ command /Waffekaufengunstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
 		if arg 1 is "3":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 1249:
 					remove 1249 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -191,7 +205,7 @@ command /Waffekaufengunstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
 		if arg 1 is "4":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2920:
 					remove 2920 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -201,7 +215,7 @@ command /Waffekaufengunstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
 		if arg 1 is "5":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 529:
 					remove 529 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -211,7 +225,7 @@ command /Waffekaufengunstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
 		if arg 1 is "6":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 1749:
 					remove 1749 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -221,7 +235,7 @@ command /Waffekaufengunstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
 		if arg 1 is "7":
-			if {%player's uuid%.waffenbesitzkarte} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 1 or 2 or 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2350:
 					remove 2350 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -274,7 +288,7 @@ command /Waffekaufenmpstore [<text>]:
 		if arg 1 is not set:
 			stop
 		if arg 1 is "1":
-			if {%player's uuid%.Schwerwaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 4499:
 					remove 4499 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -284,7 +298,7 @@ command /Waffekaufenmpstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
 		if arg 1 is "2":
-			if {%player's uuid%.Schwerwaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 3 or 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 2800:
 					remove 2800 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -338,7 +352,7 @@ command /Waffekaufengewehrestore [<text>]:
 		if arg 1 is not set:
 			stop
 		if arg 1 is "1":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 8686:
 					remove 8686 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -348,7 +362,7 @@ command /Waffekaufengewehrestore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
 		if arg 1 is "2":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 7020:
 					remove 7020 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -358,7 +372,7 @@ command /Waffekaufengewehrestore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
 		if arg 1 is "3":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 10395:
 					remove 10395 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -411,7 +425,7 @@ command /Waffekaufenschrotflintenstore [<text>]:
 		if arg 1 is not set:
 			stop
 		if arg 1 is "1":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 7200:
 					remove 7200 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -421,7 +435,7 @@ command /Waffekaufenschrotflintenstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
 		if arg 1 is "2":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 9320:
 					remove 9320 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -475,7 +489,7 @@ command /Waffekaufensniperstore [<text>]:
 		if arg 1 is not set:
 			stop
 		if arg 1 is "1":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 14120:
 					remove 7200 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -485,7 +499,7 @@ command /Waffekaufensniperstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"
 		if arg 1 is "2":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 11080:
 					remove 11080 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
@@ -495,7 +509,7 @@ command /Waffekaufensniperstore [<text>]:
 			else:
 				send "&e➣  &4⚠ &6Du besitzt nicht den benötigten Waffenschein"	
 		if arg 1 is "3":
-			if {%player's uuid%.Kriegswaffenschein} is "&2Ja":
+			if {%player's uuid%.waffenscheinid} is 4:
 				if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} >= 9090:
 					remove 9090 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 					send "&2✔ Kauf erfolgreich"
