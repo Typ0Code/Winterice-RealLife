@@ -74,8 +74,8 @@ command /World [<text>] [<text>] [<text>] [<text>] [<text>] [<text>] [<text>]:
     aliases: Winterice:world, Winterice:w, wl
     permission: {@permission}
     trigger:
-    	if arg-1 is not set:
-    		helpMsg(player)
+        if arg-1 is not set:
+            helpMsg(player)
         if arg-1 = "seed":
             if arg-2 is set:
                 send formatted "&6Seed of world &c%arg-2%&6: <suggest command:%seed of world(arg-2)%>&b%seed of world(arg-2)% &e(click to paste)"
