@@ -1,0 +1,270 @@
+options:
+    permission: skworld.use
+
+on load:
+    send " %nl%&cLoaded &6Winterice world-tools&c!%nl%  " to console
+
+on tab complete of "/w" or "/World" or "/Winterice:w" or "/Winterice:world":
+    set tab completions for position 1 to "create" and "list" and "delete" and "teleport" and "tp" and "del" and "help" and "load" and "unload" and "spawn" and "setspawn" and "clone" and "seed"
+    if tab arg-1 = "clone":
+        set tab completions for position 2 to all worlds
+        set tab completions for position 3 to "<new world name>"
+    if tab arg-1 = "delete" or "del" or "tp" or "teleport" or "load" or "unload" or "seed":
+        set tab completions for position 2 to all worlds
+    if tab arg-1 = "create":
+        set tab completions for position 3 to "e:" and "n:" and "s:" and "g:" and "h:" and "w:" 
+        set tab completions for position 4 to "e:" and "n:" and "s:" and "g:" and "h:" and "w:" 
+        set tab completions for position 5 to "e:" and "n:" and "s:" and "g:" and "h:" and "w:" 
+        set tab completions for position 6 to "e:" and "n:" and "s:" and "g:" and "h:" and "w:" 
+         
+    if tab arg-3 = "e:":
+        set tab completions for position 3 to "e:overworld" and "e:end" and "e:nether"
+    if tab arg-3 = "g:":
+        set tab completions for position 3 to "g:<generator_name>"
+    if tab arg-3 = "s:":
+        set tab completions for position 3 to "s:<seed_string>"
+    if tab arg-3 = "n:":
+        set tab completions for position 3 to "n:<world_name>"
+    if tab arg-3 = "h:":
+        set tab completions for position 3 to "h:true" and "h:false"
+    if tab arg-3 = "w:":
+        set tab completions for position 3 to "w:amplified" and "w:normal" and "w:flat" and "w:large_biomes" and "w:legacy" and "w:buffet"
+
+    if tab arg-6 = "e:":
+        set tab completions for position 6 to "e:overworld" and "e:end" and "e:nether"
+    if tab arg-6 = "g:":
+        set tab completions for position 6 to "g:<generator_name>"
+    if tab arg-6 = "s:":
+        set tab completions for position 6 to "s:<seed_string>"
+    if tab arg-6 = "n:":
+        set tab completions for position 6 to "n:<world_name>"
+    if tab arg-6 = "h:":
+        set tab completions for position 6 to "h:true" and "h:false"
+    if tab arg-6 = "w:":
+        set tab completions for position 6 to "w:amplified" and "w:normal" and "w:flat" and "w:large_biomes" and "w:legacy" and "w:buffet"
+
+    if tab arg-4 = "e:":
+        set tab completions for position 4 to "e:overworld" and "e:end" and "e:nether"
+    if tab arg-4 = "g:":
+        set tab completions for position 4 to "g:<generator_name>"
+    if tab arg-4 = "s:":
+        set tab completions for position 4 to "s:<seed_string>"
+    if tab arg-4 = "n:":
+        set tab completions for position 4 to "n:<world_name>"
+    if tab arg-4 = "h:":
+        set tab completions for position 4 to "h:true" and "h:false"
+    if tab arg-4 = "w:":
+        set tab completions for position 4 to "w:amplified" and "w:normal" and "w:flat" and "w:large_biomes" and "w:legacy" and "w:buffet"
+
+    if tab arg-5 = "e:":
+        set tab completions for position 5 to "e:overworld" and "e:end" and "e:nether"
+    if tab arg-5 = "g:":
+        set tab completions for position 5 to "g:<generator_name>"
+    if tab arg-5 = "s:":
+        set tab completions for position 5 to "s:<seed_string>"
+    if tab arg-5 = "n:":
+        set tab completions for position 5 to "n:<world_name>"
+    if tab arg-5 = "h:":
+        set tab completions for position 5 to "h:true" and "h:false"
+    if tab arg-5 = "w:":
+        set tab completions for position 5 to "w:amplified" and "w:normal" and "w:flat" and "w:large_biomes" and "w:legacy" and "w:buffet"
+
+    
+command /World [<text>] [<text>] [<text>] [<text>] [<text>] [<text>] [<text>]:
+    aliases: Winterice:world, Winterice:w, w
+    permission: {@permission}
+    trigger:
+        if arg-1 = "seed":
+            if arg-2 is set:
+                send formatted "&6Seed of world &c%arg-2%&6: <suggest command:%seed of world(arg-2)%>&b%seed of world(arg-2)% &e(click to paste)"
+            else:
+                send "&6Specify a world!"
+        if arg-1 = "reload":
+            reload script "worldsystem"
+        if arg-1 = "clone":
+            send "&6You need to specify &a1. &cthe world to copy &6and &a2. &cthe target!" if arg-2 is not set
+            stop if arg-2 is not set
+            send "&6You need to specify &a1. &cthe world to copy &6and &a2. &cthe target!" if arg-3 is not set
+            stop if arg-3 is not set
+            set {_w} to a world creator named arg-3 to clone world(arg-2) 
+            load world from creator {_w}
+            send "&6Successfully cloned world &c%arg-2% &6into world &c%arg-3%&6!"
+        if arg-1 = "setspawn":
+            set the spawn of player's world to player's location
+            send "&6Set the new &cspawnpoint&6!"
+        if arg-1 = "spawn":
+            send "&6Teleporting to the &cspawn&6!"
+            teleport player to the spawn of player's world
+        if arg-1 = "tp" or "teleport":
+            if world(arg-2) does not exist:
+                send "&6This world &cdoesn't &6exist!"
+                stop
+            send "&6Teleporting to world &c%arg-2%&6!"
+            teleport player to spawn of world(arg-2)
+        if arg-1 = "list":
+            send " %nl%       &bList of worlds &c(click to tp!)&e:%nl% "
+            loop all worlds:
+                send formatted " &d&l- <command:/w tp %loop-value%><tooltip:&Click to tp!>&a%loop-value%" to player
+            send " "
+        if arg-1 = "delete" or "del":
+            if arg-2 is set:
+                if world(arg-2) does not exist:
+                    send "&6This world &cdoesn't &6exist!"
+                    stop
+                delete world file for arg-2
+                send "&6Deleted world &c%arg-2%&6! &7(keep in mind that non-custom worlds cannot be fully deleted through SkBee!)"
+            else:
+                send "&6Specify a world!"
+        if arg-1 = "help":
+            helpMsg(player)
+        if arg-1 = "load":
+            if arg-2 is set:
+                load world arg-2
+                send "&6Successfully loaded world &c%arg-2%&6!"
+        if arg-1 = "unload":
+            if arg-2 is set:
+                if world(arg-2) does not exist:
+                    send "&6This world &cdoesn't &6exist!"
+                    stop
+                unload world(arg-2) and save
+                send "&6Successfully unloaded world &c%arg-2%&6!"
+            else:
+                send "&6You have to &cspecify &6a world!"
+        if arg-1 = "create":
+            if arg-2 is set:
+                set {_w} to a world creator named arg-2
+
+                loop 4 times:
+                    set {_n} to loop-value
+                    if {_n} = 1:
+                        #exit 1 loop if arg-3 is not set
+                        set {_type::%loop-value%} to getArgs(arg-3)
+                        set {_arg} to arg-3
+                    if {_n} = 2:
+                        #exit 1 loop if arg-4 is not set
+                        set {_type::%loop-value%} to getArgs(arg-4)
+                        set {_arg} to arg-4
+
+                    if {_n} = 3:
+                        #exit 1 loop if arg-5 is not set
+                        set {_type::%loop-value%} to getArgs(arg-5)
+                        set {_arg} to arg-5
+                    if {_n} = 4:
+                        #exit 1 loop if arg-6 is not set
+                        set {_type::%loop-value%} to getArgs(arg-6)
+                        set {_arg} to arg-6
+                    if {_type::%loop-value%} = "environment":
+                        replace all "e:" and " " in {_arg} with ""
+                        set {_arg} to {_arg} parsed as an environment
+                        set environment of {_w} to {_arg}
+                    else if {_type::%loop-value%} = "hardcore":
+                        replace all "h:" and " " in {_arg} with ""
+                        set {_arg} to {_arg} parsed as a boolean
+                        set is hardcore of {_w} to {_arg}
+                    else if {_type::%loop-value%} = "seed":
+                        replace all "s:" and " " in {_arg} with ""
+                        set {_arg} to {_arg} parsed as a number
+                        set world seed of {_w} to {_arg}
+                    else if {_type::%loop-value%} = "generator":
+                        replace all "g:" in {_arg} with ""
+                        set generator of {_w} to "%{_arg}%"
+
+                    else if {_type::%loop-value%} = "world type":
+                        replace all "w:" and " " in {_arg} with ""
+                        set {_arg} to {_arg} parsed as a world type
+                        set world type of {_w} to {_arg}
+                send "&6Creating world &c%arg-2%&6..."
+                load world from creator {_w}
+                send "&dComplete!"
+            else:
+                send "&6Specify a name!"
+
+function getArgs(t: text) :: text:
+    set {_n::*} to split {_t} at ""
+    if {_n::1} = "e":
+        if {_n::2} = ":":
+            return "environment"
+    if {_n::1} = "s":
+        if {_n::2} = ":":
+            return "seed"
+    
+    #if {_n::1} = "h":
+        #if {_n::2} = ":":
+            #return "hardcore"
+    if {_n::1} = "g":
+        if {_n::2} = ":":
+            return "generator"
+    if {_n::1} = "w":
+        if {_n::2} = ":":
+            return "world type"
+
+function helpMsg(p: player):
+    send "&c-----------------------------%nl%&5Winterice &cWorld Management System%nl% %nl%&aCommands &2(you can click on them!)&a:" to {_p}
+    send formatted "<tooltip:&5The help command.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World help> &b/w &ehelp" to {_p}
+    send formatted "<tooltip:&5Deleting a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World delete> &b/w &edelete &4(world)" to {_p}
+    send formatted "<tooltip:&5Teleporting to a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World teleport> &b/w &eteleport &4(world)" to {_p}
+    send formatted "<tooltip:&5Setting spawn.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World setspawn> &b/w &esetspawn" to {_p}
+    send formatted "<tooltip:&5Teleporting to a world's spawn.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World spawn> &b/w &espawn" to {_p}
+    send formatted "<tooltip:&5Loading a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World load> &b/w &eload &c(world)" to {_p}
+    send formatted "<tooltip:&5Unloading a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World unload> &b/w &eunload &c(world)" to {_p}
+    send formatted "<tooltip:&5Cloning a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World clone> &b/w &eclone &c(world) &2(target)" to {_p}
+    send formatted "<tooltip:&5Creating a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World create> &b/w &ecreate &4(world name) &f[FLAGS]" to {_p}
+    send "&6- &fFlags: &bg: &a(generator), &bs:&a(seed)&b, &bw:&a(world type)&b, &be:&a(environment)" to {_p}
+    send " %nl%&c-----------------------------" to {_p}
+
+
+function resetWorld(t: text):
+    delete world file for "%{_t}%"
+    set {_w} to a world creator named "%{_t}%" to clone world("%{_t}%-clone")
+    load world from creator {_w}
+function saveWorld(t: text):
+    delete world file for "%{_t}%-clone"
+    set {_w} to a world creator named "%{_t}%-clone" to clone world("%{_t}%")
+    load world from creator {_w}
+function seperateWorld(t: text):
+    set {world::%{_t}%::seperate} to true
+    loop all players in world({_t}):
+        loop all players where [input's world != loop-player's world]:
+            hide loop-player-2 from loop-player-1
+            hide loop-player-1 from loop-player-2
+function rejoinWorld(t: text):
+    set {world::%{_t}%::seperate} to false
+    loop all players in world({_t}):
+        loop all players where [input's world != loop-player's world]:
+            reveal loop-player-2 to loop-player-1 if {world::%loop-player-2's world%::seperate} is not true
+            reveal loop-player-1 to loop-player-2 if {world::%loop-player-2's world%::seperate} is not true
+        loop all players where [input's world = loop-player's world]:
+            reveal loop-player-2 to loop-player-1
+            reveal loop-player-1 to loop-player-2
+command /hideworld:
+    permission: world.hide
+    trigger:
+        seperateWorld("%player's world%")
+        send "&6seperated world!"
+command /revealworld:
+    permission: world.reveal
+    trigger:
+        rejoinWorld("%player's world%")
+        send "&6revealed world!"
+on world change:
+    wait 1 tick
+    if {world::%event-world%::seperate} is true:
+        loop all players in world event-world:
+            reveal loop-player to player
+            reveal player to loop-player
+        loop all players where [input's world != player's world]:
+            hide loop-player from player
+            hide player from loop-player
+    else:
+        loop all players where [{world::%input's world%::seperate} is true]:
+            hide player from loop-player if loop-player's world != player's world
+            hide loop-player from player if loop-player's world != player's world
+
+
+on chat:
+    if {world::%player's world%::seperate} is true:
+        loop all players where [input's world != player's world]:
+            remove loop-player from chat recipients
+    loop all players:
+        if {world::%loop-player's world%::seperate} is true:
+            remove loop-player from chat recipients if loop-player's world != player's world
