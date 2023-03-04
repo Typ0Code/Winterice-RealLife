@@ -4,7 +4,7 @@ options:
 on load:
     send " %nl%&cLoaded &6Winterice world-tools&c!%nl%  " to console
 
-on tab complete of "/w" or "/World" or "/Winterice:w" or "/Winterice:world":
+on tab complete of "/wl" or "/World" or "/Winterice:w" or "/Winterice:world":
     set tab completions for position 1 to "create" and "list" and "delete" and "teleport" and "tp" and "del" and "help" and "load" and "unload" and "spawn" and "setspawn" and "clone" and "seed"
     if tab arg-1 = "clone":
         set tab completions for position 2 to all worlds
@@ -71,9 +71,11 @@ on tab complete of "/w" or "/World" or "/Winterice:w" or "/Winterice:world":
 
     
 command /World [<text>] [<text>] [<text>] [<text>] [<text>] [<text>] [<text>]:
-    aliases: Winterice:world, Winterice:w, w
+    aliases: Winterice:world, Winterice:w, wl
     permission: {@permission}
     trigger:
+    	if arg-1 is not set:
+    		helpMsg(player)
         if arg-1 = "seed":
             if arg-2 is set:
                 send formatted "&6Seed of world &c%arg-2%&6: <suggest command:%seed of world(arg-2)%>&b%seed of world(arg-2)% &e(click to paste)"
@@ -200,15 +202,15 @@ function getArgs(t: text) :: text:
 
 function helpMsg(p: player):
     send "&c-----------------------------%nl%&5Winterice &cWorld Management System%nl% %nl%&aCommands &2(you can click on them!)&a:" to {_p}
-    send formatted "<tooltip:&5The help command.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World help> &b/w &ehelp" to {_p}
-    send formatted "<tooltip:&5Deleting a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World delete> &b/w &edelete &4(world)" to {_p}
-    send formatted "<tooltip:&5Teleporting to a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World teleport> &b/w &eteleport &4(world)" to {_p}
-    send formatted "<tooltip:&5Setting spawn.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World setspawn> &b/w &esetspawn" to {_p}
-    send formatted "<tooltip:&5Teleporting to a world's spawn.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World spawn> &b/w &espawn" to {_p}
-    send formatted "<tooltip:&5Loading a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World load> &b/w &eload &c(world)" to {_p}
-    send formatted "<tooltip:&5Unloading a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World unload> &b/w &eunload &c(world)" to {_p}
-    send formatted "<tooltip:&5Cloning a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World clone> &b/w &eclone &c(world) &2(target)" to {_p}
-    send formatted "<tooltip:&5Creating a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World create> &b/w &ecreate &4(world name) &f[FLAGS]" to {_p}
+    send formatted "<tooltip:&5The help command.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World help> &b/wl &ehelp" to {_p}
+    send formatted "<tooltip:&5Deleting a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World delete> &b/wl &edelete &4(world)" to {_p}
+    send formatted "<tooltip:&5Teleporting to a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World teleport> &b/wl &eteleport &4(world)" to {_p}
+    send formatted "<tooltip:&5Setting spawn.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World setspawn> &b/wl &esetspawn" to {_p}
+    send formatted "<tooltip:&5Teleporting to a world's spawn.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World spawn> &b/wl &espawn" to {_p}
+    send formatted "<tooltip:&5Loading a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World load> &b/wl &eload &c(world)" to {_p}
+    send formatted "<tooltip:&5Unloading a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World unload> &b/wl &eunload &c(world)" to {_p}
+    send formatted "<tooltip:&5Cloning a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World clone> &b/wl &eclone &c(world) &2(target)" to {_p}
+    send formatted "<tooltip:&5Creating a world.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/World create> &b/wl &ecreate &4(world name) &f[FLAGS]" to {_p}
     send "&6- &fFlags: &bg: &a(generator), &bs:&a(seed)&b, &bw:&a(world type)&b, &be:&a(environment)" to {_p}
     send " %nl%&c-----------------------------" to {_p}
 
