@@ -1,0 +1,732 @@
+# - Welcome! My name is Death_Source (Death_Source#1925 on Discord, Deathofsource@gmail.com is my email).
+# - If you have any bug reports, send me a message, or report it on the spigot!
+# - Be creative! There are sooo many possibilities with this and I haven't even begun to scratch that list.
+# - Feel free to use various functions for other purposes- but some credit is always appreciated :)
+# - Special Acknowledgements: Skillsbo and oToght for their help with some vector-related functions! 
+
+# [IMPORTANT]
+# Join this discord: https://discord.gg/Gcy83fUPhW << To get support, share your models, or see my other resources!
+
+
+options:
+    prefix: &c[&7SkCAD&c]
+    doParticles: true #Show Particle contours when saving or rotating?
+    importmode: off #Are you importing something?
+
+on script load:
+    if {@importmode} = on:
+        set {import} to ""
+        #Copy and paste your SkCad code inside there, and remember to have importmode on!
+    
+
+variables:
+    {currentmodel} = "Untitled"
+
+
+on tab complete of "/skcad":
+    set tab completions for position 1 to "load" and "ver" and "removetarget" and "removemodel" and "removemodelvars" and "deletesoftware" and "resetblocks" and "resetmodels" and "tp" and "settings" and "clearmodels" and "configure" and "list" and "removenear" and "import" and "export"
+    set tab completions for position 2 to {Sklist::*} if tab arg-1 = "load" or "remove" or "export" or "removemodelvars" or "removemodel" or "settings"
+    set tab completions for position 2 to "1.18+" and "1.17-" if tab arg-1 = "configure"
+
+#
+#FUNCTIONS
+#
+
+function software(p: player):
+    clear {_p}'s inventory
+    set {_p}'s gamemode to creative
+    set slot 0 of {_p} to armor stand named "&c&lSave Model" with lore "&7Right-Click to save!" and "&bSkCAD Tool" with all flags hidden
+    set slot 1 of {_p} to armor stand named "&c&lRotate &a(clockwise)" with lore "&7Right-Click to rotate 90 degrees!" and "&bSkCAD Tool" with all flags hidden
+    set slot 2 of {_p} to armor stand named "&c&lMove model" with lore "&7Right-Click to move in your horizontal facing!" and "&bSkCAD Tool" with all flags hidden
+    set slot 7 of {_p} to armor stand named "&c&lOther settings" with lore "&7Hold in hand to open settings menu!" and "&bSkCAD Tool" with all flags hidden
+    set slot 8 of {_p} to paper named "&c&lName of model: &e%{currentmodel}%" with lore "&7Right-Click to rename your model!" and "&bSkCAD Tool" with all flags hidden
+      
+function rodParticle(loc: location):
+    make 1 of end_rod at {_loc} with offset vector(0, 0, 0) with extra 0
+
+function saveParticles(p: player):
+    loop all blocks within {asb1} and {asb2}: #where ["%block at location of input%" does not contain "air"]:
+        loop-block is not air
+        set {_num} to size of {_blist::*} + 1
+        set {_blist::%{_num}%} to location of loop-block
+    set {_return::*} to getCorners({_blist::*}, 2)
+    loop 2 times:
+        stop if metadata "savetool" of {_p} is false
+        loop 7 times:
+            stop if metadata "savetool" of {_p} is false
+            loop all blocks between {_return::%loop-value-2%} and {_return::%loop-value-2 + 1%}:
+                set {_loc} to location of loop-block
+                rodParticle({_loc})
+                wait 1 tick
+        loop all blocks between {_return::2} and {_return::7}:
+            set {_loc} to location of loop-block
+            rodParticle({_loc})
+            wait 1 tick
+        loop all blocks between {_return::3} and {_return::6}:
+            set {_loc} to location of loop-block
+            rodParticle({_loc})
+            wait 1 tick
+        loop all blocks between {_return::4} and {_return::5}:
+            set {_loc} to location of loop-block
+            rodParticle({_loc})
+            wait 1 tick
+        loop all blocks between {_return::1} and {_return::8}:
+            set {_loc} to location of loop-block
+            rodParticle({_loc})
+            wait 1 tick
+        loop all blocks between {_return::4} and {_return::1}:
+            set {_loc} to location of loop-block
+            rodParticle({_loc})
+            wait 1 tick
+        loop all blocks between {_return::5} and {_return::8}:
+            set {_loc} to location of loop-block
+            rodParticle({_loc})
+            wait 1 tick
+        wait 1 ticks
+        stop if metadata "savetool" of {_p} is false
+        set {particledone} to true if loop-value-1 = 1
+
+
+function spawnCollision(l: location, n: number):
+    spawn slime 1 above {_l} with nbt nbt compound of "{Size:0,NoAI:1b,Invulnerable:1b}" 
+    apply potion of invisibility of tier 2 without any particles to last spawned entity for 10000 seconds
+
+
+
+function rotateSide(e: entity, n: number):
+    set {_nbt::*} to tag "Pose;Head" of nbt compound of {_e}
+    set {_nbt::1} to 0 if {_nbt::1} is not set
+    set {_nbt::2} to 0 if {_nbt::2} is not set
+    set {_nbt::3} to {_e}'s yaw if {_nbt::3} is not set
+    set {_x} to {_nbt::3}
+    add {_n} to {_x}
+    {_x} > 360:
+        set {_x} to 1
+    {_x} < 0:
+        set {_x} to 359
+    set {_nbt} to "{Pose:{Head:[%{_nbt::1}%f,%{_nbt::2}%f,%{_x}%f]}}"
+    add {_nbt} to nbt compound of {_e}
+
+function spawnBlock(l: location, m: material, name: text, f: text = "south"):
+    if {modelsize::%{_name}%} = 1 or 2:
+        set {_num} to yaw of {_l}
+        set {_times} to 135 if {_f} = "south"
+        set {_times} to 315 if {_f} = "north"
+        set {_times} to 225 if {_f} = "west"
+        set {_times} to 45 if {_f} = "east"
+        loop {_times} times:
+            add 1 to {_num}
+            set {_num} to 0 if {_num} = 360
+    if {modelsize::%{_name}%} = 1:
+        if {_f} = "south":
+            spawn armor stand at {_l} with nbt nbt compound of "{Small:1b,Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[90f,0f],Pose:{RightArm:[345f,%{_num}%f,0f]}}"
+        if {_f} = "west":
+            spawn armor stand at {_l} with nbt nbt compound of "{Small:1b,Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[180f,0f],Pose:{RightArm:[345f,%{_num}%f,0f]}}"
+        if {_f} = "north":
+            spawn armor stand at {_l} with nbt nbt compound of "{Small:1b,Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[270f,0f],Pose:{RightArm:[345f,%{_num}%f,0f]}}"
+        if {_f} = "east":
+            spawn armor stand at {_l} with nbt nbt compound of "{Small:1b,Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[0f,0f],Pose:{RightArm:[345f,%{_num}%f,0f]}}"
+        set tool of last spawned entity to {_m}
+    if {modelsize::%{_name}%} = 2:
+        if {_f} = "south":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[90f,0f],Pose:{RightArm:[345f,%45 + (yaw of {_l})%f,0f]}}"
+        if {_f} = "west":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[180f,0f],Pose:{RightArm:[345f,%45 + (yaw of {_l})%f,0f]}}"
+        if {_f} = "north":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[270f,0f],Pose:{RightArm:[345f,%45 + (yaw of {_l})%f,0f]}}"
+        if {_f} = "east":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[0f,0f],Pose:{RightArm:[345f,%45 + (yaw of {_l})%f,0f]}}"
+        set tool of last spawned entity to {_m}
+
+    if {modelsize::%{_name}%} = 3:
+        if {_f} = "south":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Small:1b,Pose:{Head:[%pitch of {_l}%f,90f,0f]}}"
+        if {_f} = "west":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Small:1b,Pose:{Head:[%pitch of {_l}%f,180f,0f]}}" 
+        if {_f} = "north":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Small:1b,Pose:{Head:[%pitch of {_l}%f,270,0f]}}"
+        if {_f} = "east":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Small:1b,Pose:{Head:[%pitch of {_l}%f,0f,0f]}}"
+        set helmet slot of last spawned entity to {_m}
+    if {modelsize::%{_name}%} = 4:
+        spawnCollision({_l}, 1) if {docollisions::%{_name}%} is true
+        if {_f} = "south":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Pose:{Head:[%pitch of {_l}%f,90f,0f]}}"
+        if {_f} = "west":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Pose:{Head:[%pitch of {_l}%f,180f,0f]}}" 
+        if {_f} = "north":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Pose:{Head:[%pitch of {_l}%f,270,0f]}}"
+        if {_f} = "east":
+            spawn armor stand at {_l} with nbt nbt compound of "{Invisible:1b,NoGravity:1b,Invulnerable:1b,Pose:{Head:[%pitch of {_l}%f,0f,0f]}}"
+        set helmet slot of last spawned entity to {_m}
+
+function skcadExport(p: player, t: text) :: string:
+    set {_export} to text component from "Click to copy code for export!"
+    set color format of {_export} to orange
+    set {_text} to "%{Skcad::%{_t}%::*}% || %indices of {Skcad::%{_t}%::*}% || %{Skcadfacing::%{_t}%::*}% || %{modelsize::%{_t}%}%"
+    replace all " and " in {_text} with ", "
+    set hover event of {_export} to a new hover event showing "&6Click to copy!"
+    set click event of {_export} to a new click event to copy {_text} to clipboard
+    send component {_export} to {_p}
+
+function skcadImport(p: player, name: text):
+    if {@importmode} = on:
+        set {_import} to {import}
+    else:
+        send "&6Import mode is off! Read the Spigot guide for more info." to {_p}
+        stop
+    set {_imports::*} to split {_import} by " || "
+    loop 4 times:
+        set {_imports::%loop-value%::*} to split {_imports::%loop-value%} by ", " 
+    loop {_imports::2::*}:
+        #set {_imports::2::%loop-index%} to loop-value parsed 
+        
+        set {Skcad::%{_name}%::%loop-value%} to ({_imports::1::%loop-index%} parsed as a itemtype)
+        if {_imports::3::%loop-index%} does not contain "none":
+            set {Skcadfacing::%{_name}%::%loop-value%} to ({_imports::3::%loop-index%}) 
+    set {modelsize::%{_name}%} to {_imports::4} parsed as a number
+    add {_name} to {Sklist::*}
+    broadcast "DONE"
+
+
+function loadASB(l: location, t: text, uuid: number):
+    set pitch of {_l} to 0
+    set {_l2} to {_l}
+    set {_waitnum} to 0
+    loop {Skcad::%{_t}%::*}:
+        set {_l} to {_l2}
+        set {_facing} to "%{Skcadfacing::%{_t}%::%loop-index%}%" if {Skcadfacing::%{_t}%::%loop-index%} is set
+
+
+        add 1 to {_waitnum}
+        stop if {skcadstop} is true
+        continue if loop-value is not set
+        clear {_dif::*}
+        set {_dif::*} to split loop-index at "_"
+
+        if {modelsize::%{_t}%} = 1:
+            set {_x} to (({_dif::1} parsed as a number) / 5.45)
+            set {_z} to (({_dif::2} parsed as a number) / 5.45)
+            set {_y} to (({_dif::3} parsed as a number) / 5.45)
+        if {modelsize::%{_t}%} = 2:
+            set {_l} to location 0.4 meters below {_l}
+            set {_x} to (({_dif::1} parsed as a number) / 2.85)
+            set {_z} to (({_dif::2} parsed as a number) / 2.85)
+            set {_y} to (({_dif::3} parsed as a number) / 2.85)
+        if {modelsize::%{_t}%} = 3:
+            set {_l} to location 0.55 meters below {_l}
+            set {_x} to (({_dif::1} parsed as a number) / 2.32)
+            set {_z} to (({_dif::2} parsed as a number) / 2.32)
+            set {_y} to (({_dif::3} parsed as a number) / 2.32)
+        if {modelsize::%{_t}%} = 4:
+            set {_l} to location 1.5 meters below {_l}
+            set {_x} to (({_dif::1} parsed as a number) / 1.65)
+            set {_z} to (({_dif::2} parsed as a number) / 1.65)
+            set {_y} to (({_dif::3} parsed as a number) / 1.65)
+        delete {_loc}
+        set {_loc} to location {_x} meters in front and {_z} meters right and {_y} meters above {_l}
+        set pitch of {_loc} to pitch of {_l}
+        set yaw of {_loc} to yaw of {_l}
+        set {_v} to vector from {_l} to {_loc}
+        set {_yaw} to (yaw of {_loc}) - (yaw of {_v})
+        set {_block} to loop-value
+        set y-coordinate of {_loc} to (y-coordinate of {_loc} - 0.5)
+        if {_facing} is set: 
+            spawnBlock({_loc}, {_block}, {_t}, {_facing})
+        else:
+            spawnBlock({_loc}, {_block}, {_t})
+        wait 1 tick
+        set {_e} to last spawned armor stand
+        loop all slimes in radius 0.2 of location 1 meter above {_e}:
+            set {_e2} to loop-value-2
+        set {_distance} to distance between {_e} and {_l}  
+        set {_nbt} to nbt compound of {_e}
+        set tag "custom;modeltype" of {_nbt} to {_t}
+
+function getCenter(c1: location, c2: location) :: location:
+    set {_xdif} to ((x-coordinate of {_c1}) - (x-coordinate of {_c2}))
+    set {_ydif} to ((y-coordinate of {_c1}) - (y-coordinate of {_c2}))
+    set {_zdif} to ((z-coordinate of {_c1}) - (z-coordinate of {_c2}))
+    set {_x} to (x-coordinate of {_c1} - ({_xdif} / 2))
+    set {_y} to (y-coordinate of {_c1} - ({_ydif} / 2))
+    set {_z} to (z-coordinate of {_c1} - ({_zdif} / 2))
+    set {_center} to location({_x}, {_y}, {_z}, ({_c1}'s world))
+    return {_center}
+
+function configureSkcad(p: player, t: text):
+    broadcast "{@prefix}: &fSetting up editing software..."
+    set {_world} to a new world creator named "SkCAD_Editor"
+    set environment of {_world} to normal
+    set world type of {_world} to flat
+    set should generate structures of {_world} to false
+    load world from creator {_world}
+    execute command "mv import SkCAD_Editor normal"
+    send "{@prefix}: &fHad to run this command just in case you had multiverse! :D" to console
+    wait 5 ticks
+    set {_w} to world("SkCAD_Editor")
+    broadcast "{@prefix}: &fPreparing default settings..."
+    set {cadconfig} to true
+    wait 10 ticks
+    set {globalcorner} to location(49, 3, 49, {_w}) if {_t} = "1.17-"
+    set {globalcorner} to location(49, -61, 49, {_w}) if {_t} = "1.18+"
+    set the gamerule doDaylightCycle of {_w} to false
+    set the gamerule doWeatherCycle of {_w} to false
+    set the gamerule doMobSpawning of {_w} to false
+    set the gamerule doMobSpawning of {_w} to false
+    set the gamerule doTileDrops of {_w} to false
+    set the gamerule doEntityDrops of {_w} to false
+    set the gamerule fallDamage of {_w} to false
+    set the difficulty of {_w} to easy
+    if {_t} is "1.18+":
+        set the spawn point of {_w} to location(49, -60, 49, {_w})
+        set {asb1} to location(49, -60, 49, {_w})
+        set {asb2} to location(-49, -10, -49, {_w})
+    if {_t} is "1.17-":
+        set the spawn point of {_w} to location(49, 4, 49, {_w})
+        set {asb1} to location(49, 4, 49, {_w})
+        set {asb2} to location(-49, 54, -49, {_w})
+    if {_w} is not set:
+        broadcast "{@prefix}: &fSomething went wrong! &dCheck the logs to see what it could be."
+        stop
+    broadcast "{@prefix}: &fSoftware is set up!"
+    wait 1 second
+    send formatted "{@prefix}: &fSuccess!<command:/skcad tp><tooltip:&cClick here!> &eClick here<reset>&f to access the software and finish setting it up." to {_p}
+
+function accessSoftware(p: player):
+    set metadata "savetool" of {_p} to false
+    set {_w} to world("SkCAD_Editor") 
+    teleport {_p} to location(49, 4, 49, {_w})
+    software({_p})
+    set metadata "pdelay" of {_p} to false
+
+function accessFSoftware(p: player):
+    set metadata "savetool" of {_p} to false
+    set {modelsize::%{currentmodel}%} to 4 if {modelsize::%{currentmodel}%} is not set
+    set {docollisions::%{currentmodel}%} to false if {docollisions::%{currentmodel}%} is not set
+    set {_w} to world("SkCAD_Editor")
+    teleport {_p} to location(49, 4, 49, {_w})
+    wait 5 ticks
+    if {_p}'s world != {_w}:
+        send "{@prefix}: &fSomething went wrong! &dCheck the logs to see what it could be." to {_p}
+        stop
+    make {_p} execute command "worldborder set 100"
+    
+    set block at {globalcorner} to gold block
+    software({_p})
+
+function getType(e: entity) :: text:
+    set {_nbt} to nbt compound of {_e}
+    set {_t} to tag "custom;modeltype" of {_nbt}
+    return "%{_t}%"
+function getUUID(e: entity) :: text:
+    
+    set {_nbt} to nbt compound of {_e}
+    if (tag "custom;uuid" of {_nbt}) is not set:
+        return "none"
+        stop
+    set {_t} to tag "custom;uuid" of {_nbt}
+    return "%{_t}%"
+
+
+
+
+
+
+
+function getCorner(l: location, l2: location) :: locations:
+    if y-coordinate of {_l} <= y-coord of {_l2}:
+        set {_lowest} to {_l}
+        set {_lowest2} to {_l2}
+        set y-coord of {_lowest2} to y-coord of {_l}
+    else:
+        set {_lowest} to {_l2}
+        set {_lowest2} to {_l}
+        set y-coord of {_lowest2} to y-coord of {_l2}
+    if x-coord of {_lowest} >= x-coord of {_lowest2}:
+        set {_xmax} to x-coordinate of {_lowest}
+    else:
+        set {_xmax} to x-coordinate of {_lowest2}
+    if z-coord of {_lowest} >= z-coord of {_lowest2}:
+        set {_zmax} to z-coordinate of {_lowest}
+    else:
+        set {_zmax} to z-coordinate of {_lowest2}
+    loop all blocks within {_lowest2} and {_lowest2}:
+        set {_xmax} to x-coordinate of loop-block if (x-coordinate of loop-block > {_xmax})
+        set {_zmax} to z-coordinate of loop-block if (z-coordinate of loop-block > {_zmax})
+    set {_corner} to {_lowest}
+    set x-coord of {_corner} to {_xmax}
+    set z-coord of {_corner} to {_zmax}
+    set {_xdif} to abs(x-coord of {_l1} - x-coord of {_l2})
+    set {_zdif} to abs(z-coord of {_l1} - z-coord of {_l2})
+    set {_corner} to {_corner}
+    set x-coord of {_corner2} to (x-coord of {_corner} - {_xdif})
+    set z-coord of {_corner2} to (z-coord of {_corner} - {_zdif})
+    set {_return::1} to {_corner}
+    set {_return::2} to {_corner2} 
+    return {_return::*}
+    
+function getCorners(l: locations, n: number) :: locations:
+    loop {_l::*}:	
+        set {_xmax} to x-coordinate of loop-value if {_xmax} is not set	
+        set {_xmin} to x-coordinate of loop-value if {_xmin} is not set	
+        set {_zmax} to z-coordinate of loop-value if {_zmax} is not set	
+        set {_zmin} to z-coordinate of loop-value if {_zmin} is not set	
+        set {_ymax} to y-coordinate of loop-value if {_ymax} is not set	
+        set {_ymin} to y-coordinate of loop-value if {_ymin} is not set	
+        set {_xmax} to x-coordinate of loop-value if (x-coordinate of loop-value > {_xmax})
+        set {_zmax} to z-coordinate of loop-value if (z-coordinate of loop-value > {_zmax})
+        set {_ymax} to y-coordinate of loop-value if (y-coordinate of loop-value > {_ymax})
+        set {_xmin} to x-coordinate of loop-value if (x-coordinate of loop-value < {_xmin})
+        set {_zmin} to z-coordinate of loop-value if (z-coordinate of loop-value < {_zmin})
+        set {_ymin} to y-coordinate of loop-value if (y-coordinate of loop-value < {_ymin})
+        set {_w} to loop-value's world if {_w} is not set
+    remove 1 from {_xmin}
+    remove 1 from {_ymin}
+    remove 1 from {_zmin}
+    add 1 to {_xmax}
+    add 1 to {_ymax}
+    add 1 to {_zmax}
+    if {_n} = 2:
+        set {_return::6} to location({_xmin}, {_ymin}, {_zmax}, {_w})
+        set {_return::7} to location({_xmin}, {_ymax}, {_zmax}, {_w})
+        set {_return::8} to location({_xmin}, {_ymax}, {_zmin}, {_w})
+        set {_return::2} to location({_xmax}, {_ymax}, {_zmax}, {_w})
+        set {_return::3} to location({_xmax}, {_ymin}, {_zmax}, {_w})
+        set {_return::4} to location({_xmax}, {_ymin}, {_zmin}, {_w})
+    if {_n} = 1:
+        set {_return::1} to location({_xmax}, {_ymax}, {_zmax}, {_w})
+        set {_return::2} to location({_xmin}, {_ymin}, {_zmin}, {_w})
+        return {_return::*}
+    set {_return::1} to location({_xmax}, {_ymax}, {_zmin}, {_w})
+    set {_return::5} to location({_xmin}, {_ymin}, {_zmin}, {_w})
+    set {globalcorner} to {_return::3}
+    return {_return::*}
+
+function openSettings(p: player, t: text = "normal"):
+    set {modelsize::%{currentmodel}%} to 4 if {modelsize::%{currentmodel}%} is not set
+    set {docollisions::%{currentmodel}%} to false if {docollisions::%{currentmodel}%} is not set
+
+    if {_t} is "normal":
+        set {_t} to {currentmodel}
+    open chest inventory with 2 rows named "&cModel &e%{_t}% &csettings" to {_p}
+    set slot 0 of {_p}'s current inventory to blue wool named "&dModel size: &e%{modelsize::%{_t}%}%" with lore "&7Left-Click to increase size" and "&8Right-Click to decrease size" with all flags hidden
+    if {modelsize::%{_t}%} = 4:
+        set slot 1 of {_p}'s current inventory to purple wool named "&dDo Collisions: &e%{docollisions::%{_t}%}%" with lore "&7Left-Click to Enable/Disabe collisions!"
+    else:
+        set slot 1 of {_p}'s current inventory to purple wool named "&7Do Collisions: &8%{docollisions::%{_t}%}%" with lore "&7You need to have a model size 4 for collisions..."
+
+    set metadata "settingtype" of {_p} to {_t}
+
+#
+#EVENTS
+#
+
+on inventory click:
+    name of player's current inventory contains "&cModel":
+        cancel event
+        name of event-slot contains "model size":
+            set {_t} to metadata "settingtype" of player
+            click type = left mouse button:
+                add 1 to {modelsize::%{_t}%}
+                if {modelsize::%{_t}%} > 4:
+                    set {modelsize::%{_t}%} to 1
+                send "{@prefix}&f: Increased size!" to player
+            else if click type = right mouse button:
+                remove 1 from {modelsize::%{_t}%}
+                if {modelsize::%{_t}%} < 1: 
+                    set {modelsize::%{_t}%} to 4
+                send "{@prefix}&f: Decreased size!" to player
+            openSettings(player, {_t})  
+    
+        name of event-slot contains "&dDo Collisions":
+            set {_t} to metadata "settingtype" of player
+            click type = left mouse button
+            if {docollisions::%{_t}%} is true:
+                set {docollisions::%{_t}%} to false
+                send "{@prefix}&f: No more collisions - re-spawn your model to enact changes!"
+            else:
+                set {docollisions::%{_t}%} to true
+                send "{@prefix}&f: Enabled collisions - re-spawn your model to enact changes!"
+            openSettings(player, {_t}) 
+
+
+on right click on air:
+    name of tool contains "&c&lOther":
+        openSettings(player)
+    name of tool contains "&c&lSave":
+        execute player command "skcad save %{currentmodel}%"
+    name of tool contains "&c&lName":
+        set metadata "currentnaming" of player to true
+        send "{@prefix}&f: Type your new model name in chat!"
+    name of tool contains "&c&lMove":
+        loop all blocks within {asb1} and {asb2}: 
+            loop-block is not air
+            set {_num} to size of {_blist::*} + 1
+            set {_blist::%{_num}%} to location of loop-block
+            set {_type::%location of loop-block%} to type of loop-block
+            set loop-block to air
+        loop {_blist::*}:
+            set {_b} to {_type::%loop-value%}
+            set block 1 meter in the horizontal facing of player from loop-value to {_b}
+    name of tool contains "&c&lRotate":
+        loop all blocks within {asb1} and {asb2}:
+            loop-block is not air
+            set {_num} to size of {_blist::*} + 1
+            set {_blist::%{_num}%} to location of loop-block
+        set {_return::*} to getCorners({_blist::*}, 1)
+        set {_center} to getCenter({_return::1}, {_return::2})
+        set {_n} to 0	
+        loop {_blist::*}:
+            add 1 to {_n}
+            set {_v} to vector from {_center} to loop-value
+            rotate {_v} around y-axis by -90
+            set {_l} to {_center} offset by {_v}
+            set {_number} to size of {_newblist::*} + 1
+            set {_b} to block at loop-value
+            set {_m} to type of {_b}
+            set {_d} to facing of {_b} 
+            set {_newblist::%{_number}%} to {_l}
+            set {_type::%{_l}%} to {_d} if {_d} is set
+            set {_type2::%{_l}%} to {_m}
+            set block at loop-value to air
+        wait 1 tick
+        loop {_newblist::*}:
+            set {_m} to {_type2::%loop-value%}
+            set {_d} to {_type::%loop-value%} if {_type::%loop-value%} is set
+            set block at loop-value to {_m}
+            set facing of block at loop-value to {_d} if {_type::%Loop-value%} is set
+
+on chat:
+    if metadata "currentnaming" of player is true:
+        cancel event 
+        set metadata "currentnaming" of player to false
+        set {currentmodel} to colored message
+        set {modelsize::%{currentmodel}%} to 4
+        set {docollisions::%{currentmodel}%} to false
+        send "{@prefix}&f: Set your new model name to %colored message%&f!"
+
+on tool change:
+    set {_i} to player's tool
+    if name of tool contains "&c&lRotate":
+        stop if metadata "savetool" of player is true
+        send action bar "&cRight-Click to rotate model: &7%{currentmodel}%&c!" to player
+        stop if {@doParticles} = false
+        set metadata "savetool" of player to true
+        while tool = {_i}:
+            stop if player is offline
+            set {particledone} to false
+            saveParticles(player)
+            wait 2 seconds
+            #while {particledone} is not true:
+             #   wait 5 ticks
+        set metadata "savetool" of player to false if name of player's tool does not contain "savetool" or "rotate"
+    if name of tool contains "&c&lsave" or "&c&lmove":
+        stop if metadata "savetool" of player is true
+        send action bar "&cRight-Click to move model: &7%{currentmodel}%&c!" to player if name of tool contains "&c&lmove"
+        stop if {@doParticles} = false
+        set metadata "savetool" of player to true
+        while tool = {_i}:
+            stop if player is offline
+            saveParticles(player)
+            wait 2 seconds
+        set metadata "savetool" of player to false	
+
+on skript stop:
+    loop indices of {-castr::*}:
+        clear {-castr::%loop-value%::*}
+    loop indices of {-cadtype::*}:
+        clear {-cadtype::%loop-value%::*}
+
+function isPropertype(e: entity) :: boolean:
+    set {_nbt} to nbt compound of {_e}
+    if "%type of {_e}%" = "slime":
+        if tag "modeltype" of {_nbt} is set:
+            return true
+    if {_e} is an armor stand:
+        if helmet slot of {_e} is set:
+            if tag "Invisible" of nbt compound of {_e} is set:
+                return true
+           
+
+#
+#COMMANDS
+#
+
+command /armpose [<num>] [<num>] [<num>]:
+    permission: skcad.armpose
+    trigger:
+        set {_e} to target entity of player
+        set {_nbt} to nbt compound of {_e}
+        add "{Invisible:1b,NoGravity:1b,ShowArms:1b,Invulnerable:1b,Rotation:[0f,0f],Pose:{RightArm:[%arg-1%f,%arg-2%f,%arg-3%f]}}" to {_nbt}
+
+command /skcad [<text>] [<text>]:
+    permission: skcad.commands
+    trigger:    
+        if arg-1 = "export":
+            if {Sklist::*} contains arg-2:
+                skcadExport(player, arg-2)
+            else:
+                send "&6This model doesn't exist."
+                
+        if arg-1 = "import":
+            if {Sklist::*} does not contain arg-2:
+                skcadImport(player, arg-2)
+            else:
+                send "&6A model with this namealready exists. Delete it first!"
+
+
+        if arg-1 = "ver":
+            send formatted "{@prefix}&f: Your SkCAD version is <tooltip:https://www.spigotmc.org/resources/skcad.91850/><link:https://www.spigotmc.org/resources/skcad.91850/>&e[&a0.6&e]!"
+        if arg-1 = "failsafe":
+            if {skcadstop} is not true:
+                set {skcadstop} to true
+                send "&c[&6FAILSAFE ACTIVATED&c]"
+            else:
+                set {skcadstop} to false
+                send "&c[&6FAILSAFE DEACTIVATED&c]"
+        if arg-1 = "deletesoftware":
+            delete {asb1} 
+            delete {asb2}
+                
+            set {_w} to world("SkCAD_Editor")
+            unload world {_w} and do not save
+            delete world file for {_w} 
+            wait 2 ticks
+            
+            set {cadconfig} to false
+            set {cadfinal} to false
+            send "{@prefix}: &fDeleted the editor. Restart the server to properly reset the editor."
+        if arg-1 = "resetblocks":
+            loop all blocks within {asb1} and {asb2}:
+                loop-block != air
+                set loop-block to air
+        if arg-1 = "resetmodels":
+            set {_w} to world("SkCAD_Editor")
+            loop 2 times:
+                kill all entities in {_w} where [input is an armor stand]
+                wait 5 ticks
+        if arg-1 = "tp":
+            if {cadfinal} is true:
+                accessSoftware(player)
+            else:
+                accessFSoftware(player)
+                set {cadfinal} to true
+        if arg-1 = "configure":
+
+            if {cadconfig} is true:
+                send "{@prefix}: &fSkCAD is already set up."
+            else:
+                if arg-2 = "1.18+":
+                    configureSkcad(player, "1.18+")
+                else if arg-2 = "1.17-":
+                    configureSkcad(player, "1.17-")
+                else:
+                    send "{@prefix}&f: Specify if your version is 1.18+, or 1.17-!"
+        if arg-1 = "cancel":
+            if {cancelskcad} is not true:
+                set {cancelskcad} to true
+                wait 1 second
+                set {cancelskcad} to false
+        if arg-1 = "removemodel":
+            if arg-2 is set:
+                loop all entities where [getType(input) = arg-2]:
+                    add 1 to {_num}
+                    if type of loop-entity = slime:
+                        teleport loop-entity to location 500 meters below loop-entity
+                    kill loop-entity
+                send "{@prefix}&f: Successfully deleted model %arg-2% &d(%{_num}%&d blocks)"
+        if arg-1 = "removetarget":
+            set {_uuid} to getUUID(target entity of player)
+            
+            loop all entities in radius 20 of target entity of player where [getUUID(input) = {_uuid}]:
+                getUUID(loop-entity) = {_uuid}
+                type of loop-entity = slime or armor stand
+                add 1 to {_num}
+                if type of loop-entity = slime:
+                    teleport loop-entity to location 500 meters below loop-entity
+                kill loop-entity
+            #send "{@prefix}&f: Successfully deleted model %arg-2% &d(%{_num}%&d blocks)"
+        if arg-1 = "removemodelvars":
+            if arg-2 is set:
+                if {Sklist::*} does not contain arg-2:
+                    send "{@prefix}&f: This model does not exist!"
+                    stop
+                send "{@prefix}&f: Successfully removed all variables for this model."
+                delete {Sklist::%arg-2%}
+                clear {Skcad::%arg-2%::*}
+                clear {Skcadfacing::%arg-2%::*}
+                remove arg-2 from {Sklist::*}
+        if arg-1 = "settings":
+            if arg-2 is not set:
+                openSettings(player)
+            else:
+                if {Skcad::%arg-2%::*} is not set:
+                    send "{@prefix}&f: Specify a model name!"
+                else:
+                    openSettings(player, arg-2)
+        if arg-1 = "save":
+            if {Sklist::*} contains arg-2:
+                send "{@prefix}&f: That model is already saved. Saving in 3 seconds.. <command:/skcad cancel><tooltip:&cClick to cancel>&e[Click Here] <reset>&fto cancel!"
+                wait 10 ticks
+                loop 5 times:
+                    if (rounded loop-value / 2) = (loop-value / 2):
+                        send "{@prefix}&f: That model is already saved. Saving in %3 - (loop-value / 2)% seconds.. <command:/skcad cancel><tooltip:&cClick to cancel>&e[Click Here] <reset>&fto cancel!"
+                    wait 10 ticks
+                    if {cancelskcad} is true:
+                        send "{@prefix}&f: Successfully overrode saving."
+                        stop
+                wait 10 ticks
+            loop {Sklist::*}:
+                if loop-value = arg-2:
+                    clear {Sklist::%Loop-index%}
+            add arg-2 to {Sklist::*}
+            clear {Skcad::%arg-2%::*}
+            if arg-2 is set:
+                clear {Skcadfacing::%arg-2%::*}
+                clear {Skcad::%arg-2%::*}
+                set {_corner} to {globalcorner}
+                send "{@prefix}: &fSaving design within &d%x-coord of {asb1}%, %y-coord of {asb1}%, %z-coord of {asb1}% &fand &e%x-coord of {asb2}%, %y-coord of {asb2}%, %z-coord of {asb2}%&c..."
+                set {_size} to (size of all blocks within {asb1} and {asb2} where [block at input is not air])
+                set {_msize} to 0
+                loop all blocks within {asb1} and {asb2}:
+                    stop if {skcadstop} is true
+                    block at loop-block is not air
+                    add 1 to {_msize}
+                    set {_loc} to location of loop-block
+                    set {_xdif} to abs(x-coordinate of {_loc} - x-coordinate of {_corner})
+                    set {_zdif} to abs(z-coordinate of {_loc} - z-coordinate of {_corner})
+                    set {_ydif} to abs(y-coordinate of {_loc} - y-coordinate of {_corner})
+                    set {Skcadfacing::%arg-2%::%{_xdif}%_%{_zdif}%_%{_ydif}%} to facing of loop-block
+                    set {Skcad::%arg-2%::%{_xdif}%_%{_zdif}%_%{_ydif}%} to type of loop-block 
+                    wait 1 tick if ({_msize} / 20) = rounded ({_msize} / 20)
+                send "{@prefix}: &fSuccessfully saved model &a%arg-2%! &d(size %{_msize}%&d)"
+            else:
+                send "&dSpecify a name!"
+        if arg-1 = "clearmodels":
+            clear {Sklist::*}
+            loop indices of {Skcad::*}:
+                clear {Sklist::%loop-value%::*}
+                clear {Skcad::%loop-value%::*}
+        if arg-1 = "removenear":
+            set {_num} to arg-2 parsed as a number
+            if {_num} is not set:
+                send "{@prefix}&f: Specify a radius!"
+                stop
+            loop all armor stands in radius {_num} of player:
+                kill loop-value
+            loop all slimes in radius {_num} of player:
+                teleport loop-value to location 500 meters below loop-value
+        if arg-1 = "load":
+            if arg-2 is set:
+                set {_corner} to location of player
+                set {_uuid} to (random integer from 0 to 1000000)
+                loadASB({_corner}, arg-2, {_uuid})
+        if arg-1 = "list":
+            loop {Sklist::*}:
+                send "&d%loop-value%"
+
+command /getUUID:
+    permission: op
+    trigger:
+        send getUUID(target)
+

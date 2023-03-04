@@ -1,6 +1,4 @@
 command /sit [<text>]:
-    permission: tc.commands.sit
-    permission message: "&cYou don't have the right rank to use this!"
     trigger:
         player's world is not "world-you-dont-want-sit-working"
         set {_cont} to true
