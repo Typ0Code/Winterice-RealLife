@@ -1,3 +1,10 @@
+options:
+	prefix: PREFIX
+	noperm: §cDu hast keine Berechtigung.
+	team: §7[§c§lTC§7]
+	kreis: ●
+	pfeil1: »
+	pfeil2: ➤
 on right click:
 	"%event-block%" contains "iron door":
 		if {%player's uuid%_teamdienst} is true:
@@ -13,30 +20,33 @@ on right click:
 		send "&e&l➣  &4&l⚠ &6Du kannst dies nicht öffnen!" to player
 		cancel event
 		stop
-options:
-	Team: §8§l【§c§lTC§8§l】&8&l▶§7
+		
 command /tc [<text>]:
 	aliases: /teamchat
 	permission: *
+	permission message: {@noperm}
 	trigger:
 		if arg-1 is not set:
-			send "{@Team} §a/tc §f<Text>"
+			send "{@team} §a/tc §f<Text>"
 			stop
 		if arg-1 is set:
 			loop all players:
 				if loop-player has permission "*":
-					send "{@Team} %colored player's prefix% §f%player% §8§l● §7%colored arg%" to loop-player
+					send "{@team} §7%player% §c» §7%colored arg%" to loop-player
+					
 command /Fraktiontest <text>:
 	trigger:
 		set {%player's uuid%_Fraktion} to arg-1
-command /teamdienst:
+		
+command /teamdienst [<text>]:
+	permission: *
+	permission message: {@noperm}
 	trigger:
-		if player has permission "*":
-			if {%player's uuid%_teamdienst} is true:
-				delete {%player's uuid%_teamdienst}
-				send "&c&l[ACHTUNG] &cDein Teamdienst wurde beendet!"
-				set the player's tablist name to "&7%player%"
-			else:
-				set {%player's uuid%_teamdienst} to true
-				send "&c&l[ACHTUNG] &cDu hast den Teamdienst betreten!"
-				set the player's tablist name to "&4[T] &c%player%"
+		if {%player's uuid%_teamdienst} is true:
+			delete {%player's uuid%_teamdienst}
+			send "&c&l[ACHTUNG] &cDein Teamdienst wurde beendet!"
+			set the player's tablist name to "&7%player%"
+		else:
+			set {%player's uuid%_teamdienst} to true
+			send "&c&l[ACHTUNG] &cDu hast den Teamdienst betreten!"
+			set the player's tablist name to "&4[T] &c%player%"
