@@ -1,5 +1,5 @@
 options:
-	prefix: &9System &7»
+	prefix: &9System &e»
 	noperm: &cDu hast keine Berechtigung.
 	team: &7[&c&lTC&7]
 	kreis: ●
@@ -10,16 +10,16 @@ on right click:
 	"%event-block%" contains "iron door":
 		if {%player's uuid%_teamdienst} is true:
 			toggle event-block
-			wait 2 seconds
-			deactivate event-block
+#			wait 2 seconds
+#			deactivate event-block
 			stop
 		if player has permission "*":
-			send ""
-			send "{@prefix} &4{@alert} &7Du musst zuerst den /Teamdienst starten, "
-			send "{@prefix} &4{@alert} &7um Türen öffnen zu können."
-#			send "&e&l➣  &4&l⚠ &6&lGehe in den /Teamdienst, um alle Türen zu öffnen!" to player
-			send ""
+			set action bar of player to "{@prefix} &7Du bist nicht im &cTeamdienst!"
+#
+#		gehört eigentlich in locksystem.sk
+#
 #		play sound "notification_warning" with volume 10 with pitch 1 at player for player
+#
 #		send "&e&l➣  &4&l⚠ &6Du kannst dies nicht öffnen!" to player
 #		cancel event
 		stop
