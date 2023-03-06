@@ -13,10 +13,10 @@ command /fly [<text>]:
 	trigger:
 		if arg 1 is not set:
 			if {fly.%player%} is not true:
-				message "{@prefix} {@flyonDE}"
+				message "{@prefix} {@flyonEN}"
 				set player's flight mode to true
 				set {fly.%player%} to true
 			else:
-				message "{@prefix} {@flyoffDE}"
+				message "{@prefix} {@flyoffEN}"
 				set player's flight mode to false
 				delete {fly.%player%}
