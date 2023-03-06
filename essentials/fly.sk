@@ -6,10 +6,6 @@ options:
 	flyoffEN: &6Flightmode &cdisabled.
 	flyonDE: &6Flugmodus &aaktiviert.
 	flyoffDE: &6Flugmodus &cdeaktiviert.
-	kreis: ●
-	pfeil1: »
-	pfeil2: ➤
-	alert: ⚠
 
 command /fly [<text>]:
 	permission: *
