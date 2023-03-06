@@ -1,10 +1,11 @@
 options:
-	prefix: PREFIX
-	noperm: §cDu hast keine Berechtigung.
-	team: §7[§c§lTC§7]
+	prefix: &9System &7»
+	noperm: &cDu hast keine Berechtigung.
+	team: &7[&c&lTC&7]
 	kreis: ●
 	pfeil1: »
 	pfeil2: ➤
+	alert: ⚠
 on right click:
 	"%event-block%" contains "iron door":
 		if {%player's uuid%_teamdienst} is true:
@@ -14,25 +15,28 @@ on right click:
 			stop
 		if player has permission "*":
 			send ""
-			send "&e&l➣  &4&l⚠ &6&lGehe in den /Teamdienst, um alle Türen zu öffnen!" to player
+			send "{@prefix} &4{@alert} &7Du musst zuerst den /Teamdienst starten, "
+			send "{@prefix} &4{@alert} &7um Türen öffnen zu können."
+#			send "&e&l➣  &4&l⚠ &6&lGehe in den /Teamdienst, um alle Türen zu öffnen!" to player
 			send ""
-		play sound "notification_warning" with volume 10 with pitch 1 at player for player
-		send "&e&l➣  &4&l⚠ &6Du kannst dies nicht öffnen!" to player
-		cancel event
+#		play sound "notification_warning" with volume 10 with pitch 1 at player for player
+#		send "&e&l➣  &4&l⚠ &6Du kannst dies nicht öffnen!" to player
+#		cancel event
 		stop
 		
 command /tc [<text>]:
 	aliases: /teamchat
 	permission: *
-	permission message: {@noperm}
+	permission message: {@prefix} {@noperm}
 	trigger:
 		if arg-1 is not set:
-			send "{@team} §a/tc §f<Text>"
+			send "{@team} &7Benutzung: &a/tc [Message]"
+			send "{@team} &eSendet eine Nachricht an alle anwesenden Teammitglieder."
 			stop
 		if arg-1 is set:
 			loop all players:
 				if loop-player has permission "*":
-					send "{@team} §7%player% §c» §7%colored arg%" to loop-player
+					send "{@team} &b&l%player% &c» &7%colored arg%" to loop-player
 					
 command /Fraktiontest <text>:
 	trigger:
@@ -40,13 +44,13 @@ command /Fraktiontest <text>:
 		
 command /teamdienst [<text>]:
 	permission: *
-	permission message: {@noperm}
+	permission message: {@prefix} {@noperm}
 	trigger:
 		if {%player's uuid%_teamdienst} is true:
 			delete {%player's uuid%_teamdienst}
-			send "&c&l[ACHTUNG] &cDein Teamdienst wurde beendet!"
+			send "{@prefix} &7Du befindest dich jetzt nicht mehr im &c&lTeamdienst!"
 			set the player's tablist name to "&7%player%"
 		else:
 			set {%player's uuid%_teamdienst} to true
-			send "&c&l[ACHTUNG] &cDu hast den Teamdienst betreten!"
+			send "{@prefix} &7Du befindest dich jetzt im &a&lTeamdienst!"
 			set the player's tablist name to "&4[T] &c%player%"
