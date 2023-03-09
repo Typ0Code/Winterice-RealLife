@@ -1,24 +1,23 @@
 options:
-    xp: true                                                #Should script show sprint progress in xp bar?
-    increase_xp: 0.0195                                     #How fast should be xp bar filled. If you change values, you have to balance 
-    default: 0.175                                          #Player's walk speed while not sprinting
-    max_speed: 0.3                                          #Maximum player's sprint speed
-    increase_speed: 0.0025                                  #How fast should player
-    often: 1                                                #How often should be speed increased in ticks
+	xp: true												#Should script show sprint progress in xp bar?
+	increase_xp: 0.0195									 #How fast should be xp bar filled. If you change values, you have to balance 
+	default: 0.175										  #Player's walk speed while not sprinting
+	max_speed: 0.3										  #Maximum player's sprint speed
+	increase_speed: 0.0025								  #How fast should player
+	often: 1												#How often should be speed increased in ticks
 on sprint toggle:
-    if gamemode of player is creative or spectator:
-        stop
-    if player is not sprinting:
-        wait 1 tick
-        set {_speed} to {@default}
-        set {_direction} to (player's facing)
-        set (player's level progress) to 0 if {@xp} is true
-        while (player is sprinting):
-            if player's walk speed < {@max_speed}:
-                set (player's walk speed) to {_speed}
-                add {@increase_speed} to {_speed}
-                add {@increase_xp} to (level progress of player) if {@xp} is true
-            wait {@often} ticks
-    else:
-        set (player's walk speed) to {@default}
-        set (player's level progress) to 0 if {@xp} is true
+	if gamemode of player is survival:
+		if player is not sprinting:
+			wait 1 tick
+			set {_speed} to {@default}
+			set {_direction} to (player's facing)
+			set (player's level progress) to 0 if {@xp} is true
+			while (player is sprinting):
+				if player's walk speed < {@max_speed}:
+					set (player's walk speed) to {_speed}
+					add {@increase_speed} to {_speed}
+					add {@increase_xp} to (level progress of player) if {@xp} is true
+				wait {@often} ticks
+		else:
+			set (player's walk speed) to {@default}
+			set (player's level progress) to 0 if {@xp} is true

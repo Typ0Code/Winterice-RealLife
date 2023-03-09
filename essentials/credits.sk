@@ -3,7 +3,8 @@ command /credits [<text>]:
 	trigger:
 		if arg is "set":
 			player has permission "*":
-				set {creditsbook} to player's tool
+				player's tool is a written book:
+					set {creditsbook} to player's tool
 		open book {creditsbook} to player
 	#		send ""
 	#		send "              &cCREDITS"
