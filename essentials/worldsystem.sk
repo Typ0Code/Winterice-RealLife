@@ -1,5 +1,8 @@
 options:
     permission: skworld.use
+    prefix: &9System &e»
+    nopermDE: &cDu hast keine Berechtigung.
+    nopermEN: &cYou don't have permission.
 
 on load:
     send " %nl%&cLoaded &6Winterice world-tools&c!%nl%  " to console
@@ -73,6 +76,7 @@ on tab complete of "/wl" or "/World" or "/Winterice:w" or "/Winterice:world":
 command /World [<text>] [<text>] [<text>] [<text>] [<text>] [<text>] [<text>]:
     aliases: Winterice:world, Winterice:w, wl
     permission: {@permission}
+    permission message: {@prefix} {@nopermEN}
     trigger:
         if arg-1 is not set:
             helpMsg(player)
@@ -238,13 +242,15 @@ function rejoinWorld(t: text):
         loop all players where [input's world = loop-player's world]:
             reveal loop-player-2 to loop-player-1
             reveal loop-player-1 to loop-player-2
-command /hideworld:
+command /hideworld [<text>]:
     permission: world.hide
+    permission message: {@prefix} {@nopermEN}
     trigger:
         seperateWorld("%player's world%")
         send "&6seperated world!"
-command /revealworld:
+command /revealworld [<text>]:
     permission: world.reveal
+    permission message: {@prefix} {@nopermEN}
     trigger:
         rejoinWorld("%player's world%")
         send "&6revealed world!"
