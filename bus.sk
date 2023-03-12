@@ -6,7 +6,7 @@ on region enter:
 	if "%event-region%" contains "bus_flughafen":
 		execute player command "/busgui Bushaltestelle Flughafen"
 	if "%event-region%" contains "bus_krankenhaus":
-		execute player command "/busgui Bushaltestelle Krankenhaus" #2
+		execute player command "/busgui Bushaltestelle Krankenhaus"
 	if "%event-region%" contains "bus_shemond":
 		execute player command "/busgui Bushaltestelle Shemond-Lagoon"
 	if "%event-region%" contains "bus_unknown":
