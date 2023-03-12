@@ -6,6 +6,8 @@ options:
 	pfeil1: »
 	pfeil2: ➤
 	alert: ⚠
+	usageDE: &7Benutzung: &a/
+	usageEN: &7Usage: &a/
 on right click:
 	"%event-block%" contains "iron door":
 		if {%player's uuid%_teamdienst} is true:
@@ -42,9 +44,10 @@ command /Fraktiontest <text>:
 	trigger:
 		set {%player's uuid%_Fraktion} to arg-1
 		
-command /teamdienst [<text>]:
+command /teamdienst:
 	permission: *
 	permission message: {@prefix} {@noperm}
+	usage: {@prefix} {@usageDE}teamdienst
 	trigger:
 		if {%player's uuid%_teamdienst} is true:
 			delete {%player's uuid%_teamdienst}

@@ -3,7 +3,9 @@ options:
     prefix: &9System &e»
     nopermDE: &cDu hast keine Berechtigung.
     nopermEN: &cYou don't have permission.
-
+    usageDE: &7Benutzung: &a/
+    usageEN: &7Usage: &a/
+    
 on load:
     send " %nl%&cLoaded &6Winterice world-tools&c!%nl%  " to console
 
@@ -242,15 +244,17 @@ function rejoinWorld(t: text):
         loop all players where [input's world = loop-player's world]:
             reveal loop-player-2 to loop-player-1
             reveal loop-player-1 to loop-player-2
-command /hideworld [<text>]:
+command /hideworld:
     permission: world.hide
     permission message: {@prefix} {@nopermEN}
+    usage: {@prefix} {@usageEN}hideworld
     trigger:
         seperateWorld("%player's world%")
         send "&6seperated world!"
-command /revealworld [<text>]:
+command /revealworld:
     permission: world.reveal
     permission message: {@prefix} {@nopermEN}
+    usage: {@prefix} {@usageEN}revealworld
     trigger:
         rejoinWorld("%player's world%")
         send "&6revealed world!"
