@@ -1,0 +1,30 @@
+﻿command /autospawn:
+	trigger:
+		set {_n} to nbt compound from "{Silent:1b,Invulnerable:1b}"
+		spawn armor stand at player with nbt {_n}
+		set max health of last spawned armor stand to 30000
+		set health of last spawned armor stand to 30000
+		#apply invisibility of tier 1 without particles to last spawned armor stand for 99999 seconds
+		make player ride last spawned armor stand
+		
+on vehicle steer forward:
+	push player's vehicle forward with speed 0.2
+	set {_vector} to vector from location of vehicle of player to location 1 meter above block 2 meter in front of vehicle of player
+	set velocity of vehicle of player to {_vector}
+	broadcast "%{_vector}%"
+	broadcast "%velocity of vehicle of player%"
+   
+#on vehicle steer backward:
+#	push player's vehicle backwards with speed 0.2
+#	set {_vector} to vector from location of vehicle of player to location 1 meter above block 1 meter behind of vehicle of player
+#	set velocity of vehicle of player to {_vector}
+   
+#on vehicle steer left:
+#	push player's vehicle left with speed 0.05
+
+  
+#on vehicle steer right:
+#	push player's vehicle right with speed 0.05
+    
+on rightclick on armor stand:
+	make player ride clicked entity
