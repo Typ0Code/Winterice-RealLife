@@ -1,5 +1,7 @@
 ﻿on command "/vehicle":
-	cancel event
+	loop 1000 times:
+		send " " to player
+	wait 1 tick
 	if player has permission "*":
 		send "&c-----------------------------%nl%&5[ADMIN] &cWinterice Vehicle System%nl% %nl%&aCommands &2(you can click on them!)&a:" to player
 		send formatted "<tooltip:&5Get Vehicle Info.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle info> &b/vehicle &einfo" to player
