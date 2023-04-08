@@ -8,7 +8,7 @@ command /loopalleorte: #Zeigt alle Orte außer Bus, Zug, Bankautomaten und tanks
 		set {locations.names.list.sorted::*} to sorted {locations.names.list::*} #Sortiere alle orte nach Alphabet
 		loop {locations.names.list.sorted::*}: # Gehe alle Orte durch, welche existieren
 			if "%loop-value%" contains "Bus" or "Zug" or "Bankautomat" or "Tankstelle": #Überprüfe, ob die Orte jeweils mit Bus, Zug, Bankautomat oder Tankstelle anfangen. Wenn ja, keine weitere Aktion
-			else: #Wenn ja
+			else: #Wenn nein
 				set {_distance_%loop-value%_%player%} to distance between player and {%{%loop-value%_Name}%_location} #Berechne distanz zum jeweiligen Punkt
 				set {_distance_%loop-value%_%player%} to round({_distance_%loop-value%_%player%}) #Runde Distanz auf volle Blöcke
 				set slot {zaehler.gui.alleorte.%player%} of player's current inventory to paper named "&7 %loop-value%" with lore "" and "&7 ➙ Entfernung  :  &7&l%{_distance_%loop-value%_%player%}% Meter" # Zeige den Punkt in der GUI an

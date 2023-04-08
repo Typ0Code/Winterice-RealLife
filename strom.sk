@@ -1,6 +1,6 @@
 options:
 	DefaultBlock: cyan glazed terracotta  
-	Check: 8    # Wie oft soll nach Schlater / Knopfdrücken gesucht werden? Max 20, MUSS teilbar durch 4 sein.                         20 = 1 Sekunde.
+	Check: 4    # Wie oft soll nach Schlater / Knopfdrücken gesucht werden? Max 20, MUSS teilbar durch 4 sein.                         20 = 1 Sekunde.
 	Permission: RS
 	PermMsg: &c▌ &aYou don't have permission to use that command!
 command /signal [<text>]: #Admincommand um alle Signale zu sehen und/oder Signale zu deaktivieren / reaktivieren
