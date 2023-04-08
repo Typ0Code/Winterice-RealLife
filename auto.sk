@@ -1,15 +1,15 @@
 ﻿on command "/vehicle":
 	cancel event
-		if player has permission "*":
-			send "&c-----------------------------%nl%&5[ADMIN] &cWinterice Vehicle System%nl% %nl%&aCommands &2(you can click on them!)&a:" to player
-			send formatted "<tooltip:&5Get Vehicle Info.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle info> &b/vehicle &einfo" to player
-			send formatted "<tooltip:&5Refill the vehicle.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle refill> &b/vehicle &erefill" to player
-			send formatted "<tooltip:&5Repair the vehicle.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle repair> &b/vehicle &erepair" to player
-			send formatted "<tooltip:&5Edit vehicle parameters.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle edit> &b/vehicle &eedit" to player
-			send formatted "<tooltip:&5Open give-menu.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle menu> &b/vehicle &emenu" to player
-			send formatted "<tooltip:&5Open fuel menu.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle fuel> &b/vehicle &efuel" to player
-			send formatted "<tooltip:&5Restore deleted vehicles.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle restore> &b/vehicle &erestore" to player
-			send formatted "<tooltip:&5Set the owner of vehicle in hand.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle setowner> &b/vehicle &esetowner &2(player)" to player
-			send formatted "<tooltip:&5Give defined player the defined car.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle givecar> &b/vehicle &egivecar &2(player) &4(car uuid)" to player
-			send formatted "<tooltip:&5Give a voucher of defined car to defined player.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle givevoucher> &b/vehicle &egivevoucher  &2(player) &4(car uuid)" to player
-			send " %nl%&c-----------------------------" to player
+	if player has permission "*":
+		send "&c-----------------------------%nl%&5[ADMIN] &cWinterice Vehicle System%nl% %nl%&aCommands &2(you can click on them!)&a:" to player
+		send formatted "<tooltip:&5Get Vehicle Info.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle info> &b/vehicle &einfo" to player
+		send formatted "<tooltip:&5Refill the vehicle.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle refill> &b/vehicle &erefill" to player
+		send formatted "<tooltip:&5Repair the vehicle.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle repair> &b/vehicle &erepair" to player
+		send formatted "<tooltip:&5Edit vehicle parameters.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle edit> &b/vehicle &eedit" to player
+		send formatted "<tooltip:&5Open give-menu.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle menu> &b/vehicle &emenu" to player
+		send formatted "<tooltip:&5Open fuel menu.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle fuel> &b/vehicle &efuel" to player
+		send formatted "<tooltip:&5Restore deleted vehicles.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle restore> &b/vehicle &erestore" to player
+		send formatted "<tooltip:&5Set the owner of vehicle in hand.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle setowner> &b/vehicle &esetowner &2(player)" to player
+		send formatted "<tooltip:&5Give defined player the defined car.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle givecar> &b/vehicle &egivecar &2(player) &4(car uuid)" to player
+		send formatted "<tooltip:&5Give a voucher of defined car to defined player.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle givevoucher> &b/vehicle &egivevoucher  &2(player) &4(car uuid)" to player
+		send " %nl%&c-----------------------------" to player
