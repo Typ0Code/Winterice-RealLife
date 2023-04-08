@@ -24,7 +24,7 @@ command /Waffenscheinmachengui:
 			set {%player's uuid%.Kriegswaffenschein} to "&2Ja"
 			
 			
-		if {%player's uuid%.waffenscheinid} is not set or 0:
+		if {%player's uuid%.waffenscheinid} is not set:
 			set {%player's uuid%.waffenscheinid} to 0
 			
 			
@@ -64,7 +64,7 @@ command /Waffenscheinmachenlevel [<text>]:
 					if {%player's uuid%.waffenscheinid} is not 1 or 2 or 3 or 4:
 						remove 4999 from {%{%player's uuid%_kontonummer_bank}%_kontostand_bank}
 						send "&2✔ Du hast die Waffenbesitzkarte erfolgreich erworben!"
-						set {%player's uuid%.waffenscheinid} to 1,
+						set {%player's uuid%.waffenscheinid} to 1
 					else:
 						send "&e➣  &4⚠ &6Du hast diesen bereits"
 				else:

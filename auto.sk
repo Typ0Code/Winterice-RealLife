@@ -1,4 +1,4 @@
-﻿on command /vehicle:
+﻿on command "/vehicle":
 	cancel event
 		if player has permission "*":
 			send "&c-----------------------------%nl%&5[ADMIN] &cWinterice Vehicle System%nl% %nl%&aCommands &2(you can click on them!)&a:" to player
