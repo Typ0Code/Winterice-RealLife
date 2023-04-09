@@ -1,4 +1,4 @@
-﻿on command "/vehicle help":
+﻿on command "/wintericevehicle help":
 	cancel event
 	if player has permission "*":
 		send "&c-----------------------------%nl%&5[ADMIN] &cWinterice Vehicle System%nl% %nl%&aCommands &2(you can click on them!)&a:" to player
@@ -13,3 +13,20 @@
 		send formatted "<tooltip:&5Give defined player the defined car.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle givecar> &b/vehicle &egivecar &2(player) &4(car uuid)" to player
 		send formatted "<tooltip:&5Give a voucher of defined car to defined player.>&5[&d?&5]<reset><tooltip:&5Click here!><suggest command:/vehicle givevoucher> &b/vehicle &egivevoucher  &2(player) &4(car uuid)" to player
 		send " %nl%&c-----------------------------" to player
+
+on left click:
+	name of player's vehicle contains "MTVEHICLE"
+	cancel event
+
+Every second:
+	loop all players:
+		name of loop-player's vehicle contains "MTVEHICLE"
+		if {lastpos.%loop-player%} is not set:
+			set {lastpos.%loop-player%} to loop-player's location
+		Set {_loc} to loop-player's location
+		set {speed.tmp.%loop-player%} to distance between {_loc} and {lastpos.%loop-player%}
+		set {speed.%loop-player%} to {speed.tmp.%loop-player%} * 3.6
+		#broadcast "%{speed.%loop-player%}%"
+		set action bar of loop-player to "&7» %{speed.%loop-player%}% km/h"
+		set {lastpos.%loop-player%} to loop-player's location
+		
