@@ -1,0 +1,438 @@
+command /loadplugin [<text>]:
+	permission: *
+	trigger:
+		if arg-1 is not set:
+			send "&cBitte gib ein Plugin an, welches du aktivieren willst."
+		else:
+			load plugin "%arg 1%"
+			broadcast "loaded %arg 1%"
+
+command /coremenu:
+	permission: *
+	permission message: &cDu hast keine Berechtigung für diesen Befehl.
+	executable by: player
+	trigger:
+		core(player)
+		
+function core(p: player):
+	set {_gui} to chest inventory with 5 rows named "&2Winterice Core System"
+
+	set slot (numbers between 0 and 45) of {_gui} to black stained glass pane
+	set slot 4 of {_gui} to clock named "&a✖Winterice Core &cPRE-001.001.003" with lore "&a➤ Click to update"
+	set slot 19 of {_gui} to clock named "➥&7Plugins" with lore "&a➤ Click for a list"
+	set slot 21 of {_gui} to clock named "➥&7Skripts" with lore "&a➤ Click for a list"
+	set slot 23 of {_gui} to clock named "➥&7Admin-Panel" with lore "&a➤ Click to open"
+	set slot 25 of {_gui} to clock named "➥&7DEV-Tools" with lore "&a➤ Click to open"
+	open {_gui} to {_p}
+
+
+on inventory click:
+	if name of event-inventory is "&2Winterice Core System":
+		cancel event
+		event-inventory is not player's inventory
+		if clicked slot is 4:
+			send "&a➤ Kein Update verfügbar. "
+		if clicked slot is 19:
+			Pluginlist(player)
+		if clicked slot is 21:
+			Skriptlist(player)
+		if clicked slot is 23:
+			execute player command "/panel"
+
+on load:
+	set {auto.version} to "PRE-001.002.031"
+	set {bus.version} to "PRE-001.001.001"
+	set {chat.version} to "PRE-001.003.041"
+	set {Documentation.version} to "PRE-001.001.001"
+	set {Flughafen.version} to "Module not loaded"
+	set {friend.version} to "PRE-001.004.087"
+	set {grundstuecke.version} to "PRE-001.007.127"
+	set {kompass.version} to "PRE-002.041.142"
+	set {levelgeld.version} to "PRE-001.001.001"
+	set {library.version} to "PRE-001.001.001"
+	set {locksystem.version} to "PRE-002.007.031"
+	set {marry.version} to "PRE-001.001.041"
+	set {music.version} to "PRE-001.001.001"
+	set {staatsfirmen.version} to "PRE-001.002.004"
+	set {strom.version} to "PRE-001.003.047"
+	set {team.version} to "PRE-001.001.002"
+	set {waffen.version} to "PRE-001.001.001"
+	set {menus.version} to "PRE-004.007.174"
+
+
+function Skriptlist(p: player):
+	set {_gui} to chest inventory with 3 rows named "&2Skripts"
+
+	set slot (numbers between 0 and 27) of {_gui} to black stained glass pane
+	set slot 0 of {_gui} to paper named "auto" with lore "%{auto.version}%"
+	set slot 1 of {_gui} to paper named "bus" with lore "%{bus.version}%"
+	set slot 2 of {_gui} to paper named "chat" with lore "%{chat.version}%"
+	set slot 3 of {_gui} to paper named "Documentation" with lore "%{Documentation.version}%"
+	set slot 4 of {_gui} to paper named "Flughafen" with lore "%{Flughafen.version}%"
+	set slot 5 of {_gui} to paper named "friend" with lore "%{friend.version}%"
+	set slot 6 of {_gui} to paper named "grundstuecke" with lore "%{grundstuecke.version}%"
+	set slot 7 of {_gui} to paper named "kompass" with lore "%{kompass.version}%"
+	set slot 8 of {_gui} to paper named "levelgeld" with lore "%{levelgeld.version}%"
+	set slot 9 of {_gui} to paper named "library" with lore "%{library.version}%"
+	set slot 10 of {_gui} to paper named "locksystem" with lore "%{locksystem.version}%"
+	set slot 11 of {_gui} to paper named "marry" with lore "%{marry.version}%"
+	set slot 12 of {_gui} to paper named "menus" with lore "%{menus.version}%"
+	set slot 13 of {_gui} to paper named "music" with lore "%{music.version}%"
+	set slot 14 of {_gui} to paper named "staatsfirmen" with lore "%{staatsfirmen.version}%"
+	set slot 15 of {_gui} to paper named "strom" with lore "%{strom.version}%"
+	set slot 16 of {_gui} to paper named "team" with lore "%{team.version}%"
+	set slot 16 of {_gui} to paper named "waffen" with lore "%{waffen.version}%"
+	
+	open {_gui} to {_p}
+
+on inventory click:
+	if name of event-inventory is "&2Skripts":
+		cancel event
+		event-inventory is not player's inventory
+		reload script "%name of clicked item%"
+		send "&k... &c♼ Reloading %name of clicked item%.sk"
+
+
+
+
+
+
+
+
+
+
+
+function Pluginlist(p: player):
+	set {_gui} to chest inventory with 3 rows named "&2Plugins"
+	set slot 0 of {_gui} to paper named "&8 ✦ Animatica" with lore "&cLeftclick load, rightclick unload"
+	set slot 1 of {_gui} to paper named "&8 ✦ BigDoors" with lore "&cLeftclick load, rightclick unload"
+	set slot 2 of {_gui} to paper named "&8 ✦ CinematicStudios" with lore "&cLeftclick load, rightclick unload"
+	set slot 3 of {_gui} to paper named "&8 ✦ HolographicDisplays" with lore "&cLeftclick load, rightclick unload"
+	set slot 4 of {_gui} to paper named "&8 ✦ ItemsAdder" with lore "&cLeftclick load, rightclick unload"
+	set slot 5 of {_gui} to paper named "&8 ✦ WintericeVehicles" with lore "&cLeftclick load, rightclick unload"
+	set slot 6 of {_gui} to paper named "&8 ✦ OpenAudioMC" with lore "&cLeftclick load, rightclick unload"
+	set slot 7 of {_gui} to paper named "&8 ✦ QualityArmory" with lore "&cLeftclick load, rightclick unload"
+	set slot 8 of {_gui} to paper named "&8 ✦ RealisticSeasons" with lore "&cLeftclick load, rightclick unload"
+	
+	open {_gui} to {_p}
+
+on inventory click:
+	if name of event-inventory is "&2Plugins":
+		cancel event
+		event-inventory is not player's inventory
+		send "&k... &c♼ %name of clicked item% loading"
+		if clicked slot is 0:
+			if "%click type%" contains "LEFT":
+				enable plugin "Animatica-v2.1.6-CRACKED.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "Animatica-v2.1.6-CRACKED.jar"
+				
+				
+		if clicked slot is 1:
+			if "%click type%" contains "LEFT":
+				enable plugin "BigDoors.jar"
+				enable plugin "BigDoorsOpener-2.5.1.jar"
+				enable plugin "BigDoorsPhysics-2.3.1.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "BigDoors.jar"
+				disable plugin "BigDoorsOpener-2.5.1.jar"
+				disable plugin "BigDoorsPhysics-2.3.1.jar"
+				
+				
+		if clicked slot is 2:
+			if "%click type%" contains "LEFT":
+				enable plugin "CinematicStudio_1.4.3-r5 (1).jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "CinematicStudio_1.4.3-r5 (1).jar"
+			
+			
+		if clicked slot is 3:
+			if "%click type%" contains "LEFT":
+				enable plugin "HolographicDisplays.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "HolographicDisplays.jar"
+			
+			
+		if clicked slot is 4:
+			if "%click type%" contains "LEFT":
+				enable plugin "ItemsAdder_3.2.5-r3.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "ItemsAdder_3.2.5-r3.jar"
+			
+			
+		if clicked slot is 5:
+			if "%click type%" contains "LEFT":
+				enable plugin "MTVehicles.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "MTVehicles.jar"
+			
+			
+		if clicked slot is 6:
+			if "%click type%" contains "LEFT":
+				enable plugin "openaudiomc-6.7.7.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "openaudiomc-6.7.7.jar"
+			
+			
+		if clicked slot is 7:
+			if "%click type%" contains "LEFT":
+				enable plugin "QualityArmory.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "QualityArmory.jar"
+			
+			
+		if clicked slot is 8:
+			if "%click type%" contains "LEFT":
+				enable plugin "RealisticSeasons-10.2.5.jar"
+			if "%click type%" contains "RIGHT":
+				disable plugin "RealisticSeasons-10.2.5.jar"
+				
+				
+				
+				
+				
+
+
+
+
+
+
+
+options:
+    gui_name: "Hello, %player%."
+    startup_message: true
+
+    gui_permission: "agui.use"
+    clearchat_permission: "agui.clearchat"
+    restart_permission: "agui.restart.server"
+    kickall_permission: "agui.kickall"
+
+
+    time_permission: "agui.time"
+    
+    # Set to air to disable.
+    filler_block1: grey stained glass pane
+    filler_block2: light grey stained glass pane
+    filler_name: " "
+
+    clear_chat_message: "&B&LChat Cleared by %event-player%"
+    permission_message: "&cNo Permission"
+
+    vanish_command: "/vanish"
+
+
+
+
+
+command /panel:
+    aliases: /ag, /agui, /options
+    permission: {@gui_permission}
+    description: "Open the Admin GUI"
+    trigger:
+        set {_plonline} to number of online players
+        set {_gui} to a new chest inventory with 6 row with name {@gui_name}
+        set slot 0 of {_gui} to red concrete named "&4Stop Server &eUse with Caution."
+        set slot 1 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 2 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 3 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 4 of {_gui} to yellow concrete named "&eRestart Server"
+        set slot 5 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 6 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 7 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 8 of {_gui} to lime concrete named "&aReload all Skripts &eUse with Caution."
+        set slot 9 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 10 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 11 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 12 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 22 of {_gui} to a water bucket named "&9Change Weather"
+        set slot 14 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 15 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 16 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 17 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 18 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 19 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 20 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 21 of {_gui} to a player skull named "&6Teleport All" with lore "&eUse with Caution."
+        set slot 13 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 23 of {_gui} to a feather named "&6Vanish"
+        set slot 24 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 25 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 26 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 27 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 28 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 29 of {_gui} to a barrier named "&cKick all Players"
+        set slot 30 of {_gui} to eye of ender named "&bClear Chat"
+        set slot 31 of {_gui} to a compass named "&aPlayers Online: %{_plonline}%"
+        set slot 33 of {_gui} to a diamond sword named "&2Change Gamemode"
+        set slot 34 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 35 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 36 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 37 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 38 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 49 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 42 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 43 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 44 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 45 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 46 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 47 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 48 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 50 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 51 of {_gui} to {@filler_block1} named {@filler_name}
+        set slot 52 of {_gui} to {@filler_block2} named {@filler_name}
+        set slot 53 of {_gui} to {@filler_block1} named {@filler_name}
+        open {_gui} to player
+
+
+
+on inventory click:
+    event-inventory is not player's inventory
+    if name of event-inventory is {@gui_name}:
+        cancel event
+        if index of event-slot is 0:
+            close event-player's inventory
+            wait 1 tick
+            execute player command "/stop"
+        if index of event-slot is 4:
+            if event-player has permission {@restart_permission}:
+                close event-player's inventory
+                cancel event
+                wait 1 tick
+                restart the server
+            else:
+                send "&cNo Permission" to event-player
+        if index of event-slot is 8:
+            close event-player's inventory
+            cancel event
+            wait 2 ticks
+            execute player command "/sk reload all"
+        if index of event-slot is 21:
+            send "&aTeleported all players to your current location." to event-player
+            loop all players:
+                close event-player's inventory
+                teleport loop-player to event-player
+        if index of event-slot is 23:
+            execute player command {@vanish_command}
+
+        if index of event-slot is 29:
+            set {_plonline} to number of all players
+            if event-player has permission {@kickall_permission}:
+                loop all players:
+                    kick loop-player due to "Kicked from server."
+                    send "&4%event-player% Kicked all Players" to console
+            
+        if index of event-slot is 30:
+            if event-player has permission {@clearchat_permission}:
+                loop 100 times:
+                    send " " to all players
+                send {@clear_chat_message} to all players
+
+        if index of event-slot is 31:
+            set {_plonline} to number of all players
+            set {_plgui} to a new chest inventory with 6 row with name "Players Online: %{_plonline}%"
+            wait a tick
+            set {_s} to 0
+        loop all players:
+            set {_lp} to the loop-player
+            set {_lpworld} to loop-player's world
+            set {_phead} to loop-player's head named "&f%{_lp}%"
+            set line 1 of lore of {_phead} to "&6World: %{_lpworld}%"
+            set line 2 of lore of {_phead} to "&fClick to Teleport!"
+            set slot {_s} of {_plgui} to {_phead}
+            set slot 53 of {_plgui} to arrow named "&cBack"
+            if {_s} is 53:
+                stop
+            else:
+                add 1 to {_s}
+                open {_plgui} to player
+
+        if index of event-slot is 32:
+            execute player command {@mute_chat_command}
+
+        if index of event-slot is 33:
+            set {_gmgui} to a new chest inventory with 1 row with name "Select Gamemode"
+            set slot 0 of {_gmgui} to grass block named "&aCreative"
+            set slot 1 of {_gmgui} to {@filler_block1} named {@filler_name}
+            set slot 2 of {_gmgui} to {@filler_block2} named {@filler_name}
+            set slot 3 of {_gmgui} to {@filler_block1} named {@filler_name}
+            set slot 4 of {_gmgui} to white stained glass named "&cSpectator"
+            set slot 5 of {_gmgui} to {@filler_block1} named {@filler_name}
+            set slot 6 of {_gmgui} to {@filler_block2} named {@filler_name}
+            set slot 7 of {_gmgui} to {@filler_block1} named {@filler_name}
+            set slot 8 of {_gmgui} to a diamond sword named "&4Survival"
+            open {_gmgui} to event-player
+ 
+        if index of event-slot is 39:
+            set {_wgui} to a new chest inventory with 1 row with name "Select Time"
+            set slot 0 of {_wgui} to paper named "&r12:00am"
+            set slot 1 of {_wgui} to paper named "&r06:00am"
+            set slot 2 of {_wgui} to paper named "&r08:00am"
+            set slot 3 of {_wgui} to paper named "&r10:00am"
+            set slot 4 of {_wgui} to paper named "&r12:00pm"
+            set slot 5 of {_wgui} to paper named "&r02:00pm"
+            set slot 6 of {_wgui} to paper named "&r04:00pm"
+            set slot 7 of {_wgui} to paper named "&r06:00pm"
+            set slot 8 of {_wgui} to arrow named "&6Next Page"
+            open {_wgui} to player
+
+        if index of event-slot is 41:
+            execute player command {@butcher_command}
+
+        if index of event-slot is 40:
+            cancel event
+            wait 2 ticks
+            execute player command "/sk reload admingui"
+
+
+
+on inventory click:
+    event-inventory is not player's inventory
+    set {_plonline} to number of online players
+    if name of event-inventory is {@gui_name}:
+        if index of event-slot is 22:
+            set {_wtgui} to a new chest inventory with 1 row with name "Select Weather"
+            set slot 0 of {_wtgui} to gold block named "&6Sunshine"
+            set slot 1 of {_wtgui} to {@filler_block1} named {@filler_name}
+            set slot 2 of {_wtgui} to {@filler_block2} named {@filler_name}
+            set slot 3 of {_wtgui} to {@filler_block1} named {@filler_name}
+            set slot 4 of {_wtgui} to a barrier named "&cMain Menu"
+            set slot 5 of {_wtgui} to {@filler_block1} named {@filler_name}
+            set slot 6 of {_wtgui} to {@filler_block2} named {@filler_name}
+            set slot 7 of {_wtgui} to {@filler_block1} named {@filler_name}
+            set slot 8 of {_wtgui} to redstone named "&1Storm"
+            open {_wtgui} to player
+    if name of event-inventory is "Players Online: %{_plonline}%":
+        cancel event
+        set {_tpname} to the event-block
+        teleport the player to {_tpname}
+        send "&aTeleported to &2%{_tpname}%&a."
+    else if name of event-inventory is "Select Weather":
+        cancel event
+        if index of event-slot is 0:
+            execute player command "/weather clear"
+        if index of event-slot is 4:
+            execute player command "/agui"
+        if index of event-slot is 8:
+            execute player command "/weather storm"
+    else if name of event-inventory is "Select Gamemode":
+        cancel event
+        if index of event-slot is 0:
+            close event-player's inventory
+            execute player command "/gamemode creative"
+        if index of event-slot is 4:
+            close event-player's inventory
+            execute player command "/gamemode spectator"
+        if index of event-slot is 8:
+            close event-player's inventory
+            execute player command "/gamemode survival"
+    else if name of event-inventory is "Players Online: %{_plonline}%":
+        if index of event-slot is 53:
+            execute player command "/agui"
+        else:
+            close event-player's inventory
+
+
+on script load:
+    {@startup_message}:
+        send "&aAdminGUI by &fMashhhyyy &aSuccessfully Loaded" to console
+    stop

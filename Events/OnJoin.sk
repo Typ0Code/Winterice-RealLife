@@ -6,7 +6,7 @@ on join:
 		set {%player's UUID%.abrechnung.strom} to 0
 	if {firstJoin.%uuid of player%} is not set:
 		teleport player to location at 77, 75, -358 in world "world"
-		wait 2 seconds # Um Lags zu vermeiden aufgrund des Lagebildschirms bei Weltwechsel
+		wait 2 seconds # Um Lags zu vermeiden aufgrund des Ladebildschirms bei Weltwechsel
 		clear player's inventory #Um alle versehentlichen Items im Inventar zu löschen (Minecraft Bug)
 		send "" to player #Damit mögliche Join Nachrichten gecleart werden
 		send "" to player
