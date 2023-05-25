@@ -25,7 +25,12 @@ on right click:
 #		send "&e&l➣  &4&l⚠ &6Du kannst dies nicht öffnen!" to player
 #		cancel event
 		stop
-		
+	
+on command "/Skript reload":
+	broadcast ""
+	broadcast "{@prefix} &c{@alert} ACHTUNG   &6{@kreis}  Folgender Systemrelevante Befehl wurde ausgeführt : &2&l %arguments%"
+	broadcast ""
+
 command /tc [<text>]:
 	aliases: /teamchat
 	permission: *

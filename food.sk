@@ -1,0 +1,124 @@
+command /food:
+	permission: *
+	permission message: No Permission
+	aliases: essen
+	executable by: player
+	trigger:
+		wait 5 ticks
+		give 1 of skull of "Molflin" parsed as offline player named "&7Muffin" to player
+		wait 5 ticks
+		give 1 of skull of "Thanauser" parsed as offline player named "&7Bier" to player
+		wait 5 ticks
+		give 1 of skull of "GROUK" parsed as offline player named "&7Brot" to player
+		wait 5 ticks
+		give 1 of skull of "CakeKillz" parsed as offline player named "&7Tortenstück" to player
+		wait 5 ticks
+		give 1 of skull of "Witherxkill" parsed as offline player named "&7Erdbeerkuchen" to player
+		wait 5 ticks
+		give 1 of skull of "polkadot44" parsed as offline player named "&7Pepso" to player
+		wait 5 ticks
+		give 1 of skull of "pechenyshko" parsed as offline player named "&7Keks" to player
+		wait 5 ticks
+		give 1 of skull of "StarfirePrime" parsed as offline player named "&7Fried Chicken" to player
+		wait 5 ticks
+		give 1 of skull of "BiggWigz" parsed as offline player named "&7Schokolade" to player
+		wait 5 ticks
+		give 1 of skull of "Hershey" parsed as offline player named "&7Dunkle Schokolade" to player
+		wait 5 ticks
+		give 1 of skull of "MrTacomarker" parsed as offline player named "&7Taco" to player
+		wait 5 ticks
+		give 1 of skull of "TheUnderground11" parsed as offline player named "&7Hamburger" to player
+		wait 5 ticks
+		give 1 of skull of "Kekb" parsed as offline player named "&7Sundae" to player
+		
+function vitalfettchance(p: player, rarity: number = 0.5):
+	play sound "entity.generic.eat" at volume 2 to {_p}
+	chance of {_rarity}%:
+		if {%uuid of {_p}%_fett} is 5:
+			send "" to {_p}
+			send "&3&l TIPP" to {_p}
+			send "" to {_p}
+			send "            &bDu solltest ein Fitnessstudio aufsuchen!" to {_p}
+			send "" to {_p}
+			broadcast "Checkpoint 2"
+		if {%uuid of {_p}%_fett} is not 5:
+			add 1 to {%uuid of {_p}%_fett}
+			broadcast "Checkpoint 3"
+			
+			
+on rightclick with player head:
+	if name of tool of player is "&7Muffin":
+		cancel event
+		add 2 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player)
+	if name of tool of player is "&7Bier":
+		cancel event
+		add 1 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.2)
+	if name of tool of player is "&7Brot":
+		cancel event
+		add 3 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0)
+	if name of tool of player is "&7Tortenstück":
+		cancel event
+		add 4 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.7)
+	if name of tool of player is "&7Erdbeerkuchen":
+		cancel event
+		add 4 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 1.0)
+	if name of tool of player is "&7Pepso":
+		cancel event
+		add 1 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.1)
+	if name of tool of player is "&7Keks":
+		cancel event
+		add 1 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.1)
+	if name of tool of player is "&7Fried Chicken":
+		cancel event
+		add 5 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.5)
+	if name of tool of player is "&7Schokolade":
+		cancel event
+		add 3 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.4)
+	if name of tool of player is "&7Dunkle Schokolade":
+		cancel event
+		add 3 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.3)
+	if name of tool of player is "&7Taco":
+		cancel event
+		add 4 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.4)
+	if name of tool of player is "&7Hamburger":
+		cancel event
+		add 5 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.4)
+	if name of tool of player is "&7Sundae":
+		cancel event
+		add 3 to player's food level
+		remove 1 of tool from tool
+		vitalfettchance(player, 0.7)
+		
+command /vital:
+	aliases: vitalwerte,fett,muskeln
+	executable by: player
+	trigger:
+		send ""
+		send "    &3&lVitalwerte"
+		send "            &7» &bFett :     %{%uuid of player%_fett}% / 5"
+		send "            &7» &bMuskeln:     %{%uuid of player%_muskeln}% / 5"
+		send ""
