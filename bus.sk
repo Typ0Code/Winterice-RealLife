@@ -35,7 +35,7 @@ on inventory click:
 			stop
 		else:
 			cancel event
-			send "&2Der Bus fährt gleich los..."
+			send "&2Der Bus fährt gleich los...."
 			add 25 to {%uuid of player%_exp}
 			set {%player%.bus.delay} to true
 			set {%player%.wartezeit} to a random integer between 1 and 5
