@@ -56,7 +56,7 @@ on inventory click:
 				if "%{_index.event.slot.bus}%" is loop-index:
 					set {_warp.name.%player%.Dauer} to ( {distance.bus.%player%.%loop-value%} / 50 ) * 3
 					set {_warp.name.%player%.Dauer} to round({_warp.name.%player%.Dauer})
-					teleport player to location -134, 65, -392 in world "world"
+					teleport player to location 359, 66.5, -20.5 in world "world"
 					set {name.bus.%player%} to loop-value
 					set {warp.name.bus.%player%.Dauer} to {_warp.name.%player%.Dauer}
 					set {warp.name.bus.%player%} to true

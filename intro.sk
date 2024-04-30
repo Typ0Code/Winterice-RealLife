@@ -279,6 +279,7 @@ on rightclick with stone button:
 				
 				
 on rightclick with redstone:
+	{%player's uuid%.deny.movement.lobby} is true
 	set {character.%player's uuid%} to true
 	set helmet of player to golden helmet
 	set chestplate of player to golden chestplate
