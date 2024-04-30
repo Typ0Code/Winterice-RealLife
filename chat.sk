@@ -1,5 +1,7 @@
 on chat:
 	cancel event
+	if {%player's uuid%.chat.fertig} is true:
+		stop
 	if {%player%.add.player} is true:
 		set {_p.add} to message parsed as player
 		set {_baurechteregion} to the first 7 characters of "%region at player%"

@@ -1,0 +1,378 @@
+
+command /resetintro:
+	trigger:
+		delete {character.%player's uuid%}
+
+on join:
+	if player has permission "*":
+		stop
+	
+	if {%player%_gesperrt} is true: # Falls alter Account über IP gesperrt sein sollte
+		kick player because "&7Bitte warte einen Moment.. Du wurdest eben erst gesperrt!"
+		stop
+
+	if {character.%player's uuid%} is not set:
+		send title "&c&lLade... " with subtitle "&7Dies kann bis zu eine Minute dauern..." to player for 20 seconds
+		wait 2 seconds
+		loop 100 times:
+			send ""
+		wait 10 seconds
+		loop 100 times:
+			send ""
+		clear player's inventory
+		set {%player's uuid%.deny.movement.lobby} to true
+		set player's gamemode to spectator
+		set {_w} to a world creator named "character_creation_%player's uuid%" to clone world("character_creation_") 
+		load world from creator {_w}
+		teleport player to location(35, -57, -26, world "character_creation_%player's uuid%", -30, 1)
+		wait 1 second
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Simulation..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Lade Simulation..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Erstelle Standardcharakter.." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Generiere Terrain..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Datenbank..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Simulation..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Schaue in den Chat..." to player for 5 seconds
+		wait 5 seconds
+		loop 100 times:
+			send ""
+		send title "&c&lSCHAUE IN DEN CHAT" with subtitle "&7und lies ihn genau durch..." to player for 60 seconds
+		send "&c---"
+		send ""
+		send "&2&lWillkommen! &7Lass mich dir eine kleine Einführung geben..."
+		send ""
+		send "&c---"
+		send ""
+		wait 5 seconds
+		send "&e&l➣  &c⚠ &e&l Wir gehen nun die Einstellungen durch, die du für diesen Server vornehmen musst."
+		send ""
+		wait 5 seconds
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send "&c---                                   &c❶"
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send "&e&l➣  &c⚠ &e&l Stelle die Sichtweite und die Simulationsweite auf 12 Chunks! Ich warte solange..."
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send "&7Du findest diese Option unter  &lOptionen ➣ Grafikeinstellungen ➣ die beiden Regler ganz oben rechts"
+		wait 15 seconds
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send "&c---                                   &c➋"
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send "&e&l➣  &c⚠ &e&l Stelle das Sichtfeld/FOV auf einen Wert zwischen 70 und 85! Ich warte solange..."
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send "&7Du findest diese Option unter  &lOptionen ➣  ganz oben links"
+		wait 15 seconds
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		send ""
+		wait 1 tick
+		send "&c---                                   &c➌"
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send "&e&l➣  &c⚠ &e&l Stelle den Grafikmodus auf Fabelhaft für farbige Lichter! Ich warte solange..."
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send "&7Du findest diese Option unter  &lOptionen ➣ Grafikeinstellungen ➣  ganz oben links"
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send ""
+		wait 1 tick
+		send ""
+		wait 1 tick	
+		send "&l&7---------- &a H I N W E I S &7----------"
+		wait 1 tick
+		send "&e&l➣  &c⚠ &6&l Sollte dein PC eine schlechtere Grafikkarte als die 1050 / 1650 oder weniger als 16 GB RAM verfügen, probiere diese Einstellung hier in dieser Lobby erstmal aus!"
+		wait 10 seconds
+		send "&c&l Wenn du fertig bist, schreibe 'fertig' in den chat"
+		set {%player's uuid%.chat.fertig} to true
+		
+
+on chat:
+	if {%player's uuid%.chat.fertig} is true:
+		if message contains "fertig":
+			cancel event
+			execute player command "/charactercreationcontinue"
+			delete {%player's uuid%.chat.fertig}
+			set player's gamemode to adventure
+			
+		else:
+			send "&c&l Wenn du fertig bist, schreibe 'fertig' in den chat"
+			cancel event		
+		
+		
+		
+command /charactercreationcontinue:
+	executable by: player
+	trigger:
+		set {%player's uuid%.deny.movement.lobby} to true
+		set {%player's uuid%.character.position} to 0
+		teleport player to location(35.041, -57, -21.883, world "character_creation_%player's uuid%", -46.8, 3.2)
+		set slot 0 of player to oak button named "&7nach links drehen"
+		set slot 8 of player to stone button named "&7nach rechts drehen"
+		
+		set slot 2 of player to leather helmet named ""
+		set slot 3 of player to leather chestplate named ""
+		set slot 4 of player to redstone named "&2&lfertig"
+		set slot 5 of player to leather leggings named ""
+		set slot 6 of player to leather boots named ""
+		
+on rightclick on armor stand:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		
+on damage:
+	if victim is armor stand:
+		if {%attacker's uuid%.deny.movement.lobby} is true:
+			cancel event
+		
+
+on any movement:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		
+on inventory click:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+	
+on drop:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		
+		
+on rightclick with leather helmet:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		loop all entities in radius 3 around player:
+			if loop-entity is a armor stand:
+				set {_a} to loop-entity
+				set helmet of {_a} to golden helmet
+				
+on rightclick with leather chestplate:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		loop all entities in radius 3 around player:
+			if loop-entity is a armor stand:
+				set {_a} to loop-entity
+				set chestplate of {_a} to golden chestplate
+				
+on rightclick with leather leggings:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		loop all entities in radius 3 around player:
+			if loop-entity is a armor stand:
+				set {_a} to loop-entity
+				set leggings of {_a} to golden leggings
+				
+on rightclick with leather boots:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		loop all entities in radius 3 around player:
+			if loop-entity is a armor stand:
+				set {_a} to loop-entity
+				set boots of {_a} to golden boots
+			
+		
+on rightclick with oak button:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		if {%player's uuid%.character.position} is 0:
+			teleport player to location(37.992, -57, -21.936, world "character_creation_%player's uuid%", 44.8, 4.9)
+			set {%player's uuid%.character.position} to 1
+			stop
+			
+			
+			
+		if {%player's uuid%.character.position} is 1:
+			set {%player's uuid%.character.position} to 2
+			teleport player to location(37.925, -57, -18.998, world "character_creation_%player's uuid%", 135.3, 8.3)
+			stop
+			
+			
+			
+		if {%player's uuid%.character.position} is 2:
+			set {%player's uuid%.character.position} to 3
+			teleport player to location(35.300, -57, -19.075, world "character_creation_%player's uuid%", -140.7, 6.3)
+			stop
+			
+			
+			
+		if {%player's uuid%.character.position} is 3:
+			set {%player's uuid%.character.position} to 0
+			teleport player to location(35.041, -57, -21.883, world "character_creation_%player's uuid%", -46.8, 3.2)
+			stop
+			
+			
+			
+			
+on rightclick with stone button:
+	if {%player's uuid%.deny.movement.lobby} is true:
+		cancel event
+		if {%player's uuid%.character.position} is 0:
+			teleport player to location(35.300, -57, -19.075, world "character_creation_%player's uuid%", -140.7, 6.3)
+			set {%player's uuid%.character.position} to 3
+			stop
+			
+			
+			
+		if {%player's uuid%.character.position} is 3:
+			set {%player's uuid%.character.position} to 2
+			teleport player to location(37.925, -57, -18.998, world "character_creation_%player's uuid%", 135.3, 8.3)
+			stop
+			
+			
+			
+		if {%player's uuid%.character.position} is 2:
+			set {%player's uuid%.character.position} to 1
+			teleport player to location(37.992, -57, -21.936, world "character_creation_%player's uuid%", 44.8, 4.9)
+			stop
+			
+			
+			
+		if {%player's uuid%.character.position} is 1:
+			set {%player's uuid%.character.position} to 0
+			teleport player to location(35.041, -57, -21.883, world "character_creation_%player's uuid%", -46.8, 3.2)
+			stop
+			
+			
+				
+				
+				
+on rightclick with redstone:
+	set {character.%player's uuid%} to true
+	set helmet of player to golden helmet
+	set chestplate of player to golden chestplate
+	set leggings of player to golden leggings
+	set boots of player to golden boots
+	delete {%player's uuid%.deny.movement.lobby}
+	delete {%player's uuid%.character.position}
+	teleport player to location(64, 78, -414, world "world", 156, 5)
+	wait 1 second
+	set player's gamemode to survival
+	delete world file for "character_creation_%player's uuid%"
+	if {firstJoin.%uuid of player%} is not set:
+		send "" to player #Damit mögliche Join Nachrichten gecleart werden
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		send "" to player
+		wait 2 seconds # Um Server Timeouts zu vermeiden
+		give compass to player #Kompass für Navigation
+		send "&0████████████████████████████████████████"
+		send "&0████████████████████████████████████████"
+		send "&0██████████████ &f&lWillkommen auf &0██████████████"
+		send "&0████████████████████████████████████████"
+		send "                                &6          ___ ___   __     __  ___      __   __ "
+		send "                                &6|   | | |\ |  |   |__   |__) | /   ` |__       |__) |__)"
+		send "                                &6|/\| | | \|  |   |___ |  \  | \__,  |___     |  \  |   "
+		send "&0████████████████████████████████████████"
+		send "&0███████████&b✯ &2Das &6&lechte &cLeben&0████████████"
+		send "&0████████████████████████████████████████"
+		send "&0████████████████████████████████████████"
+		wait 5 seconds # Damit der Spieler nicht "überflutet" wird
+		send "&e&l➣  &f&l⚠ &6&lFahre mit dem Bus zum Jobcenter, um deine Karriere zu beginnen! Nutze den Kompass, um die nächste Haltestelle zu finden!" #Anweisung was er zutun hat
+		play sound "notification_info" with volume 1000 with pitch 1 at player for player #Sound kommt bald
+	if {days::%player's uuid%} is not set: #setze Variable für Ontime auf 0, damit Variable nicht null anzeigt
+		set {days::%player's uuid%} to 0
+	if {hour::%player's uuid%} is not set: #setze Variable für Ontime auf 0, damit Variable nicht null anzeigt
+		set {hour::%player's uuid%} to 0
+	if {minute::%player's uuid%} is not set: #setze Variable für Ontime auf 0, damit Variable nicht null anzeigt
+		set {minute::%player's uuid%} to 0
+	if {%player's uuid%_Tab} is not set:
+		set {%player's uuid%_Fraktion} to "Zivilist" # Setze Fraktion von Spieler auf Zivilist (Minecraft Standart)
+		set the player's tablist name to "&7%player%" #Setze Tablist Farbe
+	delete {%player's uuid%_teamdienst} #Um Variablenbug zu vermeiden
+	set {friends::%player's uuid%::login} to now #Setze letzten Joinpunkt zu jetzt.
+	loop {friend.list.%player's uuid%::*}: #Hole alle Freunde des Spielers
+		if loop-value is online: #Gehe jeden Freund des Spielers durch
+			send loop-value title "&8» &a%player% ist beigetreten!" for 2 seconds #Gebe allen Freunden des Spielers die Nachricht, dass er gejoint ist.
+	if {friend.count.%player's uuid%} is not set: 
+		set {friend.count.%player's uuid%} to 0 # Setze den Variablentyp auf int
+	if {%uuid of player%_level} is not set: 
+		set {%uuid of player%_level} to 1 #Setze Datentyp auf int
+		set {%uuid of player%_level2} to {%uuid of player%_level} + 1 #Setze benötigtes Level auf int / Hole level und addiere 1 dazu um die nächste Levelstufe zu bekommen
+		set {%uuid of player%_exp} to 0 #Setze xp auf int 
+		set {%{%uuid of player%_level2}%_levelneed} to ( 150 * 1.32 ) * {%uuid of player%_level2} #Formel für die XP, die fürs auflevel benutzt wird. Funktion sorgt für ein stetig ansteigendes Ziel
+	if {firstJoin.%uuid of player%} is not set:
+		set {firstJoin.%uuid of player%} to now #Setze datum und Uhrzeit für den ersten join
+	if {Marrypartner::%uuid of player%} is not set:
+		set {Marrypartner::%uuid of player%} to "&cNiemandem" #Setze partner auf den String Niemandem, um sich einige zeilen bei /m zu sparen
+	set {lastJoin.%uuid of player%} to now #Setze letzten Joinpunkt auf jetzt.
+	if {%uuid of player%_fett} is not set:
+		set {%uuid of player%_fett} to 3 #Setze fettlevel auf Standardwert 3
+	if {%uuid of player%_muskeln} is not set:
+		set {%uuid of player%_muskeln} to 3 #Setze muskellevel auf Standardwert 3
+	if {%uuid of player%_promille} is not set:
+		set {%uuid of player%_promille} to 0.00 #Setze Promille auf Datentyp Double
+	if {%player's uuid%_kontonummer_bank} is not set: #Überprüfe, ob der Spieler ein Konto hat
+		set {%player's uuid%_kontonummer_bank} to random integer between 1000000000 and 9999999999 #Setze Kontonummer auf eine zufällige 10-stellige Zahl
+		loop {kontonummer.list::*}: #Hole alle bereits existierenden Kontonummern
+			if {%player's uuid%_kontonummer_bank} is loop-value: #Überprüfe, ob zufällig generierte Kontonummer bereits existiert
+				set {%player's uuid%_kontonummer_bank} to random integer between 1000000000 and 9999999999 #Setze Kontonummer neu
+			else: #Sollte Kontonummer nicht existieren, setze generierte Kontonummer in die Liste
+				add {%player's uuid%_kontonummer_bank} to {kontonummer.bank.list::*}
+		if {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} is not set:
+			wait 2 ticks
+			set {%{%player's uuid%_kontonummer_bank}%_kontostand_bank} to 100 #Setze Kontostand auf Standardwert 300
+		if {%player's uuid%_bargeld} is not set:
+			wait 2 ticks
+			set {%player's uuid%_bargeld} to 250 #Setze Bargeld auf Standardwert 250
+	if {%UUID of player%.stuendlicheabrechnung.miete} is not set:
+		set {%UUID of player%.stuendlicheabrechnung.miete} to 0 #Setze Miete auf Datentyp int
+	if {%player's uuid%.locations} is not set:
+		set {%player's uuid%.locations} to 0 #Setze locations auf Datentyp int
+	if {%player's uuid%.locations} < 0: #Falls durch Bug anzahl der eigenen Orte unter 0 sein sollte, resette sie
+		set {%player's uuid%.locations} to 0
+	if {settings.color.%player's UUID%} is not set: #Setze standard-/m Farbe zu String "Blue"
+		set {settings.color.%player's UUID%} to "blue"
+	if {%player's UUID%.abrechnung.strom} is not set: #Setze Stromvariable auf 0, damit wird der Datentyp auf int gesetzt
+		set {%player's UUID%.abrechnung.strom} to 0
