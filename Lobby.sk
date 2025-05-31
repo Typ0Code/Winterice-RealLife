@@ -1,0 +1,2318 @@
+# Documentation made with Skript-Parser
+
+
+
+
+
+#/build: was registered on line 26
+#
+#/ownsimulationcreate: was registered on line 37
+#
+#/level [<offline player>]: was registered on line 68
+#
+#/resetlevel: was registered on line 75
+#
+#/addlevel <offline player> <number>: was registered on line 79
+#
+#/sendlevel <offline player> <offline player>: was registered on line 85
+#
+#/ankatnt [<text>]: was registered on line 112
+#
+#/vc [<text>] [<text>]: was registered on line 149
+#
+#/ans [<text>]: was registered on line 207
+#
+#/ankaweather [<text>]: was registered on line 253
+#
+#/am [<text>] [<offlineplayer>] [<integer>]: was registered on line 281
+#
+#/ambal: was registered on line 302
+#
+#/ampay [<offlineplayer>] [<integer>]: was registered on line 307
+#
+#/sudo [<player>] [<text>]: was registered on line 463
+#
+#/repair [<text>] [<player>]: was registered on line 477
+#
+#/nick [<text>] [<offlineplayer>]: was registered on line 495
+#
+#/ptime [<text>]: was registered on line 522
+#
+#/day: was registered on line 545
+#
+#/night: was registered on line 557
+#
+#/effect [<player>] [<text>] [<number>] [<number>]: was registered on line 569
+#
+#/enchant [<enchantment>] [<number>] [<player>]: was registered on line 597
+#
+#/kill [<player>]: was registered on line 618
+#
+#/burn [<player>] [<number>]: was registered on line 634
+#
+#/setspawn: was registered on line 664
+#
+#/spawn [<player>]: was registered on line 674
+#
+#/spawnmob [<entitytype>] [<number>]: was registered on line 687
+#
+#/skull [<player>]: was registered on line 707
+#
+#/vanish: was registered on line 727
+#
+#/clear [<player>]: was registered on line 753
+#
+#/give [<player>] [<item>] [<number>]: was registered on line 774
+#
+#/unbanip [<offlineplayer>]: was registered on line 789
+#
+#/ipban [<offlineplayer>] [<text>]: was registered on line 805
+#
+#/unmute [<offlineplayer>]: was registered on line 819
+#
+#/tempmute [<offlineplayer>] [<integer>] [<text>]: was registered on line 849
+#
+#/unban [<offlineplayer>]: was registered on line 866
+#
+#/ban [<offlineplayer>] [<text>]: was registered on line 894
+#
+#/kick [<player>] [<text>]: was registered on line 913
+#
+#/banlist: was registered on line 928
+#
+#/tempban [<offlineplayer>] [<integer>] [<text>]: was registered on line 934
+#
+#/ipcheck [<player>]: was registered on line 954
+#
+#/tphere [<player>]: was registered on line 966
+#
+#/delwarp [<text>]: was registered on line 986
+#
+#/warps: was registered on line 999
+#
+#/warp [<text>]: was registered on line 1031
+#
+#/setwarp [<text>]: was registered on line 1043
+#
+#/tpayes: was registered on line 1108
+#
+#/tpa [<player>]: was registered on line 1115
+#
+#/sethome [<text>]: was registered on line 1141
+#
+#/delhome [<text>]: was registered on line 1177
+#
+#/homes: was registered on line 1190
+#
+#/home [<text>]: was registered on line 1195
+#
+#/cmdspy: was registered on line 1208
+#
+#/rename [<text>]: was registered on line 1234
+#
+#/kit [<text>] [<player>]: was registered on line 1249
+#
+#/kitsave [<text>] [<text>]: was registered on line 1283
+#
+#/kitlist: was registered on line 1292
+#
+#/tptoggle: was registered on line 1299
+#
+#/teleport [<player>] [<player>]: was registered on line 1319
+#
+#/anvil: was registered on line 1350
+#
+#/invsee [<player>]: was registered on line 1361
+#
+#/invedit [<player>]: was registered on line 1375
+#
+#/gamemode [<text>] [<player>]: was registered on line 1392
+#
+#/broadcast [<text>]: was registered on line 1460
+#
+#/god [<offlineplayer>]: was registered on line 1483
+#
+#/fly [<player>]: was registered on line 1522
+#
+#/socialspy: was registered on line 1570
+#
+#/msg [<player>] [<text>]: was registered on line 1590
+#
+#/togglemsg: was registered on line 1617
+#
+#/workbench: was registered on line 1638
+#
+#/enderchest: was registered on line 1648
+#
+#/heal [<player>]: was registered on line 1660
+#
+#/feed [<player>]: was registered on line 1687
+#
+#/lockchat: was registered on line 1717
+#
+#/ankaclear [<text>]: was registered on line 1747
+#
+#/ankacore: was registered on line 1808
+
+on any movement:
+	if {%player%.deny.movement} is true:
+		cancel event
+
+command /resetmovement:
+	permission: *
+	trigger:
+		delete {%player%.deny.movement}
+
+command /jointest:
+	trigger:	
+		set player's helmet to carved pumpkin named ""
+		set {%player%.deny.movement} to true
+		set player's gamemode to spectator
+		teleport player to location(391, 76, 690, world "world")
+		wait 10 seconds
+		play sound "intro.music" at volume 0.5 to player
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Simulation..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Lade Simulation..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Erstelle Villa.." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Generiere Terrain..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Datenbank..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Simulation..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Backe Kekse..." to player for 5 seconds
+		wait 5 seconds
+		send title "&c&lLade... " with subtitle "&7Dies kann bis zu eine Minute dauern..." to player for 20 seconds
+		if {%player%.metaverse.villa} is not set:
+			execute console command "/mv clone metaverse_user %player's UUID%_metaverse_hub"
+			send "&7➢ Deine Welt wird erstellt..."
+			set {%player%.metaverse.villa} to true
+		wait 20 seconds
+		send "&2✔ Erfolgreich"
+		send title "&c&l~~~~~~~" with subtitle "&7EINGEHENDE VERBINDUNG" to player for 20 seconds
+		wait 2 seconds
+		teleport player to location(108, 68, 146, world "LAB", 40, 26)
+		wait 5 seconds
+		play sound "intro.laboratory" at volume 1 to player
+		wait 20 seconds
+		teleport player to location(103, 67, 142, world "LAB", 143, 32)
+		wait 40 seconds
+		teleport player to location(94, 67, 153, world "LAB", -50, 20)
+		wait 35 seconds
+		teleport player to location(390, 76, 690, world "world")
+		wait 1 second
+		send "&4O  Lade Daten..."
+		play sound "intro.music" at volume 0.5 to player
+		send title "&c&lLade... " with subtitle "&7Dies kann bis zu eine Minute dauern..." to player for 5 seconds
+		set player's gamemode to adventure
+		wait 5 seconds
+		execute console command "/mvtp %player% %player's UUID%_metaverse_hub" 
+		send "&7Intro noch in BETA..."
+		set player's helmet to air
+		delete {%player%.deny.movement}
+
+
+on join:
+	if {%player's UUID%.intro.skip} is true:
+		if {%player%.metaverse.villahub} is not set:
+			send "&cEin kritischer Fehler ist aufgetreten. Bitte melde dich umgehend an den Support."
+			stop
+		send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Überspringe Intro.." to player for 5 seconds
+		wait 3 seconds
+		execute console command "/mvtp %player% %player's UUID%_metaverse_user" 
+		set player's helmet to air
+		set player's gamemode to adventure
+		delete {%player%.deny.movement}
+		stop
+	set player's helmet to carved pumpkin named ""
+	set {%player%.deny.movement} to true
+	set player's gamemode to spectator
+	teleport player to location(391, 76, 690, world "world")
+	send "intro lädt..."
+	send title "&c&lIntro lädt..." with subtitle "&7Verbinde zur Simulation..." to player for 30 seconds
+	wait 30 seconds
+	play sound "intro.music" at volume 0.5 to player
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Simulation..." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Lade Simulation..." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Erstelle Villa.." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Generiere Terrain..." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Datenbank..." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Verbinde zur Simulation..." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lAKZEPTIERE DAS TEXTUREPACK!" with subtitle "&7Backe Kekse..." to player for 5 seconds
+	wait 5 seconds
+	send title "&c&lLade... " with subtitle "&7Dies kann bis zu eine Minute dauern..." to player for 20 seconds
+	if {%player%.metaverse.villahub} is not set:
+		execute console command "/mv clone metaverse_user %player's UUID%_metaverse_user"
+		send "&7➢ Deine Welt wird erstellt..."
+		set {%player%.metaverse.villahub} to true
+	wait 20 seconds
+	send "&2✔ Erfolgreich"
+	send title "&c&l~~~~~~~" with subtitle "&7EINGEHENDE VERBINDUNG" to player for 20 seconds
+	wait 2 seconds
+	teleport player to location(108, 68, 146, world "LAB", 40, 26)
+	wait 5 seconds
+	play sound "intro.laboratory" at volume 1 to player
+	wait 20 seconds
+	teleport player to location(103, 67, 142, world "LAB", 143, 32)
+	wait 40 seconds
+	teleport player to location(94, 67, 153, world "LAB", -50, 20)
+	wait 35 seconds
+	teleport player to location(391, 76, 690, world "world")
+	wait 1 second
+	send "&4O  Lade Daten..."
+	play sound "intro.music" at volume 1 to player
+	send title "&c&lLade... " with subtitle "&7Dies kann bis zu eine Minute dauern..." to player for 10 seconds
+	wait 15 seconds
+	execute console command "/mvtp %player% %player's UUID%_metaverse_user" 
+	send "&7Intro noch in BETA..."
+	set player's helmet to air
+	set player's gamemode to adventure
+	delete {%player%.deny.movement}
+		
+command /skipintro:
+	trigger:
+		if {%player's UUID%.intro.skip} is true:
+			delete {%player's UUID%.intro.skip}
+			send "&2✔ Du hast erfolgreich das Intro aktiviert."
+		else:
+			set {%player's UUID%.intro.skip} to true
+			send "&2✔ Du hast erfolgreich das Intro &c&ldeaktiviert."
+		
+on right click:
+	if "%clicked block%" contains "warped pressure plate":
+		execute player command "/Waffenladen1"
+	if {%player's UUID%.build.mode} is not set:
+		cancel event
+on left click:
+	if {%player's UUID%.build.mode} is not set:
+		cancel event
+on damage:
+	if {%attacker's UUID%.build.mode} is not set:
+		cancel event
+on build:
+	if {%player's UUID%.build.mode} is not set:
+		cancel event
+command /build:
+	trigger:
+		if player has permission "*":
+			if {%player's UUID%.build.mode} is not set:
+				set {%player's UUID%.build.mode} to true
+				send "&2✔ Erfolgreich"
+			else:
+				delete {%player's UUID%.build.mode}
+				send "&2✔ Erfolgreich"
+		else:
+			send "&7➢ Keine Rechte..."
+command /ownsimulationcreate:
+	trigger:
+		wait 5 ticks
+		execute player command "/ps"
+on rightclick on player:
+	open chest with 4 row named "&l&7%clicked player%" to player
+	format slot 11 of player with skull of ("%clicked player%" parsed as an offline player) named "&6&l%clicked player% &7| %{%clicked player%.level}%&6&l " to close
+	format slot 5 of player with piston named "&5Send Gift [1 LEVEL]" to close then run [make player run command "/sendlevel %player% %clicked player%" as op]
+	format slot 6 of player with piston named "&5Send Gift [1 LEVEL]" to close then run [make player run command "/sendlevel %player% %clicked player%" as op]
+	format slot 7 of player with piston named "&5Send Gift [1 LEVEL]" to close then run [make player run command "/sendlevel %player% %clicked player%" as op]
+	format slot 8 of player with piston named "&5Send Gift [1 LEVEL]" to close then run [make player run command "/sendlevel %player% %clicked player%" as op]
+	format slot 14 of player with piston named "&6Send invite" to close then run [make player run command "/forward %player% party invite %clicked player%" as op]
+	format slot 15 of player with piston named "&6Send invite" to close then run [make player run command "/forward %player% party invite %clicked player%" as op]
+	format slot 16 of player with piston named "&6Send invite" to close then run [make player run command "/forward %player% party invite %clicked player%" as op]
+	format slot 17 of player with piston named "&6Send invite" to close then run [make player run command "/forward %player% party invite %clicked player%" as op]
+	format slot 23 of player with piston named "&7&lSoon" to close
+	format slot 24 of player with piston named "&7&lSoon" to close
+	format slot 25 of player with piston named "&7&lSoon" to close
+	format slot 26 of player with piston named "&7&lSoon" to close
+	format slot 32 of player with piston named "&aSend Request" to close then run [make player run command "/forward %player% friend add %clicked player%" as op]
+	format slot 33 of player with piston named "&aSend Request" to close then run [make player run command "/forward %player% friend add %clicked player%" as op]
+	format slot 34 of player with piston named "&aSend Request" to close then run [make player run command "/forward %player% friend add %clicked player%" as op]
+	format slot 35 of player with piston named "&aSend Request" to close then run [make player run command "/forward %player% friend add %clicked player%" as op]
+every 30 minutes in world "DECK":
+	loop all players:
+		add 1 to {%loop-player%.level}
+		send "&7&lDu hast ein &6Level bekommen!" to loop-player
+		stop
+on join:
+	if {%player%.level} is not set:
+		set {%player%.level} to 0
+command /level [<offline player>]:
+	trigger:
+		if arg-1 is set:
+			send "&7%arg-1% Level : &6&l%{%arg-1%.level}%" to player
+			stop
+		else:
+			send "&7Level : &6&l%{%player%.level}%" to player
+command /resetlevel:
+	permission: eco
+	trigger:
+		set {%player%.level} to 0
+command /addlevel <offline player> <number>:
+	permission: eco
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				add arg-2 to {%arg-1%.level} 
+command /sendlevel <offline player> <offline player>:
+	trigger:
+		if {%player%.level} is greater than 0:
+			remove 1 from {%arg-1%.level}
+			add 1 to {%arg-2%.level}
+			send "&7Du hast noch %{%player%.level}% &6LEVEL" to arg-1
+			send "&7Du hast einen &6LEVEL &7erhalten" to arg-2
+		else:
+			send "&4&lERROR, du hast keine Level mehr!"
+			
+			
+			
+			
+			
+			
+# Integration of ANKA-CORE
+
+
+#--------------------------------
+
+# 1. ANKA-ANTI-TNT
+# DELETE IF YOU DON'T NEED IT.
+
+on explode:
+	if {explodeprotect} is true:
+		cancel event
+
+command /ankatnt [<text>]:
+	permission: ankatnt.use
+	trigger:
+		if arg-1 is "enable":
+			if {explodeprotect} is true:
+				send "&c&l[!] &fProtection already enabled."
+			else:
+				set {explodeprotect} to true
+				send "&c&l[!] &fProtection enabled."
+		if arg-1 is "disable":
+			if {explodeprotect} is false:
+				send "&c&l[!] &fProtection already disabled."
+			else:
+				set {explodeprotect} to false
+				send "&c&l[!] &fProtection sucessfly disabled."
+		if arg-1 is not set:
+			send "&c&l[!] &fUsage: &c&n/ankatnt enable/disable"
+		
+# 1. ANKA-ANTI-TNT
+# DELETE IF YOU DON'T NEED IT.
+
+
+
+# 2. ANKAQUIZ
+# DELETE IF YOU DON'T NEED IT.
+
+options:
+	noperms: &c&lERR: &fYou don't have permissions.
+	usagevc: &a&lUSE: &f/vc &a[correct answer] [question]
+	usageans: &a&lUSE: &f/ans &a[answer]
+	cmd: eco give %player% %{bet}% #command to give player money.
+	cmdcooldown: &c! &fYou can use this command only every 15 minutes.
+
+variables:
+	{quizstarted.%player%} = false
+	{quiz} = false
+
+command /vc [<text>] [<text>]:
+	permission: ankaquiz.quiz
+	permission message: {@noperms}
+	cooldown: 15 minutes
+	cooldown message: {@cmdcooldown}
+	trigger:
+		if arg-2 is set:
+			if {quizstarted.%player%} is false:
+				broadcast "&f "
+				broadcast "&6 ╔ &c&l%player% STARTED THE QUIZ! "
+				broadcast "&6 ╟ "
+				broadcast "&6 ╟ &fQuestion: &a%arg 2%"
+				broadcast "&6 ╟ &fResponse time: &a1 minute"
+				broadcast "&6 ╟ &fBet: &a500$"
+				broadcast "&6 ╟  "
+				broadcast "&6 ╚ &fAnswer with &a/ans"
+				broadcast "&f "
+				set {answer} to arg-1
+				set {bet} to 500
+				loop all players:
+					set {wrongans.%loop-players%} to false
+				set {quizstarted.%player%} to true
+				set {quiz} to true
+				set {quizauthor} to player's name
+				wait 15 seconds
+				if {quiz} is true:
+					broadcast "&f "
+					broadcast "&6 ╔ &c&lPLAYER %player% QUIZ CONTINUES! "
+					broadcast "&6 ╟ "
+					broadcast "&6 ╟ &fQuestion: &a%arg 2%"
+					broadcast "&6 ╟ &fResponse time: &a45 seconds"
+					broadcast "&6 ╟ &fBet: &a750$"
+					broadcast "&6 ╟  "
+					broadcast "&6 ╚ &fAnswer with &a/ans"
+					broadcast "&f "
+				set {bet} to 750
+				wait 25 seconds
+				if {quiz} is true:
+					broadcast "&f "
+					broadcast "&6 ╔ &c&lPLAYER %player% QUIZ CONTINUES! "
+					broadcast "&6 ╟ "
+					broadcast "&6 ╟ &fQuestion: &a%arg 2%"
+					broadcast "&6 ╟ &fResponse time: &a20 seconds"
+					broadcast "&6 ╟ &fBet: &a1250$"
+					broadcast "&6 ╟  "
+					broadcast "&6 ╚ &fAnswer with &a/ans"
+					broadcast "&f "
+				set {bet} to 1250
+				wait 20 seconds
+				if {quiz} is true:
+					set {quizstarted.%player%} to false
+					set {quiz} to false
+					broadcast "&6○ &fNobody answered correctly! Correct answer: &a%{answer}%"
+			else:
+				send "&c! &fYou already started the quiz."
+		else:
+			send "{@usagevc}"
+			
+command /ans [<text>]:
+	permission: ankaquiz.answer
+	permission message: {@noperms}
+	trigger:
+		if arg-1 is set:
+			if {quiz} is true:
+				if {wrongans.%player%} is false:
+					if arg-1 is {answer}:
+						send "&a&lCORRECT ANSWER!"
+						set {quiz} to false
+						execute console command "{@cmd}"
+						broadcast "&6○ &fPlayer &a%player% &fwon the quiz! Correct answer: &a%{answer}%"
+						set {quizstarted.%{quizauthor}%} to false
+					else:
+						send "&cWrong answer!"
+						set {wrongans.%player%} to true
+				else:
+					send "&cYou already answered."
+			else:
+				send "&cQuiz is not started yet."
+		else:
+			send "{@usageans}"
+			
+# 2. ANKAQUIZ
+# DELETE IF YOU DON'T NEED IT.
+
+#--------------------------------
+
+# 3. ANKA-ANTI-ORE-PLACE
+# DELETE IF YOU DON'T NEED IT.
+
+on place of a any ore:
+	cancel event 
+	
+# 3. ANKA-ANTI-ORE-PLACE
+# DELETE IF YOU DON'T NEED IT.
+
+#--------------------------------
+
+# 4. ANKA-ANTIWEATHER
+# DELETE IF YOU DON'T NEED IT.
+
+on weather change to rain or thunder:
+	if {ankaweather} is true:
+		cancel event
+
+command /ankaweather [<text>]:
+	permission: ankaweather.command
+	trigger:
+		if arg-1 is "enable":
+			set {ankaweather} to true 
+			send "&c&l[!] &fAnti-Weather sucessfly enabled."
+		if arg-1 is "disable":
+			set {ankaweather} to false 
+			send "&c&l[!] &fAnti-Weather sucessfly disabled."
+			
+# 4. ANKA-ANTIWEATHER
+# DELETE IF YOU DON'T NEED IT.
+
+#--------------------------------
+
+# 5. ANKA-MONEY (Economy) (Need skript-placeholders to work.)
+# DELETE IF YOU DON'T NEED IT.
+
+options:
+	usage: &c&lERROR: &fUse &c/am give/remove/set/balance &c&nplayer&r &cmoney
+	permissionerror: &c&l[!] &fYou don't have permissions.
+	usagepay: &c&lERROR: &fUse &c/ampay player money
+	notenough: &c&lERROR: &fYou don't have &c%arg 2% &fcoins.
+	
+variables:
+	{amoney.%player%} = 0
+
+
+command /am [<text>] [<offlineplayer>] [<integer>]:
+	permission: ankamoney.editbalance
+	permission message: {@permissionerror}
+	trigger:
+		if arg-3 is set:
+			if arg-1 is "add":
+				add arg-3 to {amoney.%arg 2%}
+				send "&c&l[!] &fNew &a%arg 2% &fplayer balance is: &a%{amoney.%arg 2%}%"
+				send "&a&l[!] &fAdded &a%arg 3% &fto your balance." to arg 2
+			if arg-1 is "set":
+				set {amoney.%arg 2%} to arg-3
+				send "&c&l[!] &fNew &a%arg 2% &fplayer balance is: &a%{amoney.%arg 2%}%"
+			if arg-1 is "remove":
+				remove arg-3 from {amoney.%arg 2%}
+				send "&c&l[!] &fNew &a%arg 2% &fplayer balance is: &a%{amoney.%arg 2%}%"
+		if arg-2 is set:
+			if arg-1 is "balance":
+				send "&c&l[!] &a%arg 2% &fbalance is &a%{amoney.%arg 2%}%"
+		if arg-1 is not set:
+			send "{@usage}"
+
+command /ambal:
+	permission: ankamoney.mybalance
+	permission message: {@permissionerror}
+	trigger:
+		send "&c&l[i] &fYour balance: &a%{amoney.%player%}%"
+command /ampay [<offlineplayer>] [<integer>]:
+	permission: ankamoney.pay
+	permission message: {@permissionerror}
+	trigger:
+		if arg-2 is set:
+			if {amoney.%player%} >= arg-2:
+				remove arg-2 from {amoney.%player%}
+				add arg-2 to {amoney.%arg 1%}
+				send "&a&l[!] &fYou transfered &a%arg 2% &fto &a%arg 1%"
+				send "&a&l[!] &fAdded &a%arg 2% &fto your balance." to arg 1
+			else:
+				send "{@notenough}"
+		else:
+			send "{@usagepay}"
+
+on placeholderapi placeholder request with prefix "amoney":
+	if the identifier is "amount":
+		set {name} to player's name
+		set the result to "%{amoney.%{name}%}%"
+	
+# 5. ANKA-MONEY (Economy) (Need skript-placeholders to work.)
+# DELETE IF YOU DON'T NEED IT.
+
+
+
+# 6. ANKA-AUTOMESSAGES
+# DELETE IF YOU DON'T NEED IT.
+
+options:
+	automsg: false #true/false - enable/disable messages
+	time: 30
+	countofmessages: 3
+
+every {@time} seconds:
+	{@automsg} = true
+	set {_random} to random integer between 1 and {@countofmessages}
+	wait 1 tick
+	if {_random} is 1:
+		broadcast "&f"
+		broadcast "&6 ╔ &fText 1"
+		broadcast "&6 ╚ &fChange this message"
+		broadcast "&f"
+	if {_random} is 2:
+		broadcast "&f"
+		broadcast "&6 ╔ &fText 2"
+		broadcast "&6 ╚ &fChange this message"
+		broadcast "&f"
+	if {_random} is 3:
+		broadcast "&f"
+		broadcast "&6 ╔ &fText 3"
+		broadcast "&6 ╚ &fChange this message"
+		broadcast "&f"
+
+# 6. ANKA-AUTOMESSAGES
+# DELETE IF YOU DON'T NEED IT.
+
+#----------------------------------------
+
+# 7. ANKA-CORE
+options:
+	acaccess: ankacore.access # permission to open ankacore control menu
+	gmothers: anka.gmothers
+	notpermissions: &c&lERR: &fYou don't have permissions.
+	notfound: &c&lERR: &fPlayer not found!
+	flyothers: anka.flyothers
+	healothers: anka.healothers
+	feedothers: anka.feedothers
+	permtogglemsg: anka.msgtoggle
+	gmperm: anka.gm
+	permwb: anka.wb
+	permec: anka.ec
+	permbc: anka.bc
+	permfeed: anka.feed
+	permheal: anka.heal
+	permfly: anka.fly
+	permgod: anka.god
+	permlockchat: anka.chatlock
+	permmsg: anka.msg
+	perminvsee: anka.invsee
+	permanvil: anka.anvil
+	permtp: anka.tp
+	permsavekit: anka.savekit
+	permlistkits: anka.kitlist
+	permrename: anka.rename
+	permcmdspy: anka.cmdspy
+	permsethome: anka.sethome
+	worldhome: world
+	bypasscooldown: anka.cooldownbypass
+	timeforaccept: 15 #seconds
+	permkitlist: anka.kitslist
+	maximumhomes: 3
+	bypasshomeslimit: anka.homesbypass
+	worldwarp: world
+	bypasswarplimit: anka.warpbypass
+	permsetwarp: anka.setwarp
+	maximumwarps: 2
+	perminvedit: anka.invedit
+	permipcheck: anka.ipcheck
+	permtphere: anka.tphere
+	permtempban: anka.tempban
+	permkick: anka.kick
+	permban: anka.ban
+	permunban: anka.unban
+	permtempmute: anka.tempmute
+	permunmute: anka.unmute
+	permbanlist: anka.banlist
+	permipban: anka.ipban
+	permunbanip: anka.unbanip
+	permtptoggle: anka.tptoggle
+	tpblocked: &c&lERROR: &FPlayer disabled teleports.
+	kitothers: anka.kitothers
+	permgive: anka.give
+	permsocialspy: anka.socialspy
+	permclear: anka.clear
+	clearothers: anka.clearothers
+	permvanish: ankavanish
+	bypassvanish: anka.bypassvanish
+	permskull: anka.skull
+	permspawnmob: anka.spawnmob
+	spawnothers: anka.spawnothers
+	permsetspawn: anka.setspawn
+	permburn: anka.burn
+	ankabypassworld: anka.bypasswarpworld
+	permkill: anka.kill
+	permkillothers: anka.killothers
+	permenchant: anka.enchant
+	permeffect: anka.effect
+	globaldaytime: 12:00
+	globalnighttime: 23:00
+	permchangetime: anka.changetime
+	permchangeptime: anka.ptime
+	personaldaytime: 12:00
+	personalnighttime: 0:00
+	permnick: anka.nick
+	permnickothers: anka.nickothers
+	permrepair: anka.repair
+	permrepairothers: anka.repairothers
+	permsudo: anka.sudo
+	deathtitle: true #true/false - show death message
+	deathmsg: &c&lYOU DIED
+variables:
+	{cspy.%player%} = false
+	{accepted.%player%} = true
+	{homescount.%player%} = 0
+	{warpscount.%player%} = 0
+	{banned.%player%} = false
+	{bantime::%player%} = 0
+	{muted.%player%} = false
+	{mutetime::%player%} = 0
+	{banname::%player%} = "none"
+	{mutename::%player%} = "none"
+	{tpallow.%player%} = true
+	{sub.%player%} = 0
+	{vanish.%player%} = false
+	
+	
+command /sudo [<player>] [<text>]:
+	usage: &a&lUSE: &f/sudo <player> <command>
+	permission: {@permsudo}
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				if arg-1 has permission "*":
+					send "&c&lERR: &fError while executing command!"
+				else:
+					execute arg-1 command "%colored arg 2%"
+			else:
+				send "&a&lUSE: &f/sudo <player> <command>"
+		else:
+			send "&a&lUSE: &f/sudo <player> <command>"
+command /repair [<text>] [<player>]:
+	usage: &a&lUSE: &f/repair
+	permission: {@permrepair}
+	cooldown: 40 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c40 seconds.
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "all":
+				if arg-2 is set:
+					if player has permission "{@permrepairothers}":
+						repair all items of arg-2's inventory
+						send "&a&lSUCCESS!" to player
+				else:
+					repair all items of player's inventory
+		else:
+			repair tool of player
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /nick [<text>] [<offlineplayer>]:
+	usage: &a&lUSE: &f/nick &a<nick/clear> <player>
+	permission: {@permnick}
+	cooldown: 40 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c40 seconds.
+	trigger:
+		executor is a player
+		if arg-2 is set:
+			if player has permission "{@permnickothers}":
+				if arg-1 is not "clear":
+					set arg-2's display name to colored arg-1
+					send "&a&l&nSUCCESS!" to player
+				else:
+					set arg-2's display name to arg-2's name
+					send "&a&l&nSUCCESS!" to player
+		else:
+			if arg-1 is set:
+				if arg-1 is not "clear":
+					set player's display name to colored arg-1
+					send "&a&l&nSUCCESS!"
+				else:
+					set player's display name to player's name
+					send "&a&l&nSUCCESS!"
+			else:
+				send "&a&lUSAGE: &f/nick &a<nick/clear>"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /ptime [<text>]:
+	permission: {@permchangeptime}
+	cooldown: 30 seconds
+	usage: &a&lUSE: &f/ptime &a<day/night/exit>
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c30 seconds.
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "day":
+				send "&a&lINFO: &fYour personal time changed to &aday!"
+				set time of player to {@personaldaytime}
+			if arg-1 is "night":
+				send "&a&lINFO: &fYour personal time changed to &anight!"
+				set time of player to {@personalnighttime}
+			if arg-1 is "exit":
+				send "&a&lINFO: &fSuccessfully!"
+				set relative time of player to 6:00
+		else:
+			send "&a&lUSE: &f/ptime &a<day/night/exit>"
+			cancel the cooldown
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+	
+command /day:
+	permission: {@permchangetime}
+	cooldown: 45 seconds
+	usage: &a&lUSE: &f/day/night
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c45 seconds.
+	trigger:
+		set {_pw} to player's world
+		set time of the world "%{_pw}%" to {@globaldaytime}
+		broadcast "&a&lINFO: &fWorld time changed to &aday&f!"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /night:
+	permission: {@permchangetime}
+	cooldown: 45 seconds
+	usage: &a&lUSE: &f/day/night
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c45 seconds.
+	trigger:
+		set {_pw} to player's world
+		set time of the world "%{_pw}%" to {@globalnighttime}
+		broadcast "&a&lINFO: &fWorld time changed to &anight&f!"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /effect [<player>] [<text>] [<number>] [<number>]:
+	permission: {@permeffect}
+	cooldown: 25 seconds
+	usage: &a&lUSE: &f/effect &a<player> <effect> <level> <time>
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c25 seconds.
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				if arg-3 is set:
+					if arg-4 is set:
+						if arg-2 is a potion effect type:
+							set {_f} to "%arg 2% %arg 3%" parsed as potion effect type
+							set {_ff} to "%arg 4% seconds" parsed as time span
+							apply {_f} to the arg-1 for {_ff}
+						else:
+							send "&c&lERR: &a%arg-2% &fis not a potion effect type!"
+					else:
+						set {_f} to "%arg 2% %arg 3%" parsed as potion effect type
+						apply {_f} to the arg-1 for 1 second
+				else:
+					send "&a&lUSE: &f/effect &a<player> <effect> <level> <time>"
+			else:
+				send "&a&lUSE: &f/effect &a<player> <effect> <level> <time>"
+		else:
+			send "&a&lUSE: &f/effect &a<player> <effect> <level> <time>"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /enchant [<enchantment>] [<number>] [<player>]:
+	permission: {@permenchant}
+	cooldown: 25 seconds
+	usage: &a&lUSE: &f/enchant &a<enchantment> <level> <player>
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c25 seconds.
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				if arg-3 is not set:
+					set {_en} to "%arg 1% %arg 2%" parsed as enchantment type
+					enchant the player's tool with {_en}
+				else:
+					set {_en} to "%arg 1% %arg 2%" parsed as enchantment type
+					enchant the arg-3's tool with {_en}
+			else:
+				enchant the player's tool with arg-1
+		else:
+			send "&a&lUSE: &f/enchant &a<enchantment> <level> <player>"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /kill [<player>]:
+	permission: {@permkill}
+	cooldown: 45 seconds
+	usage: &a&lUSE: &f/kill &a<player>
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c45 seconds.
+	aliases: /suicide
+	trigger:
+		if arg-1 is not set:
+			kill the player
+		else:
+			if player has permission "{@permkillothers}":
+				kill the arg-1
+				send "&4Killed the %arg-1%"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /burn [<player>] [<number>]:
+	permission: {@permburn}
+	cooldown: 15 seconds
+	usage: &a&lUSE: &f/burn &a<player> <seconds>
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	trigger:
+		if arg-2 is not set:
+			if arg-1 is not set:
+				ignite the player for 1 second
+				send "&cYou ignited for 1 second."
+			else:
+				ignite the arg-1 for 1 second
+				send "&cYou ignited for 1 second." to arg-1
+		else:
+			send "&cYou ignited for %arg 2% seconds." to arg-1
+			loop arg-2 times:
+				wait 0.9 seconds
+				set arg-1 on fire for 1 second
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+on first join:
+	if {ankaspawn.world} is set:
+		teleport player to location ({ankaspawnx}, {ankaspawny}, {ankaspawnz}) in world "%{ankaspawn.world}%"
+on player respawning:
+	if {ankaspawn.world} is set:
+		wait 1 tick
+		teleport player to location ({ankaspawnx}, {ankaspawny}, {ankaspawnz}) in world "%{ankaspawn.world}%"
+		if {@deathtitle} is true:
+			send title "{@deathmsg}" to player
+command /setspawn:
+	permission: {@permsetspawn}
+	permission message: {@notpermissions}
+	trigger:
+		set {ankaspawnx} to player's x-coordinate
+		set {ankaspawny} to player's y-coordinate
+		set {ankaspawnz} to player's z-coordinate
+		set {_ankaspawn} to player's location
+		set {ankaspawn.world} to player's world
+		send "&a&lINFO: &fYou have successfully set the spawnpoint! Location: &a%{_ankaspawn}%"
+command /spawn [<player>]:
+	cooldown: 10 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if arg-1 is not set:
+			teleport player to location ({ankaspawnx}, {ankaspawny}, {ankaspawnz}) in world "%{ankaspawn.world}%"
+			send "&a&lINFO: &fTeleporting..."
+		else:
+			if player has permission "{@spawnothers}":
+				teleport arg-1 to location ({ankaspawnx}, {ankaspawny}, {ankaspawnz}) in world "%{ankaspawn.world}%"
+				send "&a&lINFO: &fTeleporting..." to arg-1
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /spawnmob [<entitytype>] [<number>]:
+	permission: {@permspawnmob}
+	cooldown: 35 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c35 seconds.
+	usage: &a&lUSE: &f/spawnmob &a<entity> <count>
+	trigger:
+		if arg-2 is not set:
+			if arg-1 is set:
+				if arg-1 is a entity:
+					spawn 1 of arg-1 at player's location
+				else:
+					send "&c&lERROR! &c%arg-1% is not a entity."
+		else:
+			if arg-1 is a entity:
+				spawn arg-2 of arg-1 at player's location
+			else:
+				send "&c&lERROR! &c%arg-1% is not a entity."
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /skull [<player>]:
+	permission: {@permskull}
+	cooldown: 15 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	trigger:
+		if arg-1 is not set:
+			give skull of player to player
+			send "&a&lSuccessfully!" to player
+		else:
+			if arg-1 is online:
+				give skull of arg-1 to player
+				send "&a&lSuccessfully!" to player
+			else:
+				send "{@notfound}"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+on join:
+	if {vanish.%player%} = true:
+		send "&a&lVANISH: &fYou are vanished, for disable, enter &a/v"
+command /vanish:
+	permission: {@permvanish}
+	cooldown: 15 seconds
+	aliases: /v
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if {vanish.%player%} = false:
+			send "&f"
+			send "&6 ╔ &fYou have been enabled"
+			send "&6 ╚ &fthe &avanish &fmode."
+			send "&f"
+			set {vanish.%player%} to true
+			loop all players:
+				loop-value doesn't have permission "{@bypassvanish}"
+				add loop-value to {_vanish::*}
+			hide player from {_vanish::*}
+		else:
+			send "&f"
+			send "&6 ╔ &fYou have been disabled"
+			send "&6 ╚ &fthe &avanish &fmode."
+			send "&f"
+			set {vanish.%player%} to false
+			reveal player from all players
+command /clear [<player>]:
+	permission: {@permclear}
+	cooldown: 10 seconds
+	aliases: /ci
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if arg-1 is not set:
+			clear player's inventory
+			send "&a&lSuccessfully!" to player
+		else:
+			if arg-1 is online:
+				if player has permission "{@clearothers}":
+					clear arg-1's inventory
+					send "&a&lSuccessfully!" to player
+				else:
+					send "{@notpermissions}"
+			else:
+				send "{@notfound}"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /give [<player>] [<item>] [<number>]:
+	permission: {@permgive}
+	cooldown: 10 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if arg-3 is not set:
+			if arg-1 is not set:
+				send "&a&lUSE: &f/give <player> <item>"
+			else:
+				give arg-2 to player
+		else:
+			give arg-3 of arg-2 to arg-1
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /unbanip [<offlineplayer>]:
+	permission: {@permunbanip}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-1 is set:
+			if "%{blackip::*}%" contains arg-1:
+				set {_pn} to player's name
+				if executor is console:
+					set {_pn} to "Console"
+				remove arg-1 from {blackip::*}
+				IP unban arg-1
+				broadcast "&fPlayer &a%{_pn}% &funbannedip &a%arg 1%"
+			else:
+				send "&c&lERROR: &fIP can't be unbanned."
+		else:
+			send "&a&lUSE: &f/unbanip &a<ip>"
+command /ipban [<offlineplayer>] [<text>]:
+	permission: {@permipban}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-2 is set:
+			set {_pn} to player's name
+			if executor is console:
+				set {_pn} to "Console"
+			set {_ip} to arg-1's ip
+			add arg-1 to {blackip::*}
+			broadcast "&fPlayer &a%{_pn}% &fbannedip &a%{_ip}% due to &a%arg 2%"
+			ban arg-1 by IP due to arg-2
+		else:
+			send "&a&lUSE: &f/ipban &a<ip> <reason>"
+command /unmute [<offlineplayer>]:
+	permission: {@permunmute}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-1 is set:
+			if {muted.%arg 1%} is true:
+				set {_pn} to player's name
+				if executor is console:
+					set {_pn} to "Console"
+				set {muted.%arg 1%} to false
+				set {mutetime::%arg 1%} to 0
+				broadcast "&fPlayer &a%{_pn}% &funmuted &a%arg 1%"
+			else:
+				send "&c&lERROR: &fPlayer can't be unmuted."
+		else:
+			send "&a&lUSE: &f/unmute &a<player>"
+on chat:
+	if {muted.%player%} = true:
+		send "&c&lYOU ARE MUTED! %nl%&fMuted by: &a%{bymute.%player%}% %nl%&fTime: &a%{mutetime::%player%}% &fminutes %nl%&fReason: &a%{mutereason.%player%}%"
+		cancel event
+every 1 minutes:
+	loop {mutename::*}:
+		if {mutetime::%loop-value%} > 0:
+			remove 1 from {mutetime::%loop-value%}
+every 1 seconds:
+	loop {mutename::*}:
+		if {mutetime::%loop-value%} = 0:
+			if {muted.%loop-value%} = true:
+				set {_p} to "%loop-value%" parsed as offlineplayer
+				set {muted.%{_p}%} to false
+command /tempmute [<offlineplayer>] [<integer>] [<text>]:
+	permission: {@permtempmute}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-3 is set:
+			set {_pn} to player's name
+			if executor is console:
+				set {_pn} to "Console"
+			broadcast "&fPlayer &a%{_pn}% &fmuted &a%arg 1% &ffor &a%arg 2%&f minutes due to &a%arg 3%"
+			set {muted.%arg 1%} to true
+			set {mutetime::%arg 1%} to arg-2
+			set {mutename::%arg 1%} to arg-1's name
+			set {bymute.%arg 1%} to player's name
+			set {mutereason.%arg 1%} to arg-3
+			send "&c&lYOU ARE MUTED! %nl%&fMuted by: &a%{bymute.%arg 1%}% %nl%&fTime: &a%{mutetime::%arg 1%}% &fminutes %nl%&fReason: &a%{mutereason.%arg 1%}%" to arg-1
+		else:
+			send "&a&lUSE: &f/tempmute &a<player> <time(minutes)> <reason>"
+command /unban [<offlineplayer>]:
+	permission: {@permunban}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-1 is set:
+			if {ankabanned.%arg 1%} is true:
+				set {_pn} to player's name
+				unban arg-1
+				if executor is console:
+					set {_pn} to "Console"
+				set {ankabanned.%arg 1%} to false
+				set {bantime::%arg 1%} to 0
+				broadcast "&fPlayer &a%{_pn}% &funbanned &a%arg 1%"
+			else:
+				send "&c&lERROR: &fPlayer can't be unbanned."
+		else:
+			send "&a&lUSE: &f/unban &a<player>
+on join:
+	if player is not banned:
+		if {ankabanned.%player%} = true:
+			set {ankabanned.%player%} to false
+			remove "%player% : &fBanned by &a%{byban.%player%}% due to &a%{banreason.%player%}%" from {banlist::*}
+			remove "%player% : &fBanned by &a%{byban.%player%}% due to &a%{banreason.%player%}% &ffor &a%{bantime.%player%}% &fminutes" from {banlist::*}
+	if player is not IP-banned:
+		if {ankabanned.%player%} = true:
+			set {ankabanned.%player%} to false
+			remove "%player% : &fBanned by &a%{byban.%player%}% due to &a%{banreason.%player%}%" from {banlist::*}
+			remove "%player% : &fBanned by &a%{byban.%player%}% due to &a%{banreason.%player%}% &ffor &a%{bantime.%player%}% &fminutes" from {banlist::*}
+command /ban [<offlineplayer>] [<text>]:
+	permission: {@permban}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-2 is set:
+			set {_pn} to player's name
+			if executor is console:
+				set {_pn} to "Console"
+			broadcast "&fPlayer &a%{_pn}% &fbanned &a%arg 1% due to &a%arg 2%"
+			set {banname::%arg 1%} to arg-1's name
+			set {bantime::%arg 1%} to -1
+			set {byban.%arg 1%} to {_pn}
+			set {banreason.%arg 1%} to arg-2
+			set {ankabanned.%arg 1%} to true
+			kick arg-1 because "&c&lYOU ARE BANNED FROM SERVER! %nl%&fBanned by: &a%player% %nl%&fReason: &a%arg 1% %nl%&fTime: &a&lNEVER"
+			ban arg-1 due to arg-2
+			add "%arg 1% : &fBanned by &a%{_pn}% due to &a%arg 2%" to {banlist::*}
+		else:
+			send "&a&lUSE: &f/ban &a<player> <reason>"
+command /kick [<player>] [<text>]:
+	permission: {@permkick}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-2 is set:
+			if arg-1 is online:
+				set {_pn} to player's name
+				if executor is console:
+					set {_pn} to "Console"
+				broadcast "&fPlayer &a%{_pn}% &fkicked &a%arg 1% due to &a%arg 2%"
+				kick arg-1 because "&c&lYOU KICKED FROM SERVER! %nl%&fKicked by: &a%player% %nl%&fReason: &a%arg 1%"
+			else:
+				send "{@notfound}"
+		else:
+			send "&a&lUSE: &f/kick &a<player> <reason>"
+command /banlist:
+	permission: {@permbanlist}
+	permission message: {@notpermissions}
+	trigger:
+		loop {banlist::*}:
+			send "%loop-value%"
+command /tempban [<offlineplayer>] [<integer>] [<text>]:
+	permission: {@permtempban}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-3 is set:
+			set {_pn} to player's name
+			if executor is console:
+				set {_pn} to "Console"
+			broadcast "&fPlayer &a%{_pn}% &fbanned &a%arg 1% &ffor &a%arg 2%&f minutes due to &a%arg 3%"
+			set {banname::%arg 1%} to arg-1's name
+			set {bantime::%arg 1%} to arg-2
+			set {byban.%arg 1%} to {_pn}
+			set {banreason.%arg 1%} to arg-3
+			set {ankabanned.%arg 1%} to true
+			set {_bt} to "%arg 2% minutes" parsed as time span
+			kick arg-1 because "&c&lYOU ARE BANNED FROM SERVER! %nl%&fBanned by: &a%player% %nl%&fReason: &a%arg 1% %nl%&fTime: &a%{_bt}%"
+			ban arg-1 due to arg-3 for {_bt}
+			add "%arg 1% : &fBanned by &a%{_pn}% due to &a%arg 3% &ffor &a%arg 2% &fminutes" to {banlist::*}
+		else:
+			send "&a&lUSE: &f/tempban &a<player> <time(minutes)> <reason>"
+command /ipcheck [<player>]:
+	permission: {@permipcheck}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-1 is set:
+			if arg-1 is online:
+				set {_ip} to arg-1's ip
+				send "&a&lINFO: &fPlayer: &a%arg 1%&f, IP: &a%{_ip}%"
+			else:
+				send "{@notfound}"
+		else:
+			send "&a&lUSE: &f/ipcheck <player>"
+command /tphere [<player>]:
+	permission: {@permtphere}
+	cooldown: 15 seconds
+	aliases: /s
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	trigger:
+		if arg-1 is set:
+			if arg-1 is online:
+				if {tpallow.%arg 1%} = true:
+					send "&a&lINFO: &fTeleporting.."
+					teleport arg-1 to player
+				else:
+					send "{@tpblocked}"
+			else:
+				send "{@notfound}"
+		else:
+			send "&a&lUSE: &f/tphere <player>"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /delwarp [<text>]:
+	trigger:
+		if arg-1 is set:
+			if {warp.%arg 1%.owner} is "%player%":
+				if {warp.%arg 1%} = true:
+					set {warp.%arg 1%} to false
+					remove 1 from {warpscount.%player%}
+					remove arg-1 from {warps::*}
+					send "&c&lDELETED WARP!"
+				else:
+					send "&cWarp with that name doesn't exists!"
+		else:
+			send "&a&lUSE: &a/delwarp <name>"
+command /warps:
+	trigger:
+		open chest with 5 rows named "&0&l&nWarps menu" to player
+		set slot 8 of player's current inventory to red stained glass pane named "&c&l>>> NEXT PAGE >>>"
+		set {_a} to 45
+		clear {guiwarps::%uuid of player%::*}
+		loop {warps::*}:
+			remove 1 from {_a}
+			set {guiwarps::%uuid of player%::%loop-index%} to true
+			set slot {_a} of player's current inventory to compass named "&c&lWARP - %loop-value%" with lore "&f", "&6&l> &fCreator - &a%{warp.%loop-value%.owner}%" and "&6&l> &fLocation - &a%{warp.%loop-value%.xcord}% %{warp.%loop-value%.ycord}% %{warp.%loop-value%.zcord}%"
+			if {_a} <= 9:
+				stop loop
+on inventory click:
+	if inventory name of player's current inventory is "&0&l&nWarps menu":
+		if clicked slot is 8:
+			close player's inventory
+			open chest with 5 rows named "&0&l&nWarps menu" to player
+			set slot 8 of player's current inventory to red stained glass pane named "&c&l>>> NEXT PAGE >>>"
+			set {_a} to 45
+			loop {warps::*}:
+				if {guiwarps::%uuid of player%::%loop-index%} is not set:
+					remove 1 from {_a}
+					set {guiwarps::%uuid of player%::%loop-index%} to true
+					set slot {_a} of player's current inventory to compass named "&c&lWARP - %loop-value%" with lore "&f", "&6&l> &fCreator - &a%{warp.%loop-value%.owner}%" and "&6&l> &fLocation - &a%{warp.%loop-value%.xcord}% %{warp.%loop-value%.ycord}% %{warp.%loop-value%.zcord}%"
+				if {_a} <= 9:
+					stop loop
+		else:
+			set {_in} to name of clicked slot
+			replace all "&c&lWARP - " in {_in} with ""
+			execute player command "warp %{_in}%"
+			
+			
+command /warp [<text>]:
+	cooldown: 5 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if arg-1 is set:
+			if {warp.%arg 1%} = true:
+				teleport player to location ({warp.%arg 1%.xcord}, {warp.%arg 1%.ycord}, {warp.%arg 1%.zcord}) in world "{@worldwarp}"	
+				send "&a&lINFO: &fTeleporting.."
+		else:
+			execute player command "warps"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /setwarp [<text>]:
+	permission: {@permsetwarp}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if arg-1 is set:
+			if player's world = "{@worldwarp}":
+				if {warp.%arg 1%} is not true:
+					if player has permission "{@bypasswarplimit}":
+						set {warp.%arg 1%.xcord} to player's x-coordinate
+						set {warp.%arg 1%.ycord} to player's y-coordinate
+						set {warp.%arg 1%.zcord} to player's z-coordinate
+						set {warp.%arg 1%} to true
+						add 1 to {warpscount.%player%}
+						set {warp.%arg 1%.owner} to player's name
+						send "&a&lWARPS: &fYou created warp with name &a%arg 1%"
+						add arg-1 to {warps::*}
+					else:
+						if {warpscount.%player%} <= {@maximumwarps}:
+							set {warp.%arg 1%.xcord} to player's x-coordinate
+							set {warp.%arg 1%.ycord} to player's y-coordinate
+							set {warp.%arg 1%.zcord} to player's z-coordinate
+							set {warp.%arg 1%} to true
+							set {warp.%arg 1%.owner} to player's name
+							add 1 to {warpscount.%player%}
+							send "&a&lWARPS: &fYou created warp with name &a%arg 1%"
+							add arg-1 to {warps::*}
+						else:
+							send "&c&lERR: &fYou have too many warps!"
+				else:
+					send "&c&lERR: &fWarp with that name already exists!"
+			else:
+				if player has permission "{@ankabypassworld}":
+					if {warp.%arg 1%} is not true:
+						if player has permission "{@bypasswarplimit}":
+							set {warp.%arg 1%.xcord} to player's x-coordinate
+							set {warp.%arg 1%.ycord} to player's y-coordinate
+							set {warp.%arg 1%.zcord} to player's z-coordinate
+							set {warp.%arg 1%} to true
+							add 1 to {warpscount.%player%}
+							set {warp.%arg 1%.owner} to player's name
+							send "&a&lWARPS: &fYou created warp with name &a%arg 1%"
+							add arg-1 to {warps::*}
+						else:
+							if {warpscount.%player%} <= {@maximumwarps}:
+								set {warp.%arg 1%.xcord} to player's x-coordinate
+								set {warp.%arg 1%.ycord} to player's y-coordinate
+								set {warp.%arg 1%.zcord} to player's z-coordinate
+								set {warp.%arg 1%} to true
+								set {warp.%arg 1%.owner} to player's name
+								add 1 to {warpscount.%player%}
+								send "&a&lWARPS: &fYou created warp with name &a%arg 1%"
+								add arg-1 to {warps::*}
+							else:
+								send "&c&lERR: &fYou have too many warps!"
+					else:
+						send "&c&lERR: &fWarp with that name already exists!"
+				else:
+					send "&cWarp creation not allowed in this world!"
+		else:
+			send "&a&lUSE: &fCommand &a/setwarp NAME"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+			
+command /tpayes:
+	trigger:
+		if {accepted.%player%} = false:
+			send "&a&lTELEPORTING.."
+			set {accepted.%player%} to true
+		else:
+			send "&c&lERR: &fYou don't have requests!"
+command /tpa [<player>]:
+	cooldown: 15 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	aliases: /call
+	trigger:
+		if arg-1 is set:
+			if arg-1 is online:
+				if {tpallow.%arg 1%} = true:
+					send "&a&lINFO: &fYou have sent a teleport request to player &a%arg 1%"
+					set {accepted.%arg 1%} to false
+					send "&a&lTPA: &fPlayer &a%player% &fsent you a request to teleport!" to arg-1
+					send "&f enter &a/tpayes&f to accept request, ignore to cancel" to arg-1
+					loop {@timeforaccept} times:
+						wait 1 second
+						if {accepted.%arg 1%} = true:
+							teleport player to arg-1
+							send "&a&lTPA: &fTeleporting.."
+							stop loop
+				else:
+					send "{@tpblocked}"
+			else:
+				send "{@notfound}"
+		else:
+			send "&a&lUSE: &f/tpa &a<player>"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /sethome [<text>]:
+	permission: {@permsethome}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if arg-1 is set:
+			if player's world = "{@worldhome}":
+				if {home.%arg 1%} is not true:
+					if player has permission "{@bypasshomeslimit}":
+						set {home.%arg 1%.xcord} to player's x-coordinate
+						set {home.%arg 1%.ycord} to player's y-coordinate
+						set {home.%arg 1%.zcord} to player's z-coordinate
+						set {home.%arg 1%.owner} to player's name
+						set {home.%arg 1%} to true
+						add 1 to {homescount.%player%}
+						send "&a&lHOMES: &fYou created home with name &a%arg 1%"
+						add arg-1 to {homes::%player%::*}
+					else:
+						if {homescount.%player%} <= {@maximumhomes}:
+							set {home.%arg 1%.xcord} to player's x-coordinate
+							set {home.%arg 1%.ycord} to player's y-coordinate
+							set {home.%arg 1%.zcord} to player's z-coordinate
+							set {home.%arg 1%.owner} to player's name
+							set {home.%arg 1%} to true
+							add 1 to {homescount.%player%}
+							send "&a&lHOMES: &fYou created home with name &a%arg 1%"
+							add arg-1 to {homes::%player%::*}
+						else:
+							send "&c&lERR: &fYou have too many homes!"
+				else:
+					send "&c&lERR: &fHome with that name already exists!"
+		else:
+			send "&a&lUSE: &fCommand &a/sethome NAME"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /delhome [<text>]:
+	trigger:
+		if arg-1 is set:
+			if {home.%arg 1%.owner} is "%player%":
+				if {home.%arg 1%} = true:
+					set {home.%arg 1%} to false
+					remove 1 from {homescount.%player%}
+					remove arg-1 from {homes::%player%::*}
+					send "&c&lDELETED HOME!"
+				else:
+					send "&cHome with that name doesn't exists!"
+		else:
+			send "&a&lUSE: &a/delhome <home>"
+command /homes:
+	trigger:
+		send "&a&lHOMES:"
+		loop {homes::%player%::*}:
+			send "&7%loop-value%"
+command /home [<text>]:
+	cooldown: 5 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if arg-1 is set:
+			if {home.%arg 1%.owner} is "%player%":
+				if {home.%arg 1%} = true:
+					teleport player to location ({home.%arg 1%.xcord}, {home.%arg 1%.ycord}, {home.%arg 1%.zcord}) in world "{@worldhome}"	
+					send "&a&lINFO: &fTeleporting.."
+		else:
+			send "&a&lHOMES: &fUse &a&n/home <name>"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /cmdspy:
+	permission: {@permcmdspy}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if {cspy.%player%} = false:
+			send "&f"
+			send "&6 ╔ &fYou have been enabled"
+			send "&6 ╚ &fthe &aCommandSpy"
+			send "&f"
+			set {cspy.%player%} to true
+		else:
+			send "&f"
+			send "&6 ╔ &fYou have been disabled"
+			send "&6 ╚ &fthe &aCommandSpy"
+			send "&f"
+			set {cspy.%player%} to false
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+on command:
+	if sender is a player:
+		loop all players:
+			if {cspy.%loop-value%} is true:
+				send "&6&lSPY: &a%player%&7: &6&n/%complete command%&r" to loop-player
+
+command /rename [<text>]:
+	permission: {@permrename}
+	permission message: {@notpermissions}
+	cooldown: 10 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if player's tool is not air:
+			if arg-1 is set:
+				set name of player's tool to colored arg-1
+			else:
+				send "&a&lUSE: &f/rename &atext"
+		else:
+			send "&c&lERR: &fYou must hold the item to execute this command."
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /kit [<text>] [<player>]:
+	cooldown: 2 hours
+	cooldown message: &c&lERROR: &fYou can use this command every &c2 hours.
+	trigger:
+		if player has permission "%{kitperm.%arg 1%}%":
+			if arg-2 is not set:
+				if inventory of player is empty:
+					loop 41 times:
+						set {_p} to loop-number
+						if slot {_p}-1 of player is air:
+							set slot loop-number -1 of player to {kit::%arg 1%::slot::%loop-number%}
+						else:
+							drop {kit::%arg 1%::slot::%loop-number%}
+				else:
+					send "&c&lERR: &fYou inventory is not empty! Some items dropped on ground."
+					loop 41 times:
+						set {_p} to loop-number
+						if slot {_p}-1 of player is air:
+							set slot loop-number -1 of player to {kit::%arg 1%::slot::%loop-number%}
+						else:
+							drop {kit::%arg 1%::slot::%loop-number%}
+			else:
+				if player has permission "{@kitothers}":
+					if inventory of arg-2 is empty:
+						loop 41 times:
+							set slot loop-number -1 of arg-2 to {kit::%arg 1%::slot::%loop-number%}
+					else:
+						send "&c&lERROR: &fPlayer's inventory must be empty to get kit."
+		else:
+			send "{@notpermissions}"
+		if arg-1 is not set:
+			cancel the cooldown
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /kitsave [<text>] [<text>]:
+	permission: {@permsavekit}
+	permission message: {@notpermissions}
+	trigger:
+		if arg-2 is set:
+			add arg-1 to {kitslist::*}
+			loop 41 times:
+				set {kit::%arg 1%::slot::%loop-number%} to slot loop-number - 1 of player
+			clear inventory of player
+command /kitlist:
+	permission: {@permkitlist}
+	permission message: {@notpermissions}
+	trigger:
+		send "&aKITS:"
+		loop {kitslist::*}:
+			send "&7%loop-value%"
+command /tptoggle:
+	permission: {@permtptoggle}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if {tpallow.%player%} = false:
+			send "&f"
+			send "&6 ╔ &fYou have been enabled"
+			send "&6 ╚ &fthe &aTeleports"
+			send "&f"
+			set {tpallow.%player%} to true
+		else:
+			send "&f"
+			send "&6 ╔ &fYou have been disabled"
+			send "&6 ╚ &fthe &aTeleports"
+			send "&f"
+			set {tpallow.%player%} to false
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /teleport [<player>] [<player>]:
+	permission: {@permtp}
+	permission message: {@notpermissions}
+	cooldown: 10 seconds
+	aliases: /tp
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if arg-2 is set:
+			if arg-1 is online:
+				if arg-2 is online:
+					if {tpallow.%arg 1%} = true:
+						teleport arg-1 to arg-2
+						send "&a&lINFO: &fTeleported to &a%arg 2%" to arg-1
+					else:
+						send "{@tpblocked}"
+				else:
+					send "{@notfound}"
+			else:
+				send "{@notfound}"
+		else:
+			if arg-1 is set:
+				if arg-1 is online:
+					send "&a&lINFO: &fTeleported to &a%arg 1%"
+					teleport player to arg-1
+				else:
+					send "{@notfound}"
+			else:
+				send "&a&lUSE: &f/tp &a[player] [player]"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+	
+command /anvil:
+	permission: {@permanvil}
+	cooldown: 10 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		open anvil to the player
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+variables:
+	{invc.%player%} = false
+command /invsee [<player>]:
+	permission: {@perminvsee}
+	aliases: /inv
+	permission message: {@notpermissions}
+	cooldown: 10 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if arg-1 is online:
+			open arg-1's inventory to player
+			set {invc.%player%} to true
+		else:
+			send "{@notfound}"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /invedit [<player>]:
+	permission: {@perminvedit}
+	permission message: {@notpermissions}
+	cooldown: 10 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if arg-1 is online:
+			open arg-1's inventory to player
+		else:
+			send "{@notfound}"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+on inventory click:
+	if {invc.%player%} = true:
+		cancel event
+on inventory close:
+	set {invc.%player%} to false
+command /gamemode [<text>] [<player>]:
+	permission: {@gmperm}
+	aliases: /gm
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if arg-2 is not set:
+			if arg-1 is set:
+				if arg-1 is "0":
+					set gamemode of player to Survival
+					send "&f"
+					send "&6 ╔ &fYour current gamemode changed"
+					send "&6 ╚ &fto &aSurvival."
+					send "&f"
+				if arg-1 is "1":
+					set gamemode of player to Creative
+					send "&f"
+					send "&6 ╔ &fYour current gamemode changed"
+					send "&6 ╚ &fto &aCreative."
+					send "&f"
+				if arg-1 is "2":
+					set gamemode of player to Adventure
+					send "&f"
+					send "&6 ╔ &fYour current gamemode changed"
+					send "&6 ╚ &fto &aAdventure Mode."
+					send "&f"
+				if arg-1 is "3":
+					set gamemode of player to Spectator
+					send "&f"
+					send "&6 ╔ &fYour current gamemode changed"
+					send "&6 ╚ &fto &aSpectator Mode."
+					send "&f"
+			else:
+				send "&a&lUSE: &fCommand Usage: &a/gm 0/1/2/3"
+		else:
+			if player has permission "{@gmothers}":
+				if arg-2 is online:
+					if arg-1 is "0":
+						set gamemode of arg-2 to Survival
+						send "&f" to arg-2
+						send "&6 ╔ &fYour current gamemode changed" to arg-2
+						send "&6 ╚ &fto &aSurvival." to arg-2
+						send "&f" to arg-2
+					if arg-1 is "1":
+						set gamemode of arg-2 to Creative
+						send "&f" to arg-2
+						send "&6 ╔ &fYour current gamemode changed" to arg-2
+						send "&6 ╚ &fto &aCreative." to arg-2
+						send "&f" to arg-2
+					if arg-1 is "2":
+						set gamemode of arg-2 to Adventure
+						send "&f" to arg-2
+						send "&6 ╔ &fYour current gamemode changed" to arg-2
+						send "&6 ╚ &fto &aAdventure Mode." to arg-2
+						send "&f" to arg-2
+					if arg-1 is "3":
+						set gamemode of arg-2 to Spectator
+						send "&f" to arg-2
+						send "&6 ╔ &fYour current gamemode changed" to arg-2
+						send "&6 ╚ &fto &aSpectator Mode." to arg-2
+						send "&f" to arg-2
+				else:
+					send "{@notfound}"
+			else:
+				send "{@notpermissions}"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /broadcast [<text>]:
+	permission: {@permbc}
+	permission message: {@notpermissions}
+	aliases: /bc
+	cooldown: 60 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c60 seconds.
+	trigger:
+		if arg-1 is set:
+			send "&f"
+			send "&6 ╔ &fGlobal message from player &a%player%"
+			send "&6 ╚ &fHis message: &a%arg 1%"
+			send "&f"
+		else:
+			send "&a&lUSE: &fCommand Usage: &a/bc [text]"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+variables:
+	{god.%player%} = false
+
+on damage:
+	if {god.%victim%} is true:
+		cancel event
+		
+command /god [<offlineplayer>]:
+	permission: {@permgod}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	usage: &e&lUSE: &f/god <player>
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if arg-1 is not set:
+			if {god.%player%} = false:
+				send "&f"
+				send "&6 ╔ &fYou have been enabled"
+				send "&6 ╚ &fthe &agod &fmode."
+				send "&f"
+				set {god.%player%} to true
+			else:
+				send "&f"
+				send "&6 ╔ &fYou have been disabled"
+				send "&6 ╚ &fthe &agod &fmode."
+				send "&f"
+				set {god.%player%} to false
+		else:
+			if {god.%arg 1%} = false:
+				send "&f" to arg-1
+				send "&6 ╔ &fYou have been enabled" to arg-1
+				send "&6 ╚ &fthe &agod &fmode." to arg-1
+				send "&f" to arg-1
+				set {god.%arg 1%} to true
+			else:
+				send "&f" to arg-1
+				send "&6 ╔ &fYou have been disabled" to arg-1
+				send "&6 ╚ &fthe &agod &fmode." to arg-1
+				send "&f" to arg-1
+				set {god.%arg 1%} to false
+
+variables:
+	{fly.%player%} = false
+	
+command /fly [<player>]:
+	permission: {@permfly}
+	cooldown: 10 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c10 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if arg-1 is not set:
+			if {fly.%player%} = false:
+				send "&f"
+				send "&6 ╔ &fYou have been enabled"
+				send "&6 ╚ &fthe &afly &fmode."
+				send "&f"
+				set {fly.%player%} to true
+				set player's flight mode to true
+			else:
+				send "&f"
+				send "&6 ╔ &fYou have been disabled"
+				send "&6 ╚ &fthe &afly &fmode."
+				send "&f"
+				set player's flight mode to false
+				set {fly.%player%} to false
+		else:
+			if player has permission "{@flyothers}":
+				if arg-1 is online:
+					if {fly.%arg 1%} = false:
+						send "&f" to arg-1
+						send "&6 ╔ &fYou have been enabled" to arg-1
+						send "&6 ╚ &fthe &afly &fmode." to arg-1
+						send "&f" to arg-1
+						set {fly.%arg 1%} to true
+						set arg-1's flight mode to true
+					else:
+						send "&f" to arg-1 
+						send "&6 ╔ &fYou have been disabled" to arg-1
+						send "&6 ╚ &fthe &afly &fmode." to arg-1
+						send "&f" to arg-1
+						set arg-1's flight mode to false
+						set {fly.%arg 1%} to false
+				else:
+					send "{@notfound}"
+			else:
+				send "{@notpermissions}"
+			
+variables:
+	{mtoggle.%player%} = false
+	{sspy.%player%} = false
+command /socialspy:
+	permission: {@permsocialspy}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if {sspy.%player%} = false:
+			send "&f"
+			send "&6 ╔ &fYou have been enabled"
+			send "&6 ╚ &fthe &aSocialSpy"
+			send "&f"
+			set {sspy.%player%} to true
+		else:
+			send "&f"
+			send "&6 ╔ &fYou have been disabled"
+			send "&6 ╚ &fthe &aSocialSpy"
+			send "&f"
+			set {sspy.%player%} to false
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /msg [<player>] [<text>]:
+	permission: {@permmsg}
+	aliases: /m
+	permission message: {@notpermissions}
+	cooldown: 5 seconds
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if arg-2 is set:
+			if arg-1 is online:
+				if {mtoggle.%arg 1%} = false:
+					send "&6&l✉ &f&nYou&r &7- &f&n%arg 1%&r&7&l: &a&o%arg 2%" to player
+					send "&6&l✉ &f&n%player%&r &7- &f&nYou&r&7&l: &a&o%arg 2%" to arg-1
+					loop all players:
+						if {sspy.%loop-value%} = true:
+							send "&6&lSPY ✉ &f&n%player%&r &7- &f&n%arg 1%&r&7&l: &a&o%arg 2%" to loop-player
+				else:
+					send "&c&lERROR: &fPlayer blocked all messages from player."
+			else:
+				send "&c&lERROR: &c%arg 1% &fnot found."
+		else:
+			send "&a&lUSE: &fCommand Usage: &a/msg [player] [text]"
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+			
+			
+command /togglemsg:
+	permission: {@permtogglemsg}
+	cooldown: 5 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c5 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if {mtoggle.%player%} = false:
+			send "&f"
+			send "&6 ╔ &fYou have been enabled"
+			send "&6 ╚ &fprivate messages."
+			send "&f"
+			set {mtoggle.%player%} to true
+		else:
+			send "&f"
+			send "&6 ╔ &fYou have been disabled"
+			send "&6 ╚ &fprivate messages."
+			send "&f"
+			set {mtoggle.%player%} to false
+
+command /workbench:
+	permission: {@permwb}
+	cooldown: 15 seconds
+	aliases: /wb
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	trigger:
+		open crafting table to the player
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+command /enderchest:
+	permission: {@permec}
+	cooldown: 15 seconds
+	aliases: /ec
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c15 seconds.
+	trigger:
+		open ender chest of player to player
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+			
+
+command /heal [<player>]:
+	permission: {@permheal}
+	cooldown: 40 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c40 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if arg-1 is not set:
+			send "&f"
+			send "&6 ╔ &fYou have been"
+			send "&6 ╚ &ahealed."
+			send "&f"
+			heal the player by 10 hearts
+		else:
+			if player has permission "{@healothers}":
+				if arg-1 is online:
+					send "&f" to arg-1
+					send "&6 ╔ &fYou have been" to arg-1
+					send "&6 ╚ &ahealed." to arg-1
+					send "&f" to arg-1 
+					heal the arg-1 by 10 hearts
+				else:
+					send "{@notfound}"
+			else:
+				send "{@notpermissions}"
+		
+command /feed [<player>]:
+	permission: {@permfeed}
+	cooldown: 40 seconds
+	permission message: {@notpermissions}
+	cooldown message: &c&lERROR: &fYou can use this command every &c40 seconds.
+	trigger:
+		if player has permission "{@bypasscooldown}":
+			cancel the cooldown
+		if arg-1 is not set:
+			send "&f"
+			send "&6 ╔ &fYou have been"
+			send "&6 ╚ &afed."
+			send "&f"
+			feed the player by 10 beefs
+		else:
+			if player has permission "{@feedothers}":
+				if arg-1 is online:
+					send "&f" to arg-1
+					send "&6 ╔ &fYou have been" to arg-1
+					send "&6 ╚ &afed." to arg-1
+					send "&f" to arg-1
+					feed the arg-1 by 10 beefs
+				else:
+					send "{@notfound}"
+			else:
+				send "{@notpermissions}"
+
+variables:
+	{gchat} = true
+
+command /lockchat:
+	permission: {@permlockchat}
+	permission message: {@notpermissions}
+	trigger:
+		if {gchat} = true:
+			send "&f"
+			send "&6 ╔ &fGlobal chat has been locked"
+			send "&6 ╚ &fby &a%player%"
+			send "&f"
+			set {gchat} to false
+		else:
+			send "&f"
+			send "&6 ╔ &fGlobal chat has been unlocked"
+			send "&6 ╚ &fby &a%player%"
+			send "&f"
+			set {gchat} to true
+
+on chat:
+	if {gchat} = false:
+		cancel event
+		send "&c&lERROR: &fGlobal chat has been locked!"
+
+#----------------------OTHER---------------FEATURES-----------
+
+#ClearLag
+variables:
+	{ankaclearenabled} = true
+options:
+	permankacontrol: anka.clearlag
+	timeclear: 5 #time to clear, in minutes
+command /ankaclear [<text>]:
+    permission: {@permankacontrol}
+    trigger:
+        if arg-1 is set:
+            if arg-1 is "enable":
+                set {ankaclearenabled} to true
+                send "&aEnabled!"
+            if arg-1 is "disable":
+                set {ankaclearenabled} to false
+                send "&cDisabled!"
+            if arg-1 is "clear":
+                clear {_items}
+                loop entities:
+                    loop-entity is a dropped item
+                    clear loop-entity
+                    add 1 to {_items}
+                if {_items} is not set:
+                    set {_items} to 0
+                broadcast "&a&lSERVER: &a%{_items}% &fitems removed!"
+
+every {@timeclear} minutes:
+	if {ankaclearenabled} = true:
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c5 &fminutes!"
+		wait 2 minutes
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c3 &fminutes!"
+		wait 2 minutes
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c60 &fseconds!"
+		wait 30 seconds
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c30 &fseconds!"
+		wait 25 seconds
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c5 &fseconds!"
+		wait 1 seconds
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c4 &fseconds!"
+		wait 1 seconds
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c3 &fseconds!"
+		wait 1 seconds
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c2 &fseconds!"
+		wait 1 seconds
+		broadcast "&c&lSERVER: &fLying objects on the ground will be removed after &c1 &fseconds!"
+		wait 1 seconds
+		execute console command "cleardrop"
+
+# Join/Exit Messages
+#--------------------
+options:
+	jeenabled: true
+	joinexitmsgperm: anka.je
+	prefixplaceholder: %placeholder "vault_prefix" from player%
+on join:
+	{@jeenabled} = true
+	if player has permission "{@joinexitmsgperm}":
+		set join message to "&6&l[!] &f{@prefixplaceholder} &f&n%player%&r has joined the server!"
+on quit:
+	{@jeenabled} = true
+	if player has permission "{@joinexitmsgperm}":
+		set quit message to "&6&l[!] &f{@prefixplaceholder} &f&n%player%&r has left the server!"
+		
+#--------------------------------# ANKA CORE CONTROL MENU #----------------------------#
+# DON'T CHANGE!
+variables:
+	{acwm.%player%} = false
+command /ankacore:
+	permission: {@acaccess}
+	trigger:
+		open chest with 3 rows named "&0&l&kt&r &0&l&nAnkaCore" to player
+		set slot 12 of player's current inventory to command block named "&6&l[!] &c&lALL COMMANDS      " with lore "&f                 " and "&7 Click here to see."
+		set slot 14 of player's current inventory to command block named "&6&l[!] &c&lDISABLE CORE      " with lore "&f                 " and "&7 Click here to disable."
+		
+		
+on inventory click:
+	if inventory name of player's current inventory is "&0&l&kt&r &0&l&nAnkaCore":
+		if clicked slot is 12:
+			close player's inventory
+			set {_msg} to text from "https://pastebin.com/raw/WKckkKQH" #DON'T CHANGE THIS!
+			send "%{_msg}%"
+			send "&c&l  ^^^ INFO ^^^"
+		if clicked slot is 14:
+			close player's inventory
+			send "&c&lCORE: &fReply to this message with &aconfirm&f, to disable AnkaCore."
+			set {acwm.%player%} to true
+on chat:
+	if message contains "confirm":
+		if {acwm.%player%} is true:
+			cancel event
+			set {acwm.%player%} to false
+			wait 5 ticks
+			send "&a&lINFO: &fUse &a/sk enable ankacore.sk&f &7 - To enable core"
+			execute player command "sk disable ankacore.sk"
+			
+			
+			
+			
+			
+			
+# Integration of Ticket-System
+
+#--------------------------------------------------------------------#
+# 							    					Tickets+							  							 #
+#												Version 3, 10/02/2023												 #
+#--------------------------------------------------------------------#
+
+#--------------------------------------------------------------------#
+#					 	 (c) Efnilite 2018 - 2023. Do not distribute!			       #
+#--------------------------------------------------------------------#
+
+options:
+
+	# Permission to use /ticket
+	usage: ticket.use
+
+	# Staff permissions (everyone with perm below gets a message on ticket open)
+	staffperm: ticket.staff
+
+	# Permission to clear all tickets and reset all data
+	adminperm: ticket.admin
+
+	# Messages
+	noperm: &a&l> &7You don't have enough permissions!
+	arg2notset: &a&l &8> &cYou need to set a subject!
+	notopen: &a&l> &7That ticket is not open!
+
+	# Version 2 Messages
+	enter-ticket: &a&l> &7Enter a subject in chat to open your ticket!
+	opened-ticket: &a&l> &7You opened a ticket about '%{_message}%' # %message% is the subject
+	one-ticket: &a&l> &7You can only have one ticket at a time!
+	player-opened-ticket: &a&l> &7%{_player}% opened a ticket about '%{_message}%' # %message% is the subject and %player% is the creator
+	closed-player-ticket: &a&l> &7You closed %{_v}%'s ticket! # %{_v}% is the player
+	closed-ticket: &a&l> &7You closed your ticket!
+	joined-player-ticket: &a&l &aYou joined %{_v}%'s ticket! # %{_v}% is the player
+	joined-ticket: &a&l &a%player% joined your ticket! # %player% is the player
+	player-message: &a&l> &7Use &a/msg %player% <subject> &7to talk to the staff member currently handling your ticket!
+	staff-message: &a&l> &7Use &a/msg %arg-3% <subject> &7to talk to the player whose ticket you're currently handling!
+
+
+on join:
+	if {ticket::alerts::%player%} is not set:
+		set {ticket::alerts::%player%} to true
+
+function create(player: offlineplayer, message: text):
+	set {ticket::open::%{_player}%} to {_message}
+	add {_player} to {ticket::playerlist::*}
+	delete {ticket::enteringticket::%{_player}%}
+
+	# Alert staff
+	loop all players:
+		if loop-player has permission "{@staffperm}":
+			if {ticket::alerts::%loop-player%} is true:
+				send "{@player-opened-ticket}" to loop-player
+
+	send "{@opened-ticket}" to {_player}
+
+on chat:
+	if {ticket::enteringticket::%player%} is true:
+		cancel event
+		create(player, message)
+
+command /ticket [<text>] [<text>] [<text>]:
+	aliases: /tk, /ticket, /tickets
+	permission: {@usage}
+	permission message: {@noperm}
+	executable by: players
+	trigger:
+		if arg-1 is not set:
+			send "&7&m--------------&a Tickets+ Help &7&m--------------"
+			send "&a/tk help &8» &7Prints this help message"
+			send "&a/tk open <subject> &8» &7Open a ticket with a subject"
+			send "&a/tk close <subject> &8» &7Close a ticket"
+			send "&a/tk current &8» &7See your open ticket."
+			if player has permission "{@staffperm}":
+				send "&a&l/tk close <player> &8» &7Close a player's ticket"
+				send "&a&l/tk alerts &8» &7Enable and disable alerts"
+				send "&a&l/tk menu &8» &7Open unresolved ticket GUI"
+			if player has permission "{@adminperm}":
+				send "&a&l/tk debug &8» &7Clear all tickets and reset all data"
+			send "&7&m--------------------------------------"
+		else if arg-1 is "help":
+			send "&7&m--------------&a Tickets+ Help &7&m--------------"
+			send "&a/tk help &8» &7Prints this help message"
+			send "&a/tk open <subject> &8» &7Open a ticket with a subject"
+			send "&a/tk close <subject> &8» &7Close a ticket"
+			send "&a/tk current &8» &7See your open ticket."
+			if player has permission "{@staffperm}":
+				send "&a&l/tk close <player> &8» &7Close a player's ticket"
+				send "&a&l/tk alerts &8» &7Enable and disable alerts"
+				send "&a&l/tk menu &8» &7Open unresolved ticket GUI"
+			if player has permission "{@adminperm}":
+				send "&a&l/tk debug &8» &7Clear all tickets and reset all data"
+			send "&7&m--------------------------------------"
+		else if arg-1 is "alerts":
+			if player has permission "{@staffperm}":
+				if {ticket::alerts::%player%} is false:
+					set {ticket::alerts::%player%} to true
+					send "&a&l> &7Enabled alerts!"
+				else:
+					set {ticket::alerts::%player%} to false
+					send "&a&l> &7Disabled alerts!"
+			else:
+				send "{@noperm}"
+		else if arg-1 is "open":
+			if {ticket::open::%player%} is not set:
+				if arg-2 is set:
+					create(player, "%arg-2% %arg-3%")
+				else:
+					set {ticket::enteringticket::%player%} to true
+					send "{@enter-ticket}" to player
+			else:
+				send "{@one-ticket}"
+		else if arg-1 is "join":
+			if arg-2 is "player":
+				if (arg-3 parsed as offlineplayer) is set:
+					set {_v} to arg-3
+					if {ticket::open::%{_v}%} is set:
+						if {ticket::open::%{_v}%::handler} is not set:
+							send "{@joined-player-ticket}"
+							set {ticket::open::%{_v}%::handler} to player
+							remove {_v} from {ticket::playerlist::*}
+							send "{@joined-ticket}" to (arg-3 parsed as offlineplayer)
+							add player and arg-3 to {_l::*}
+							loop {_l::*}:
+								send ""
+								send "&a&l> Ticket of %{_v}%"
+								send "&8> &7Opened by: &f%{_v}%" to loop-value
+								send "&8> &7Treated by: &f%player%" to loop-value
+								send "&8> &7Subject: &f%{ticket::open::%{_v}%}%" to loop-value
+								send ""
+							send "{@player-message}" to (arg-3 parsed as offlineplayer)
+							send "{@staff-message}" to player
+
+		else if arg-1 is "close":
+			if arg-2 is set:
+				if arg-2 is a offlineplayer:
+					if player has permission "{@staffperm}":
+						if {ticket::open::%arg-2%} is set:
+							delete {ticket::open::%arg-2%}
+							remove arg-2 from {ticket::playerlist::*}
+							send "{@closed-player-ticket}"
+			else:
+				if {ticket::open::%player%} is set:
+					delete {ticket::open::%player%}
+					remove player from {ticket::playerlist::*}
+					send "{@closed-ticket}"
+		else if arg-1 is "current":
+			if {ticket::open::%player%} is true:
+				send "&a&l> &7Subject: %{ticket::open::%player%}%"
+			else:
+				send "{@notopen}"
+		else if arg-1 is "debug":
+			if player has permission "{@adminperm}":
+				clear {ticket::*}
+				send "&a&l> &7Reset data of Tickets!"
+			else:
+				send "{@noperm}"
+		else if arg-1 is "menu":
+			if player has permission "{@staffperm}":
+				open chest inventory with 3 rows named "Unresolved Tickets" to player
+				set {_slot} to 0
+				loop {ticket::playerlist::*}:
+					set {_player} to "%loop-value%" parsed as offlineplayer
+					set slot {_slot} of player's current inventory to skull of {_player} named "&a&l%{_player}%" with lore "&7Subject: %{ticket::open::%{_player}%}%%nl%&7Click me to join!" #to close then run [make player execute "/ticket join player %{_player}%"]
+					add 1 to {_slot}
+			else:
+				send "{@noperm}"
+
+on inventory click:
+	if name of player's current inventory is "Unresolved Tickets":
+		cancel event
+		if event-item is set:
+			set {_pl} to uncoloured name of event-item
+			close player's inventory
+			make player execute command "/skript:tickets join player %{_pl}%"
+
+on load:
+	send "&a&l> &7Enabled Tickets!" to console
+
+on unload:
+	send "&a&l> &7Disabled Tickets!" to console
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
